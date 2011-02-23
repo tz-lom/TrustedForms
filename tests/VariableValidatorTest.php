@@ -1,6 +1,6 @@
 <?php
 
-require_once '../library/VariableValidator.php';
+require_once './autoload.php';
 
 /**
  * Test class for VariableValidator.
