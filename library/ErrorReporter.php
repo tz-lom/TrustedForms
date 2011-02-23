@@ -7,6 +7,16 @@ namespace TrustedForms;
  */
 class ErrorReporter
 {
-    //put your code here
+    protected $message;
+
+	public function __construct($message)
+	{
+		$this->message = $message;
+	}
+
+	public function getMessage()
+	{
+		return $this->message;
+	}
 }
 
