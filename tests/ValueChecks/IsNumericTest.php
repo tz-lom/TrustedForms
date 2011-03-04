@@ -1,10 +1,10 @@
 <?php
 
-require_once '../autoload.php';
+require_once 'autoload.php';
 
 class IsNumericTest extends PHPUnit_Framework_TestCase
 {
-	protected function testChecker()
+	public function testChecker()
 	{
 		$checker = new \TrustedForms\ValueChecks\IsNumeric();
 		

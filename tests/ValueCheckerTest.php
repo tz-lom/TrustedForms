@@ -1,7 +1,7 @@
 <?php
 
 require_once './autoload.php';
-
+ 
 class Checker extends \TrustedForms\ValueChecker
 {
 	protected function performCheck($value)
@@ -19,7 +19,7 @@ class ValueCheckerTest extends PHPUnit_Framework_TestCase
 		$checker = new Checker();
 		$checker->setReporter($reporter);
 
-		$this->assertEquals($reporer,$checker->getReporter());
+		$this->assertEquals($reporter,$checker->getReporter());
 	}
 
 	public function testSimpleCheck()
