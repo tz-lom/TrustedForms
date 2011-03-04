@@ -7,14 +7,26 @@ namespace TrustedForms;
  */
 class ErrorReporter
 {
-    protected $message;
+    /**
+     *
+     * @var String
+     */
+	protected $message;
 
-	public function __construct($message)
+	/**
+     *
+     * @param String $message 
+     */
+    public function __construct($message)
 	{
 		$this->message = $message;
 	}
 
-	public function getMessage()
+	/**
+     *
+     * @return String
+     */
+    public function getMessage()
 	{
 		return $this->message;
 	}

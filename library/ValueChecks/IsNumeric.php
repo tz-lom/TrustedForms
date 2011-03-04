@@ -4,6 +4,14 @@ namespace TrustedForms\ValueChecks;
 
 class IsNumeric extends \TrustedForms\ValueChecker
 {
-    //put your code here
+    /**
+     *
+     * @param mixed $value
+     * @return bool 
+     */
+    protected function performCheck($value)
+    {
+        return is_numeric($value);
+    }
 }
 
