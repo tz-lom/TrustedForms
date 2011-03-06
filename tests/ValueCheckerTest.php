@@ -18,15 +18,21 @@ class ValueCheckerTest extends PHPUnit_Framework_TestCase
 		$reporter = new \TrustedForms\ErrorReporter('Error occured');
 		$checker = new Checker();
 		$checker->setReporter($reporter);
-
 		$this->assertEquals($reporter,$checker->getReporter());
 	}
 
-	public function testSimpleCheck()
+	public function testSimplePassedCheck()
 	{
 		$checker = new Checker();
-		$this->assertEquals(true,$checker->check(true));
-		$this->assertEquals(false,$checker->check(false));
+		$checker->process(true);
+		$this->assertFalse($checker->isError());
+	}
+
+	public function testSimpleFailedCheck()
+	{
+		$checker = new Checker();
+		$checker->process(false);
+		$this->assertTrue($checker->isError() instanceof \TrustedForms\ErrorReporter);
 	}
 
 }

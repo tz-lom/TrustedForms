@@ -37,18 +37,37 @@ class VariableValidatorTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testErrorWhenCheckAddedWithoutReporter()
 	{
-		$this->object->addCheck(new \TrustedForms\ValueChecks\IsNumeric());
+		$this->object->addToChain(new \TrustedForms\ValueChecks\IsNumeric());
 	}
 
 	public function testAdditionOfCheck()
 	{
 		$this->object->addReporter(new \TrustedForms\ErrorReporter('Error occured'));
-		$this->object->addCheck(new \TrustedForms\ValueChecks\IsNumeric());
+		$this->object->addToChain(new \TrustedForms\ValueChecks\IsNumeric());
 		$this->object->setValue('42');
 		$this->assertEquals(true,$this->object->isCorrect());
 		$this->assertEquals('42',$this->object->value());
 		$this->object->setValue('abc');
 		$this->assertEquals(false,$this->object->isCorrect());
+	}
+
+	public function testAdditionOfTransformers()
+	{
+		$this->object->addReporter(new \TrustedForms\ErrorReporter('Error occured'));
+		$this->object->addToChain(new \TrustedForms\ValueTransformers\Trim());
+		$this->object->setValue(' some text  ');
+		$this->assertEquals('some text',$this->object->value());
+	}
+
+	public function testComplexChain()
+	{
+		$this->object->addReporter(new \TrustedForms\ErrorReporter('Error occured'));
+		$this->object->addToChain(new \TrustedForms\ValueTransformers\Trim());
+		$this->object->addToChain(new \TrustedForms\ValueChecks\IsNumeric());
+		$this->object->addToChain(new \TrustedForms\ValueTransformers\ToInteger());
+		$this->object->setValue(' 42 ');
+		$this->assertEquals(true, $this->object->isCorrect());
+		$this->assertEquals(42, $this->object->value());
 	}
 
 }
