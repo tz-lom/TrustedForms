@@ -8,10 +8,13 @@ namespace TrustedForms;
 class ErrorReporter
 {
     /**
-     *
      * @var String
      */
 	protected $message;
+	/**
+	 * @var mixed
+	 */
+	protected $errorValue;
 
 	/**
      *
@@ -29,6 +32,17 @@ class ErrorReporter
     public function getMessage()
 	{
 		return $this->message;
+	}
+
+	/**
+	 *
+	 * @param mixed $value
+	 * @return ErrorReporter
+	 */
+	public function setErrorValue($value)
+	{
+		$this->errorValue = $value;
+		return $this;
 	}
 }
 

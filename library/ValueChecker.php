@@ -5,32 +5,8 @@ namespace TrustedForms;
 /**
  * Performs control of variable
  */
-abstract class ValueChecker
+abstract class ValueChecker extends \TrustedForms\ValidationChainItem
 {
-    /**
-     * @var ErrorReporter
-     */
-    protected $reporter;
-
-    /**
-     *
-     * @param ErrorReporter $reporter
-     * @return ValueChecker
-     */
-    public function setReporter(ErrorReporter $reporter)
-    {
-        $this->reporter = $reporter;
-        return $this;
-    }
-
-    /**
-     * @return ErrorReporter
-     */
-    public function getReporter()
-    {
-        return $this->reporter;
-    }
-
     /**
      * @param mixed $value
      * @return bool
@@ -42,9 +18,14 @@ abstract class ValueChecker
      * @param mixed $value
      * @return bool
      */
-    public function check($value)
+    public function process($value)
     {
-        return $this->performCheck($value);
+		parent::process($value);
+        if(!$this->performCheck($value))
+		{
+			$this->reportError($value);
+		}
+		return $value;
     }
 }
 

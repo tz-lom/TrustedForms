@@ -7,9 +7,11 @@ class IsNumericTest extends PHPUnit_Framework_TestCase
 	public function testChecker()
 	{
 		$checker = new \TrustedForms\ValueChecks\IsNumeric();
-		
-		$this->assertEquals(true,$checker->check('42'));
-		$this->assertEquals(false,$checker->check('abc'));
+
+		$checker->process('42');
+		$this->assertEquals(false,$checker->isError());
+		$checker->process('abc');
+		$this->assertNotEquals(false,$checker->isError());
 	}
 
 }

@@ -12,7 +12,11 @@ class VariableValidator
      * @var ErrorReporter
      */
     protected $reporter;
-    protected $checkers = array();
+	/**
+	 *
+	 * @var array of ValidationChainItem 
+	 */
+    protected $chain = array();
     protected $inputValue;
     protected $value;
     /**
@@ -37,18 +41,19 @@ class VariableValidator
         return $this;
     }
 
-    /**
-     *
-     * @param ValueChecker $checker
-     * @return VariableValidator 
-     */
-    public function addCheck(ValueChecker $checker)
-    {
-        if(is_null($this->reporter)) throw new \TrustedForms\Exceptions\ErrorReporterNotSet;
-        $checker->setReporter($this->reporter);
-        $this->checkers[] = $checker;
-        return $this;
-    }
+	public function clearChain()
+	{
+		$this->chain = array();
+		return $this;
+	}
+
+	public function addToChain(ValidationChainItem $item)
+	{
+		if(! $this->reporter instanceof \TrustedForms\ErrorReporter) throw new \TrustedForms\Exceptions\ErrorReporterNotSet;
+		$item->setReporter($this->reporter);
+		$this->chain[] = $item;
+		return $this;
+	}
 
     /**
      *
@@ -61,6 +66,7 @@ class VariableValidator
         $this->value = NULL;
         $this->checked = false;
         $this->correct = false;
+		$this->occuredError = NULL;
         return $this;
     }
 
@@ -73,16 +79,18 @@ class VariableValidator
         if(!$this->checked)
         {
             $this->correct = true;
-            foreach($this->checkers as $checker)
+			$this->value = $this->inputValue;
+			foreach($this->chain as $item)
             {
-                if(!$checker->check($this->inputValue))
+				$this->value = $item->process($this->value);
+				if($item->isError())
                 {
                     $this->correct = false;
+					$this->occuredError = $item->isError();
                     break;
                 }
             }
         }
-        $this->value = $this->inputValue;
         $this->checked = true;
         return $this->correct;
     }
@@ -93,7 +101,12 @@ class VariableValidator
      */
     public function value()
     {
-        return $this->value;
+		if($this->isCorrect())
+			return $this->value;
+		else
+		{
+			throw $this->occuredError;
+		}
     }
 }
 
