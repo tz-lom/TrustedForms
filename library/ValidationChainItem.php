@@ -13,10 +13,15 @@ abstract class ValidationChainItem
      */
     protected $reporter;
 	protected $reportedError = false;
+    protected $config = array();
 
 
-	public function  __construct()
+    /**
+     * @param array $config Параметры для валидатора
+     */
+	public function  __construct($config=array())
 	{
+        $this->config = $config;
 		$this->reporter = new \TrustedForms\ErrorReporter('');
 	}
 	/**
