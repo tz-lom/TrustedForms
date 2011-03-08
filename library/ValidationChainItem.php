@@ -43,18 +43,27 @@ abstract class ValidationChainItem
         return $this->reporter;
     }
 
+	/**
+	 * @param mixed &$value проверяемое значение,может быть изменено
+	 * @return bool результат проверки
+	 */
+	protected abstract function doProcess(&$value);
+
     /**
-     *
-     * @param mixed $value
-     * @return $value
+     * Проверяет значение,изменяет его , возвращает результат проверки
+	 * в случае не прохождения проверки заносит ошибочное значение в ErrorReporter
+	 *
+     * @param mixed &$value проверяемое значение,может быть изменено
+     * @return bool результат проверки (true == прошло проверку)
      */
-	public function process($value)
+	public function process(&$value)
 	{
 		$this->reportedError = false;
 		return $value;
 	}
 
 	/**
+	 * @todo нужен ли этот метод?
 	 *
 	 * @param mixed $value
 	 */
@@ -64,10 +73,19 @@ abstract class ValidationChainItem
 	}
 
 	/**
-	 *
-	 * @return bool | ErrorReporter
+	 * Возвращает произошла ли ошибка
+	 * @return bool
 	 */
 	public function isError()
+	{
+		return $this->reportedError != false;
+	}
+
+	/**
+	 * Возвращает ошибку или же false если ошибки не произошло
+	 * @return \TrustedForms\ErrorReporter
+	 */
+	public function getError()
 	{
 		return $this->reportedError;
 	}

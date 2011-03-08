@@ -8,9 +8,10 @@ namespace TrustedForms\ValueTransformers;
  */
 class Trim extends \TrustedForms\ValidationChainItem
 {
-	public function process($value)
+	protected function doProcess(&$value)
 	{
-		return trim($value);
+		$value = trim($value);
+		return true;
 	}
 }
 
