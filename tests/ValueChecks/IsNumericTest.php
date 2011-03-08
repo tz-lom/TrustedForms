@@ -8,9 +8,11 @@ class IsNumericTest extends PHPUnit_Framework_TestCase
 	{
 		$checker = new \TrustedForms\ValueChecks\IsNumeric();
 
-		$checker->process('42');
+		$value = 42;
+		$checker->process($value);
 		$this->assertEquals(false,$checker->isError());
-		$checker->process('abc');
+		$value = 'abc';
+		$checker->process($value);
 		$this->assertNotEquals(false,$checker->isError());
 	}
 

@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @todo Рассмотреть необходимость теста
+ */
+/*
+Тест временно отменён
+
 require_once './autoload.php';
  
 class Checker extends \TrustedForms\ValueChecker
@@ -22,7 +28,7 @@ class ValueCheckerTest extends PHPUnit_Framework_TestCase
 	}
 
 	public function testSimplePassedCheck()
-	{
+	{ 
 		$checker = new Checker();
 		$checker->process(true);
 		$this->assertFalse($checker->isError());
@@ -37,3 +43,4 @@ class ValueCheckerTest extends PHPUnit_Framework_TestCase
 
 }
 
+*/
