@@ -24,8 +24,18 @@ class ArrayValidatorTest extends PHPUnit_Framework_TestCase
 
     public function testArrayAccess()
 	{
-        $this->assertEquals('int',$this->object['int']->getReporter()->getMessage());
-        $this->assertEquals('str',$this->object['str']->getReporter()->getMessage());
+        $validator = new TrustedForms\VariableValidator();
+        $validator->addReporter(new \TrustedForms\ErrorReporter('test'));
+        $validator->addToChain(new \TrustedForms\ValueTransformers\Trim());
+
+        $array = new TrustedForms\ArrayValidator();
+
+        $this->assertFalse(isset($array['test']));
+        $array['test'] = $validator;
+        $this->assertEquals($validator, $array['test']);
+        $this->assertTrue(isset($array['test']));
+        unset($array['test']);
+        $this->assertNull($array['test']);    
 	}
 
     public function testCheckPass()
