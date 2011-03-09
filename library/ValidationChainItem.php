@@ -40,7 +40,7 @@ abstract class ValidationChainItem
      */
     public function getReporter()
     {
-        return $this->reporter;
+    	return $this->reporter;
     }
 
 	/**
@@ -58,8 +58,16 @@ abstract class ValidationChainItem
      */
 	public function process(&$value)
 	{
-		$this->reportedError = false;
-		return $value;
+ 		if($this->doProcess($value)) 
+		{ 
+			$this->reportedError = false; 
+			return true;
+		}
+		else 
+		{
+  			$this->reportedError = $this->getReporter()->setErrorValue($value);	
+			return false;	
+ 		}
 	}
 
 	/**
