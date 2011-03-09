@@ -8,33 +8,59 @@ namespace TrustedForms;
 class ArrayValidator implements \ArrayAccess
 {
     /**
+     * @var array of \TrustedForms\VariableValidator
+     */
+    protected $variables = array();
+    /**
+     * @var bool Произошла ли ошибка при проверке
+     */
+    protected $errorOccured = false;
+
+
+    /**
      * @see \ArrayAccess
      * @param mixed $offset
      * @return bool
      */
     public function offsetExists($offset)
     {
-
+        return isset($this->variables[$offset]);
     }
 
     /**
      * @see \ArrayAccess
      * @param mixed $offset
-     * @return mixed
+     * @return \TrustedForms\VariableValidator
      */
     public function offsetGet($offset)
     {
-
+        if($this->offsetExists($offset))
+        {
+            return $this->variables[$offset];
+        }
+        else
+        {
+            return null;
+        }
     }
 
     /**
      * @see \ArrayAccess
      * @param mixed $offset
-     * @param mixed $value
+     * @param \TrustedForms\VariableValidator $value
      */
     public function offsetSet($offset,$value)
     {
-
+        if(! $value instanceof \TrustedForms\VariableValidator)
+            trigger_error('ArrayValidator items must be inherited from VariableValidator');
+        if(is_null($offset))
+        {
+            $this->variables[] = $value;
+        }
+        else
+        {
+            $this->variables[$offset] = $value;
+        }
     }
 
     /**
@@ -43,7 +69,7 @@ class ArrayValidator implements \ArrayAccess
      */
     public function offsetUnset($offset)
     {
-
+        unset($this->variables[$offset]);
     }
     /**
      * Проверяет все значения массива
@@ -53,7 +79,16 @@ class ArrayValidator implements \ArrayAccess
      */
     public function checkArray($array)
     {
-
+        $this->errorOccured = false;
+        foreach($this->variables as $name=>$var)
+        {
+            if(isset($array[$name]))
+            {
+                $var->setValue($array[$name]);
+                $this->errorOccured = $this->errorOccured || $var->isError();
+            }
+        }
+        return $this->errorOccured;
     }
 
     /**
@@ -61,7 +96,7 @@ class ArrayValidator implements \ArrayAccess
      */
     public function isError()
     {
-
+        return $this->errorOccured;
     }
 
     /**
@@ -69,6 +104,13 @@ class ArrayValidator implements \ArrayAccess
      */
     public function getErrors()
     {
-
+        if(!$this->errorOccured) return array();
+        $result = array();
+        foreach($this->variables as $var)
+        {
+            if($var->isError())
+                $result[] = $var->getError();
+        }
+        return $result;
     }
 }
