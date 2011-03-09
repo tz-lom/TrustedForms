@@ -21,6 +21,13 @@ class ArrayValidatorTest extends PHPUnit_Framework_TestCase
                             ->addToChain(new TrustedForms\ValueTransformers\Trim());
     }
 
+	/**
+	 * @expectedException PHPUnit_Framework_Error
+	 */
+	public function testControllOfTypes()
+	{
+		$this->object['error'] = 1;
+	}
 
     public function testArrayAccess()
 	{
