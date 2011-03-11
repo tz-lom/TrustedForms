@@ -6,8 +6,8 @@ class Item extends \TrustedForms\ValidationChainItem
 {
 	protected function doProcess(&$value)
 	{
-        $value = $this->config[$value]['newValue'];
-		return $this->config['error'];
+        $value = $this->config[$value];
+		return !$this->config['error'];
 	}
 }
 
@@ -27,9 +27,9 @@ class ValidadionChainItemTest extends PHPUnit_Framework_TestCase
 		$item = new Item(array(
 							'key'	=> 'key',
 							'error'	=> true
-						));
+					));
 		$value = 'key';
-		$this->assertTrue($item->process($value));
+		$this->assertFalse($item->process($value));
 		$this->assertTrue($item->isError());
 		$this->assertTrue($item->getError() instanceof \TrustedForms\ErrorReporter);
 	}
@@ -41,7 +41,7 @@ class ValidadionChainItemTest extends PHPUnit_Framework_TestCase
 							'error'	=> false
 						));
 		$value = 'key';
-		$this->assertFalse($item->process($value));
+		$this->assertTrue($item->process($value));
 		$this->assertEquals('value',$value);
 	}
 
