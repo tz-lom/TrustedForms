@@ -32,12 +32,41 @@ class VariableValidatorTest extends PHPUnit_Framework_TestCase
 		
 	}
 
-	/**
-	 * @expectedException \TrustedForms\Exceptions\ErrorReporterNotSet
-	 */
-	public function testErrorWhenCheckAddedWithoutReporter()
+	public function testNoErrorWhenCheckAddedWithoutReporter()
 	{
 		$this->object->addToChain(new \TrustedForms\ValueChecks\IsNumeric());
+		$this->object->setValue('"value"');
+		$this->assertFalse($this->object->isCorrect());
+		$this->assertInstanceOf('\TrustedForms\ErrorReporter',$this->object->getError());
+		$this->assertEquals('Value "value" is incorrect',$this->object->getError()->getMessage());
+	}
+
+	public function testLazyValuePass()
+	{
+		$this->object->addToChain(new \TrustedForms\ValueChecks\IsNumeric());
+		$this->object->setValue('42');
+		$this->assertEquals('42',$this->object->value());
+	}
+
+	public function testLazyValueFails()
+	{
+		$this->object->addToChain(new \TrustedForms\ValueChecks\IsNumeric());
+		$this->object->setValue('test');
+		$this->assertNull($this->object->value());
+	}
+
+	public function testLazyGetErrorPass()
+	{
+		$this->object->addToChain(new \TrustedForms\ValueChecks\IsNumeric());
+		$this->object->setValue('test');
+		$this->assertInstanceOf('\TrustedForms\ErrorReporter',$this->object->getError());
+	}
+
+	public function testLazyGetErrorFails()
+	{
+		$this->object->addToChain(new \TrustedForms\ValueChecks\IsNumeric());
+		$this->object->setValue('42');
+		$this->assertNull($this->object->getError());
 	}
 
 	public function testAdditionOfCheck()
@@ -68,6 +97,22 @@ class VariableValidatorTest extends PHPUnit_Framework_TestCase
 		$this->object->setValue(' 42 ');
 		$this->assertEquals(true, $this->object->isCorrect());
 		$this->assertEquals(42, $this->object->value());
+	}
+
+	public function testEmptyValidationChain()
+	{
+		$this->object->setValue('random 42');
+		$this->assertTrue($this->object->isCorrect());
+		$this->assertEquals('random 42',$this->object->value());
+	}
+
+	public function testGetError()
+	{
+		$this->object->addReporter(new \TrustedForms\ErrorReporter('Error occured'));
+		$this->object->addToChain(new \TrustedForms\ValueChecks\IsNumeric());
+		$this->object->setValue('string');
+		$this->assertFalse($this->object->isCorrect());
+		$this->assertInstanceOf('TrustedForms\ErrorReporter',$this->object->getError());
 	}
 
 }

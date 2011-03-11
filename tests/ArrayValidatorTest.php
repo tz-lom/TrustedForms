@@ -15,7 +15,8 @@ class ArrayValidatorTest extends PHPUnit_Framework_TestCase
         $this->object = new TrustedForms\ArrayValidator();
         $this->object['int'] = new \TrustedForms\VariableValidator();
         $this->object['int']->addReporter(new \TrustedForms\ErrorReporter('int'))
-                            ->addToChain(new TrustedForms\ValueTransformers\ToInteger());
+                            ->addToChain(new TrustedForms\ValueChecks\IsNumeric())
+							->addToChain(new TrustedForms\ValueTransformers\ToInteger());
         $this->object['str'] = new \TrustedForms\VariableValidator();
         $this->object['str']->addReporter(new TrustedForms\ErrorReporter('str'))
                             ->addToChain(new TrustedForms\ValueTransformers\Trim());
@@ -65,8 +66,10 @@ class ArrayValidatorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($this->object->isError());
         $this->assertFalse($this->object['int']->isCorrect());
         $this->assertTrue($this->object['str']->isCorrect());
-        $this->assertEquals('simple check', $this->object['str']->value());
-    }
+        $this->assertEquals('simple string', $this->object['str']->value());
+		$this->assertEquals(1,sizeof($this->object->getErrors()));
+		$this->assertContainsOnly('\TrustedForms\ErrorReporter',$this->object->getErrors());
+	}
 
 }
 
