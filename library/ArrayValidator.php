@@ -85,7 +85,7 @@ class ArrayValidator implements \ArrayAccess
             if(isset($array[$name]))
             {
                 $var->setValue($array[$name]);
-                $this->errorOccured = $this->errorOccured || $var->isError();
+                $this->errorOccured = $this->errorOccured || !$var->isCorrect();
             }
         }
         return $this->errorOccured;
@@ -108,7 +108,7 @@ class ArrayValidator implements \ArrayAccess
         $result = array();
         foreach($this->variables as $var)
         {
-            if($var->isError())
+            if(!$var->isCorrect())
                 $result[] = $var->getError();
         }
         return $result;
