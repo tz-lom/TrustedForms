@@ -12,6 +12,9 @@ class VariableValidator
      * @var ErrorReporter
      */
     protected $reporter;
+	/**
+	 * @var ErrorReporter
+	 */
     protected $occuredError;
 	/**
 	 *
@@ -67,7 +70,7 @@ class VariableValidator
         $this->value = NULL;
         $this->checked = false;
         $this->correct = false;
-	$this->occuredError = NULL;
+		$this->occuredError = NULL;
         return $this;
     }
 
@@ -83,10 +86,12 @@ class VariableValidator
 			$this->value = $this->inputValue;
 			foreach($this->chain as $item)
             {
-			if (!$item->process($this->value)) {
-				return false;			
-			}
-			
+				if (!$item->process($this->value))
+				{
+					$this->correct = false;
+					$this->occuredError = $item->getError();
+					break;
+				}
             }
         }
         $this->checked = true;
@@ -108,5 +113,13 @@ class VariableValidator
 			return NULL;
 		}
     }
-}	
 
+	/**
+	 * Возвращает возникнувшую ошибку
+	 * @return ErrorReporter or NULL
+	 */
+	public function getError()
+	{
+		return $this->occuredError;
+	}
+}
