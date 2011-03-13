@@ -1,9 +1,14 @@
 <?php
 
-require_once './autoload.php';
+namespace {
 
+require_once 'autoload.php';
 
-class ArrayValidatorTest extends PHPUnit_Framework_TestCase
+}
+
+namespace TrustedForms {
+
+class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var ArrayValidator
@@ -12,14 +17,14 @@ class ArrayValidatorTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->object = new TrustedForms\ArrayValidator();
+        $this->object = new \TrustedForms\ArrayValidator();
         $this->object['int'] = new \TrustedForms\VariableValidator();
         $this->object['int']->addReporter(new \TrustedForms\ErrorReporter('int'))
-                            ->addToChain(new TrustedForms\ValueChecks\IsNumeric())
-							->addToChain(new TrustedForms\ValueTransformers\ToInteger());
+                            ->addToChain(new \TrustedForms\ValueChecks\IsNumeric())
+							->addToChain(new \TrustedForms\ValueTransformers\ToInteger());
         $this->object['str'] = new \TrustedForms\VariableValidator();
-        $this->object['str']->addReporter(new TrustedForms\ErrorReporter('str'))
-                            ->addToChain(new TrustedForms\ValueTransformers\Trim());
+        $this->object['str']->addReporter(new \TrustedForms\ErrorReporter('str'))
+                            ->addToChain(new \TrustedForms\ValueTransformers\Trim());
     }
 
 	/**
@@ -32,11 +37,11 @@ class ArrayValidatorTest extends PHPUnit_Framework_TestCase
 
     public function testArrayAccess()
 	{
-        $validator = new TrustedForms\VariableValidator();
+        $validator = new \TrustedForms\VariableValidator();
         $validator->addReporter(new \TrustedForms\ErrorReporter('test'));
         $validator->addToChain(new \TrustedForms\ValueTransformers\Trim());
 
-        $array = new TrustedForms\ArrayValidator();
+        $array = new \TrustedForms\ArrayValidator();
 
         $this->assertFalse(isset($array['test']));
         $array['test'] = $validator;
@@ -71,5 +76,19 @@ class ArrayValidatorTest extends PHPUnit_Framework_TestCase
 		$this->assertContainsOnly('\TrustedForms\ErrorReporter',$this->object->getErrors());
 	}
 
+	public function testNotExistingKeys()
+	{
+		$this->object->handleUndefinedKeys(\TrustedForms\ArrayValidator::REPORT_UNDEFINED_KEY);
+		$this->object->checkArray(array(
+			'int'	=> 42,
+			'str'	=> 'test',
+			'key'	=> 'value'
+		));
+		$this->assertTrue($this->object->isError());
+		$this->assertEquals(1,sizeof($this->object->getErrors()));
+		$this->assertInstanceOf('\TrustedForms\ErrorReporters\UnrecognisedKeys',$this->object->getErrors());
+	}
+
 }
 
+}
