@@ -58,7 +58,7 @@ abstract class ValidationChainItem
      */
 	public function process(&$value)
 	{
- 		if($this->doProcess($value)) 
+ 		if ($this->doProcess($value)) 
 		{ 
 			$this->reportedError = false; 
 			return true;
@@ -66,7 +66,7 @@ abstract class ValidationChainItem
 		else 
 		{
   			$this->reportedError = $this->getReporter()->setErrorValue($value);	
-			return false;	
+			return false;
  		}
 	}
 
