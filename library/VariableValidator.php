@@ -34,6 +34,11 @@ class VariableValidator
      */
     protected $correct = false;
 
+	public function __construct()
+	{
+		$this->reporter = new \TrustedForms\ErrorReporter('Value %s is incorrect');
+	}
+
     /**
      *
      * @param ErrorReporter $reporter
@@ -53,7 +58,6 @@ class VariableValidator
 
 	public function addToChain(ValidationChainItem $item)
 	{
-		if(!$this->reporter instanceof \TrustedForms\ErrorReporter) throw new \TrustedForms\Exceptions\ErrorReporterNotSet;
 		$item->setReporter($this->reporter);
 		$this->chain[] = $item;
 		return $this;
@@ -120,6 +124,13 @@ class VariableValidator
 	 */
 	public function getError()
 	{
-		return $this->occuredError;
+		if($this->isCorrect())
+		{
+			return NULL;
+		}
+		else
+		{
+			return $this->occuredError;
+		}
 	}
 }

@@ -78,7 +78,7 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
 
 	public function testNotExistingKeys()
 	{
-		$this->object->handleUndefinedKeys(\TrustedForms\ArrayValidator::REPORT_UNDEFINED_KEY);
+		$this->object->handleUndefinedKeys(\TrustedForms\ArrayValidator::REPORT_UNDEFINED_ELEMENT);
 		$this->object->checkArray(array(
 			'int'	=> 42,
 			'str'	=> 'test',
