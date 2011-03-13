@@ -18,7 +18,7 @@ class ErrorReporter
 
 	/**
      *
-     * @param String $message 
+     * @param String $message Сообщение об ошибке задаётся в формате printf , где $1 - значение на котором произошла ошибка
      */
     public function __construct($message)
 	{
@@ -31,7 +31,7 @@ class ErrorReporter
      */
     public function getMessage()
 	{
-		return $this->message;
+		return sprintf($this->message,$this->errorValue);
 	}
 
 	/**

@@ -13,6 +13,10 @@ class VariableValidator
      */
     protected $reporter;
 	/**
+	 * @var ErrorReporter
+	 */
+    protected $occuredError;
+	/**
 	 *
 	 * @var array of ValidationChainItem 
 	 */
@@ -49,7 +53,7 @@ class VariableValidator
 
 	public function addToChain(ValidationChainItem $item)
 	{
-		if(! $this->reporter instanceof \TrustedForms\ErrorReporter) throw new \TrustedForms\Exceptions\ErrorReporterNotSet;
+		if(!$this->reporter instanceof \TrustedForms\ErrorReporter) throw new \TrustedForms\Exceptions\ErrorReporterNotSet;
 		$item->setReporter($this->reporter);
 		$this->chain[] = $item;
 		return $this;
@@ -82,13 +86,12 @@ class VariableValidator
 			$this->value = $this->inputValue;
 			foreach($this->chain as $item)
             {
-				$this->value = $item->process($this->value);
-				if($item->isError())
-                {
-                    $this->correct = false;
-					$this->occuredError = $item->isError();
-                    break;
-                }
+				if (!$item->process($this->value))
+				{
+					$this->correct = false;
+					$this->occuredError = $item->getError();
+					break;
+				}
             }
         }
         $this->checked = true;
@@ -102,11 +105,21 @@ class VariableValidator
     public function value()
     {
 		if($this->isCorrect())
+		{
 			return $this->value;
+		}
 		else
 		{
-			throw $this->occuredError;
+			return NULL;
 		}
     }
-}
 
+	/**
+	 * Возвращает возникнувшую ошибку
+	 * @return ErrorReporter or NULL
+	 */
+	public function getError()
+	{
+		return $this->occuredError;
+	}
+}
