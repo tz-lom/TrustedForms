@@ -7,6 +7,24 @@ namespace TrustedForms;
  */
 class ArrayValidator implements \ArrayAccess
 {
+	/**
+	 * Возвращать ошибку если для элемента массива нет валидатора
+	 */
+	const REPORT_UNDEFINED_ELEMENT	= 0;
+	/**
+	 * Игнорировать отсутсвие валидатора для элемента массива
+	 */
+	const IGNORE_UNDEFINED_ELEMENT	= 1;
+	/**
+	 * Добавляет пустой валидатор для необъявленного элемента массива
+	 */
+	const ADD_UNDEFINED_ELEMENT		= 2;
+
+
+	/**
+	 * @var int метод обработки ключей без валидаторов
+	 */
+	protected $undefKeysMode = 0;
     /**
      * @var array of \TrustedForms\VariableValidator
      */
@@ -40,7 +58,7 @@ class ArrayValidator implements \ArrayAccess
         }
         else
         {
-            return null;
+            return NULL;
         }
     }
 
@@ -80,13 +98,30 @@ class ArrayValidator implements \ArrayAccess
     public function checkArray($array)
     {
         $this->errorOccured = false;
+		
+		$undescribedKeys = array_diff_key($array,$this->variables);
+		if(count($undescribedKeys))
+		{
+			switch($this->undefKeysMode)
+			{
+				case ArrayValidator::IGNORE_UNDEFINED_ELEMENT:
+					break;
+				case ArrayValidator::ADD_UNDEFINED_ELEMENT:
+					foreach($undescribedKeys as $key => $value)
+					{
+						$this[$key] = new \TrustedForms\VariableValidator();
+					}
+					break;
+				default:
+					$this->errorOccured = true;
+			}
+		}
+		
         foreach($this->variables as $name=>$var)
         {
-            if(isset($array[$name]))
-            {
-                $var->setValue($array[$name]);
-                $this->errorOccured = $this->errorOccured || !$var->isCorrect();
-            }
+            $var->setValue(isset($array[$name])?$array[$name]:
+							new \TrustedForms\Exceptions\ValueNotExists);
+			$this->errorOccured = $this->errorOccured || !$var->isCorrect();
         }
         return $this->errorOccured;
     }
@@ -100,7 +135,7 @@ class ArrayValidator implements \ArrayAccess
     }
 
     /**
-     * @return array возвращает массив ошибок по всем полям массива
+     * @return array массив ошибок по всем полям массива
      */
     public function getErrors()
     {
@@ -113,4 +148,13 @@ class ArrayValidator implements \ArrayAccess
         }
         return $result;
     }
+
+	/**
+	 * Задаёт способ обратотки ключей проверяемого массива для которых нет валидатора
+	 * @param \TrustedForms\ArrayValidator::const $mode
+	 */
+	public function handleUndefinedKeys($mode)
+	{
+		$this->undefKeysMode = $mode;
+	}
 }
