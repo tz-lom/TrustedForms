@@ -30,10 +30,18 @@ class ArrayValidator implements \ArrayAccess
      */
     protected $variables = array();
     /**
-     * @var bool Произошла ли ошибка при проверке
+     * @var \TrustedForms\ErrorReporter
      */
-    protected $errorOccured = false;
+    protected $errorReporter;
+    /**
+     * @var array of \TrustedForms\ErrorReporter
+     */
+    protected $errorPool;
 
+    public function  __construct()
+    {
+        $this->errorReporter = new \TrustedForms\ErrorReporter('Variable [%2$s] not exists');
+    }
 
     /**
      * @see \ArrayAccess
@@ -97,7 +105,7 @@ class ArrayValidator implements \ArrayAccess
      */
     public function checkArray($array)
     {
-        $this->errorOccured = false;
+        $this->errorPool = array();
 		
 		$undescribedKeys = array_diff_key($array,$this->variables);
 		if(count($undescribedKeys))
@@ -113,17 +121,28 @@ class ArrayValidator implements \ArrayAccess
 					}
 					break;
 				default:
-					$this->errorOccured = true;
+                    foreach($undescribedKeys as $key=>$value)
+                    {
+                        $err = $this->errorReporter;
+                        $err->setVariableName($key);
+                        $this->errorPool[] = $err;
+                    }
 			}
 		}
 		
         foreach($this->variables as $name=>$var)
         {
-            $var->setValue(isset($array[$name])?$array[$name]:
-							new \TrustedForms\Exceptions\ValueNotExists);
-			$this->errorOccured = $this->errorOccured || !$var->isCorrect();
+            if(isset($array[$name]))
+            {
+                $var->setValue($array[$name]);
+            }
+            if(!$var->isCorrect())
+            {
+                $this->errorPool[] = $var->getError();
+            }
+			
         }
-        return $this->errorOccured;
+        return $this->isError();
     }
 
     /**
@@ -131,22 +150,15 @@ class ArrayValidator implements \ArrayAccess
      */
     public function isError()
     {
-        return $this->errorOccured;
+        return count($this->errorPool)>0;
     }
 
     /**
-     * @return array массив ошибок по всем полям массива
+     * @return array of \TrustedForms\ErrorReporter массив ошибок по всем полям массива
      */
     public function getErrors()
     {
-        if(!$this->errorOccured) return array();
-        $result = array();
-        foreach($this->variables as $var)
-        {
-            if(!$var->isCorrect())
-                $result[] = $var->getError();
-        }
-        return $result;
+        return $this->errorPool;
     }
 
 	/**
@@ -157,4 +169,23 @@ class ArrayValidator implements \ArrayAccess
 	{
 		$this->undefKeysMode = $mode;
 	}
+
+    /**
+     * @param \TrustedForms\ErrorReporter $reporter
+     * @return ArrayValidator
+     */
+    public function setErrorReporter(\TrustedForms\ErrorReporter $reporter)
+    {
+        $this->errorReporter = $reporter;
+        return $this;
+    }
+
+    /**
+     *
+     * @return \TrustedForms\ErrorReporter
+     */
+    public function getErrorReporter()
+    {
+        return $this->errorReporter;
+    }
 }

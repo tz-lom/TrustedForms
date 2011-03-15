@@ -1,8 +1,10 @@
 <?php
 
+namespace TrustedForms;
+
 require_once 'autoload.php';
 
-class IsNumericTest extends PHPUnit_Framework_TestCase
+class IsNumericTest extends \PHPUnit_Framework_TestCase
 {
 	public function testChecker()
 	{

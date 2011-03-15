@@ -34,9 +34,14 @@ class VariableValidator
      */
     protected $correct = false;
 
-	public function __construct()
+    /**
+     *
+     * @param mixed $defaultValue Значение по умолчанию
+     */
+	public function __construct($defaultValue = NULL)
 	{
 		$this->reporter = new \TrustedForms\ErrorReporter('Value %s is incorrect');
+        $this->inputValue = $defaultValue;
 	}
 
     /**

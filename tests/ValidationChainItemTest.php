@@ -1,5 +1,7 @@
 <?php
 
+namespace TrustedForms;
+
 require_once './autoload.php';
 
 class Item extends \TrustedForms\ValidationChainItem
@@ -12,7 +14,7 @@ class Item extends \TrustedForms\ValidationChainItem
 }
 
 
-class ValidadionChainItemTest extends PHPUnit_Framework_TestCase
+class ValidadionChainItemTest extends \PHPUnit_Framework_TestCase
 {
 	public function testReporterAssignment()
 	{

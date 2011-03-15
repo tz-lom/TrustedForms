@@ -1,12 +1,8 @@
 <?php
 
-namespace {
+namespace TrustedForms;
 
 require_once 'autoload.php';
-
-}
-
-namespace TrustedForms {
 
 class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
 {
@@ -86,9 +82,9 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
 		));
 		$this->assertTrue($this->object->isError());
 		$this->assertEquals(1,sizeof($this->object->getErrors()));
-		$this->assertInstanceOf('\TrustedForms\ErrorReporters\UnrecognisedKeys',$this->object->getErrors());
+        $errors = $this->object->getErrors();
+		$this->assertEquals(1,count($errors));
+        $this->assertEquals('Variable [key] not exists', $errors[0]->getMessage());
 	}
-
-}
 
 }

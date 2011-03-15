@@ -15,6 +15,10 @@ class ErrorReporter
 	 * @var mixed
 	 */
 	protected $errorValue;
+    /**
+     * @var string
+     */
+    protected $variableName;
 
 	/**
      *
@@ -31,7 +35,7 @@ class ErrorReporter
      */
     public function getMessage()
 	{
-		return sprintf($this->message,$this->errorValue);
+		return sprintf($this->message,$this->errorValue,$this->variableName);
 	}
 
 	/**
@@ -44,5 +48,15 @@ class ErrorReporter
 		$this->errorValue = $value;
 		return $this;
 	}
+
+    /**
+     * @param string $name
+     * @return ErrorReporter
+     */
+    public function setVariableName($name)
+    {
+        $this->variableName = $name;
+        return $this;
+    }
 }
 

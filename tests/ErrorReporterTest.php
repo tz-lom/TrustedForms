@@ -24,6 +24,12 @@ class ErrorReporterTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals('error value: 42',$report->getMessage());
 	}
 
-}
+    public function testSetVariableName()
+    {
+        $report = new ErrorReporter('value: %s key:%s');
+        $report->setErrorValue('v');
+        $report->setVariableName('k');
+        $this->assertEquals('value: v key:k',$report->getMessage());
+    }
 
-?>
+}
