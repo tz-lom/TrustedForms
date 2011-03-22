@@ -142,7 +142,7 @@ class ArrayValidator implements \ArrayAccess
             }
 			
         }
-        return $this->isError();
+        return !$this->isError();
     }
 
     /**
