@@ -11,13 +11,22 @@ class FormErrorReporter extends \TrustedForms\ErrorReporter
 {
     protected $flags = array();
 
-    public function addFlag($flagName)
+    public function addFlag($flagName,$value=NULL)
     {
-        $this->flags[] = $flagName;
+        $this->flags[$flagName] = $value;
     }
 
     public function getFlags()
     {
-        return $this->flags;
+        $ret = $this->flags;
+        array_walk($ret,
+                function(&$value,$key,$message){
+                    if($value===NULL)
+                    {
+                        $value = $message;
+                    }
+                },
+                $this->getMessage());
+        return $ret;
     }
 }

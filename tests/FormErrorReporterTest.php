@@ -18,7 +18,7 @@ class FormErrorReporterTest extends \PHPUnit_Framework_TestCase
         $r->addFlag('flag 3');
 
         $this->assertEquals(
-                array('flag 1','flag 2','flag 3'),
+                array('flag 1'=>'message','flag 2'=>'message','flag 3'=>'message'),
                 $r->getFlags()
         );
 

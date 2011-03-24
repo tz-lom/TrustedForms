@@ -10,20 +10,25 @@ require_once 'autoload.php';
  */
 class FormValidatorTest extends \PHPUnit_Framework_TestCase
 {
-    public function testFlags()
+    public function testFlag()
     {
         $form = new FormValidator;
         $form->setFlag('mark');
+        $form->setFlag('flag','value');
         $this->assertTrue($form->isFlag('mark'));
         $this->assertFalse($form->isFlag('none'));
+        $this->assertTrue($form->isFlag('flag'));
+        $this->assertEquals('value', $form->getFlag('flag'));
     }
 
-    public function testMultipleFlags()
+    public function testSetFlags()
     {
         $form = new FormValidator;
-        $form->setFlag(array('f1','f2'));
+        $form->setFlags(array('f1'=>'a','f2'=>'b'));
         $this->assertTrue($form->isFlag('f1'));
+        $this->assertEquals('a', $form->getFlag('f1'));
         $this->assertTrue($form->isFlag('f2'));
+        $this->assertEquals('b', $form->getFlag('f2'));
     }
 
     public function testArrayValidator()
@@ -34,10 +39,7 @@ class FormValidatorTest extends \PHPUnit_Framework_TestCase
         $err->addFlag('flg');
         $form['key']->addReporter($err);
         $form['key']->addToChain(new \TrustedForms\ValueChecks\IsNumeric());
-
-        
         $this->assertFalse($form->checkArray(array('key'=>'value')));
-        \var_dump($form);
         $this->assertTrue($form->isFlag('flg'));
     }
 }

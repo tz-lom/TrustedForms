@@ -11,19 +11,29 @@ class FormValidator extends \TrustedForms\ArrayValidator
 {
     protected $flags = array();
 
-    public function setFlag($flagName)
+    public function setFlag($flagName,$value=NULL)
     {
-        $this->flags = array_merge($this->flags,(array)$flagName);
+        $this->flags[$flagName] = $value;
+    }
+
+    public function setFlags($flags)
+    {
+        $this->flags  = array_merge($this->flags,$flags);
     }
 
     public function isFlag($flagName)
     {
-        return in_array($flagName, $this->flags);
+        return array_key_exists($flagName, $this->flags);
     }
 
     public function clearFlags()
     {
         $this->flags = array();
+    }
+
+    public function getFlag($flagName)
+    {
+        return isset($this->flags[$flagName])?$this->flags[$flagName]:NULL;
     }
 
     public function checkArray($array)
@@ -34,7 +44,7 @@ class FormValidator extends \TrustedForms\ArrayValidator
         {
             if($error instanceof \TrustedForms\FormErrorReporter)
             {
-                $this->setFlag($error->getFlags());
+                $this->setFlags($error->getFlags());
             }
         }
         return false;
