@@ -188,4 +188,9 @@ class ArrayValidator implements \ArrayAccess
     {
         return $this->errorReporter;
     }
+
+    public static function instance()
+    {
+        return new static;
+    }
 }

@@ -58,5 +58,10 @@ class ErrorReporter
         $this->variableName = $name;
         return $this;
     }
+
+    public static function instance($message)
+    {
+        return new self($message);
+    }
 }
 

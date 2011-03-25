@@ -32,4 +32,9 @@ class ErrorReporterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('value: v key:k',$report->getMessage());
     }
 
+    public function testInstantiation()
+    {
+        $this->assertInstanceOf('TrustedForms\ErrorReporter', \TrustedForms\ErrorReporter::instance(''));
+    }
+
 }

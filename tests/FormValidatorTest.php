@@ -42,4 +42,9 @@ class FormValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($form->checkArray(array('key'=>'value')));
         $this->assertTrue($form->isFlag('flg'));
     }
+
+    public function testInstantiation()
+    {
+        $this->assertInstanceOf('TrustedForms\FormValidator', \TrustedForms\FormValidator::instance());
+    }
 }

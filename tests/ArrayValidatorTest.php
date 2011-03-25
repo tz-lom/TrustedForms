@@ -87,4 +87,9 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Variable [key] not exists', $errors[0]->getMessage());
 	}
 
+    public function testInstantiation()
+    {
+        $this->assertInstanceOf('TrustedForms\ArrayValidator', \TrustedForms\ArrayValidator::instance());
+    }
+
 }

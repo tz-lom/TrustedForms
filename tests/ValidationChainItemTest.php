@@ -2,7 +2,7 @@
 
 namespace TrustedForms;
 
-require_once './autoload.php';
+require_once 'autoload.php';
 
 class Item extends \TrustedForms\ValidationChainItem
 {
