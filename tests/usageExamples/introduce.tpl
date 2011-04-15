@@ -50,9 +50,9 @@ $form['text']->addToChain(new \TrustedForms\ValueChecks\Trololo(array('k'=>'v','
 
 <form>
     <input id="me" type="text" name="me" value=""/> <div id="me-err"/> <div id="superError"/>
-    <!--@me:
+    <!--@me@:
         regexp="a*b+no one care" : << Ты дурак и даже не знаешь какой тут регэксп >>,
-        fooBar=(a, b, c, d|e) : << <b>Лох!</b> >> ("superError"),
+        fooBar=(a, b, c, d|e) : << <b>Лох!</b> >> @ #id @+superName @ #id @-class,
         defaultErrReport = "me-err",
         {
             if($value + $mysupervar == "Hi!")
@@ -62,6 +62,9 @@ $form['text']->addToChain(new \TrustedForms\ValueChecks\Trololo(array('k'=>'v','
             if(value + $mysupervar == "Hi!")
                 document...
         }
+
+		<<me-name>>:
+		isInteger="text" : << idiotto!!! >>
     -->
 </form>
 
