@@ -2,8 +2,6 @@
 %name VI
 %token_prefix TK_
 
-/* this defines a symbol for the lexer */
-%nonassoc PRAGMA.
 
 %left PLUS MINUS.
 
@@ -11,6 +9,8 @@ start ::= translation_unit.
 
 parameter ::= STRING.
 parameter ::= HTML.
+parameter ::= NUMBER.
+parameter ::= IDENTIFIER.
 
 param_list ::= parameter.
 param_list ::= param_list COMA parameter.
@@ -28,9 +28,9 @@ validation_reporter_class ::= CSS class_method IDENTIFIER.
 validation_reporter_classes ::= validation_reporter_class.
 validation_reporter_classes ::= validation_reporter_classes validation_reporter_class.
 
-//validation_reporter ::= validation_reporter_text.
+validation_reporter ::= validation_reporter_text.
 //validation_reporter ::= validation_reporter_classes.
-validation_reporter ::= validation_reporter_text validation_reporter_classes.
+//validation_reporter ::= validation_reporter_text validation_reporter_classes.
 
 validator ::= validation_rule.
 validator ::= validation_rule COLON validation_reporter.
