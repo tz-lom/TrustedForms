@@ -13,6 +13,8 @@ include 'instructions.php';
 
 
 WORD =	[0-9a-zA-Z_\\-:.А-Яа-я]
+D	=	[0-9]
+L	=	[a-zA-Z_]
 
 %%
 
@@ -37,6 +39,8 @@ WORD =	[0-9a-zA-Z_\\-:.А-Яа-я]
 <YYINITIAL> ")"				{ return $this->createToken(VIParser::TK_RBRACKET); }
 <YYINITIAL> <<\\.*>>	 	{ return $this->createToken(VIParser::TK_HTML); }
 
+
+<YYINITIAL> {L}({L}|{D})*		{ return $this->createToken(VIParser::TK_IDENTIFIER); }
 <YYINITIAL> \"(\\.|[^\\\"])*\" 	{ return $this->createToken(VIParser::TK_STRING); }
 
 <YYINITIAL> ","				{ return $this->createToken(VIParser::TK_COMA); }
