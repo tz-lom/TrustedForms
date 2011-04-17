@@ -115,6 +115,26 @@ class LexerAndParserTest extends \PHPUnit_Framework_TestCase
 				array(
 					array('type'=> VIParser::TK_PLUS,'value'=>'+')
 				)
+			),
+			array(
+				'1 2 -1 -2 0 0.0 -0.0 0.005 -1.230',
+				array(
+					array('type'=> VIParser::TK_NUMBER,'value'=>'1'),
+					array('type'=> VIParser::TK_NUMBER,'value'=>'2'),
+					array('type'=> VIParser::TK_NUMBER,'value'=>'-1'),
+					array('type'=> VIParser::TK_NUMBER,'value'=>'-2'),
+					array('type'=> VIParser::TK_NUMBER,'value'=>'0'),
+					array('type'=> VIParser::TK_NUMBER,'value'=>'0.0'),
+					array('type'=> VIParser::TK_NUMBER,'value'=>'-0.0'),
+					array('type'=> VIParser::TK_NUMBER,'value'=>'0.005'),
+					array('type'=> VIParser::TK_NUMBER,'value'=>'-1.230')
+				)
+			),
+			array(
+				'"text with \" quotes \" "',
+				array(
+					array('type'=> VIParser::TK_STRING,'value'=>'text with \" quotes \" ')
+				)
 			)
 		);
 	}
