@@ -10,6 +10,11 @@ namespace TrustedForms;
 class FormErrorReporter extends \TrustedForms\ErrorReporter
 {
     protected $flags = array();
+	
+	public function __construct($message = '%2$s :: value `%1$s` is incorrect')
+	{
+		parent::__construct($message);
+	}
 
     public function addFlag($flagName,$value=NULL)
     {
@@ -19,12 +24,18 @@ class FormErrorReporter extends \TrustedForms\ErrorReporter
     public function getFlags()
     {
         $ret = $this->flags;
+		$errorValue = $this->errorValue;
+		$variableName = $this->variableName;
         array_walk($ret,
-                function(&$value,$key,$message){
+                function(&$value,$key,$message) use($errorValue,$variableName) {
                     if($value===NULL)
                     {
                         $value = $message;
                     }
+					else
+					{
+						$value = sprintf($value,$errorValue,$variableName);
+					}
                 },
                 $this->getMessage());
         return $ret;
