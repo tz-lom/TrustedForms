@@ -1,9 +1,8 @@
-/* This is a lemon grammar for the C language */
-%name VI
+%name VIParser
+
 %token_prefix TK_
 
-
-%left PLUS MINUS.
+%right CSS COLON.
 
 start ::= translation_unit.
 
@@ -15,27 +14,33 @@ parameter ::= IDENTIFIER.
 param_list ::= parameter.
 param_list ::= param_list COMA parameter.
 
+validation_rule ::= IDENTIFIER.
 validation_rule ::= IDENTIFIER EQUALS parameter.
 validation_rule ::= IDENTIFIER EQUALS LBRACKET param_list RBRACKET.
 
-validation_reporter_text ::= CSS parameter.
+vr_ct_class_name ::= IDENTIFIER.
+vr_ct_class_name ::= STRING.
 
-class_method ::= PLUS.
-class_method ::= MINUS.
+vr_ct_rule ::= PLUS  vr_ct_class_name.
+vr_ct_rule ::= MINUS vr_ct_class_name.
 
-validation_reporter_class ::= CSS class_method IDENTIFIER.
+class_transformations ::= vr_ct_rule.
+class_transformations ::= class_transformations vr_ct_rule.
 
-validation_reporter_classes ::= validation_reporter_class.
-validation_reporter_classes ::= validation_reporter_classes validation_reporter_class.
+vr_definition ::= CSS HTML.
+vr_definition ::= CSS class_transformations.
 
-validation_reporter ::= validation_reporter_text.
-//validation_reporter ::= validation_reporter_classes.
-//validation_reporter ::= validation_reporter_text validation_reporter_classes.
+validation_reporter ::= vr_definition.
+validation_reporter ::= validation_reporter vr_definition.
 
-validator ::= validation_rule.
 validator ::= validation_rule COLON validation_reporter.
+validator ::= validation_rule.
 
-rules ::= validator COMA validator.
+opt_rules ::= validator.
+opt_rules ::= opt_rules OR validator.
+
+rules ::= opt_rules.
+rules ::= rules COMA opt_rules.
 
 element_rules_definition ::= CSS COLON rules.
 

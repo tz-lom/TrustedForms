@@ -18,7 +18,7 @@ L	=	[a-zA-Z_]
 <YYINITIAL> //[^\r\n]*      { /* do nothing on comments*/ }
 
 <YYINITIAL> "="				{ return $this->createToken(VIParser::TK_EQUALS); }
-<YYINITIAL>	"("				{ return $this->createToken(VIParser::TK_LBRACKET); }
+<YYINITIAL> "("				{ return $this->createToken(VIParser::TK_LBRACKET); }
 <YYINITIAL> ")"				{ return $this->createToken(VIParser::TK_RBRACKET); }
 <YYINITIAL> "-"				{ return $this->createToken(VIParser::TK_MINUS); }
 <YYINITIAL> "+"				{ return $this->createToken(VIParser::TK_PLUS); }
