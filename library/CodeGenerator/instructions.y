@@ -28,7 +28,13 @@ class_transformations(set) ::= vr_ct_rule(t).								{ set = array(t); }
 class_transformations(set) ::= class_transformations(old) vr_ct_rule(t).	{ set=old; set[]=t; }
 
 vr_definition(def) ::= CSS(css) HTML(html).						{ def = array('target'=>css->value , 'action'=>'message' , 'value'=>html->value ); }
-vr_definition(def) ::= CSS(css) class_transformations(set).		{ def = array('action'=>css->value , 'action'=>'classes' , 'value'=>set ); }
+vr_definition(def) ::= CSS(css) class_transformations(set).		{
+																	def = array();
+																	foreach(set as $action)
+																	{
+																		def[] = array_merge(array('target'=>css->value , 'action'=>'classes'),$action);
+																	}
+																}
 
 validation_reporter(rep) ::= vr_definition(def).							{ rep = array(def); }
 validation_reporter(rep) ::= validation_reporter(old) vr_definition(def).	{ rep=old; rep[]=def; }
@@ -36,20 +42,23 @@ validation_reporter(rep) ::= validation_reporter(old) vr_definition(def).	{ rep=
 validator(v) ::= validation_rule(cmd).									{ v = array('rule'=>cmd , 'reporter'=>NULL ); }
 validator(v) ::= validation_rule(cmd) COLON validation_reporter(rep).	{ v = array('rule'=>cmd , 'reporter'=>rep ); }
 
-opt_rules(set) ::= validator(rule).						{ set = array('mode'=>'or','items'=>array(rule)); }
-opt_rules(set) ::= opt_rules(old) OR validator(rule).	{ set=old; set['items'][]=rule; }
+opt_rules(set) ::= validator(rule).							{ set = rule; }						
+opt_rules(set) ::= opt_rules(old) OR validator(newrule).	{
+																if(old['rule']['name']=='||')
+																{
+																	set = old;
+																	set['rule']['params'][] = newrule;
+																}
+																else
+																{
+																	set = array('rule'=>array('name'=>'||' , 'params'=> array(old,newrule)) , 'reporter'=>NULL ); 
+																}
+															}
 
-rules(set) ::= opt_rules(rule).						{ 
-														if(count(rule['items'])==1) rule['mode'] = 'plain';
-														set = array(rule);
-													}
-rules(set) ::= rules(old) COMA opt_rules(rule).		{
-														if(count(rule['items'])==1) rule['mode'] = 'plain';
-														set=old;
-														set[]=rule;
-													}
+rules(set) ::= opt_rules(rule).						{ set = array(rule); }
+rules(set) ::= rules(old) COMA opt_rules(rule).		{ set=old; set[]=rule; }
 
 element_rules_definition(def) ::= CSS(css) COLON rules(r).	{ def = array('element'=>css->value , 'rules'=>r ); }
 
-translation_unit ::= element_rules_definition(def).						{ print_r(def); }
-translation_unit ::= translation_unit element_rules_definition(def).	{ print_r(def); }
+translation_unit ::= element_rules_definition(def).						{ var_dump(def); /*$this->addInputCheck(def);*/ }
+translation_unit ::= translation_unit element_rules_definition(def).	{ var_dump(def); /*$this->addInputCheck(def);*/ }
