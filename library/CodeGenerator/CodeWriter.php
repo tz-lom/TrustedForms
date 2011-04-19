@@ -4,7 +4,5 @@ namespace TrustedForms\CodeGenerator;
 
 interface CodeWriter
 {
-    public function addForm($formName);    
-    public function addFieldToForm($formName,$fieldName);
-    public function add
+    public function newReporter(); // reporter must have addFlag($flag,$value);
 }
