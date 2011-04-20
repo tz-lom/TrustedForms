@@ -39,7 +39,7 @@ class CommandsParser
             $newstate = $automat[$state][$charClass];
             if($newstate != $state)
             {
-                $lexems[]
+               // $lexems[]
             }
         }
     }

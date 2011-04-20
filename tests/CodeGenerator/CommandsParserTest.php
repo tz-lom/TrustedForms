@@ -3,7 +3,7 @@
 namespace TrustedForms;
 
 require_once 'autoload.php';
-
+/*
 class CommandsParserTest extends \PHPUnit_Framework_TestCase
 {
     public function testLexer()
@@ -16,4 +16,4 @@ class CommandsParserTest extends \PHPUnit_Framework_TestCase
         
         
     }
-}
+}*/

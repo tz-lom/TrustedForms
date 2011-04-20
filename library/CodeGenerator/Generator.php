@@ -15,6 +15,12 @@ class Generator
 	 */
 	protected $fieldName;
 
+	/**
+	 * @var array
+	 */
+	protected $inputs;
+	
+	
     protected $specialRules =   array(
                                     '||' => 'specOrRule'
                                 );
@@ -36,6 +42,7 @@ class Generator
 		{
 			$input->addRule($this->parceRule($rule));
 		}
+		$this->inputs[] = $input;
 	}
 	
 	protected function parceRule($rule)
