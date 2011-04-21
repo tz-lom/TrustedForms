@@ -22,7 +22,8 @@ class Generator
 	
 	
     protected $specialRules =   array(
-                                    '||' => 'specOrRule'
+                                    '||' => 'specOrRule',
+                                    'defaultErrorReport' => 'defaultErrorReport'
                                 );
 
 	public function __construct(TemplateManipulator $tpl,CodeWriter $writer)
@@ -110,5 +111,10 @@ class Generator
             $code.=(string)$input;
         }
         return $code;
+    }
+
+    public function defaultErrorReport($params,$reporter)
+    {
+        return $reporter;
     }
 }

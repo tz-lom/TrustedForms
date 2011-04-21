@@ -8,6 +8,21 @@ namespace TrustedForms\CodeGenerator;
  */
 interface TemplateManipulator
 {
+
+    /**
+     * Set HTML to transform
+     *
+     * @param string $html
+     */
+    public function setHTML($html);
+
+
+    /**
+     * Return resulting HTML
+     *
+     * @return string
+     */
+    public function getHTML();
 	/**
 	 * Return ``name`` attribute of element specified by selector or NULL if element or attribute not exists
 	 * 
