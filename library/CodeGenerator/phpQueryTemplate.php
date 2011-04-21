@@ -51,11 +51,11 @@ class phpQueryTemplate implements TemplateManipulator
          * @todo lookup for escape codes
          */
         $el = $this->pq->find("[name=$name]");
-        $val = $el->php();
+        $val = $el->attr('value');
         /**
          * @todo not only inputs can be affected
          */
-        $el->php("if({$this->formContainer}[{$name}]->haveValue()) { echo {$this->formContainer}[{$name}]->value(); } else { ?>{$val}<?php }");
+        $el->attrPHP('value',"if({$this->formContainer}[{$name}]->haveValue()) { echo {$this->formContainer}[{$name}]->value(); } else { ?>{$val}<?php }");
     }
 
 	public function addMessageToElement($css)

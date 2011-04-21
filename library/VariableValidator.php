@@ -25,12 +25,12 @@ class VariableValidator
     protected $value;
     /**
      *
-     * @var bool
+     * @var boolean
      */
     protected $checked = false;
     /**
      *
-     * @var bool
+     * @var boolean
      */
     protected $correct = false;
 
@@ -92,7 +92,7 @@ class VariableValidator
 
     /**
      *
-     * @return bool
+     * @return boolean
      */
     public function isCorrect()
     {
@@ -144,5 +144,15 @@ class VariableValidator
 		{
 			return $this->occuredError;
 		}
+	}
+	
+	/**
+	 * Проверяет было ли значение проверено, не заданное/обновлённое значение  так же сбрасывает флаг проверки 
+	 * 
+	 * @return boolean
+	 */
+	public function isChecked()
+	{
+		return $this->checked;
 	}
 }
