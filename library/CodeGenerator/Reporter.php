@@ -6,7 +6,7 @@ namespace TrustedForms\CodeGenerator;
  *
  * @author tz-lom
  */
-class Reporter
+abstract class Reporter
 {
 	protected $flags = array();
 	

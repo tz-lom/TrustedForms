@@ -4,18 +4,18 @@ namespace TrustedForms\CodeGenerator\PHPCode;
 
 class CodeWriter implements \TrustedForms\CodeGenerator\CodeWriter
 {
-	public function newInput()
+	public function newInput($name)
 	{
-		return new Input();
+		return new \TrustedForms\CodeGenerator\PHPCode\Input($name);
 	}
 	
 	public function newReporter()
 	{
-		return new Reporter();
+		return new \TrustedForms\CodeGenerator\PHPCode\Reporter();
 	}
 	
 	public function newRule($name,$param)
 	{
-		return new Rule($name,$param);
+		return new \TrustedForms\CodeGenerator\PHPCode\Rule($name,$param);
 	}
 }

@@ -61,9 +61,16 @@ class VariableValidator
 		return $this;
 	}
 
-	public function addToChain(ValidationChainItem $item)
+	public function addToChain(ValidationChainItem $item, ErrorReporter $reporter=NULL)
 	{
-		$item->setReporter($this->reporter);
+        if($reporter)
+        {
+            $item->setReporter($reporter);
+        }
+        else
+        {
+            $item->setReporter($this->reporter);
+        }
 		$this->chain[] = $item;
 		return $this;
 	}

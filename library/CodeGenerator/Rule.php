@@ -6,7 +6,7 @@ namespace TrustedForms\CodeGenerator;
  *
  * @author tz-lom
  */
-class Rule
+abstract class Rule
 {
 	protected $reporter = NULL;
 	protected $params;
@@ -18,10 +18,31 @@ class Rule
 		$this->params = $params;
 	}
 	
-	public function addReporter(\TrustedForms\CodeGenerator\Reporter $reporter)
+	public function addReporter( $reporter)
 	{
 		$this->reporter = $reporter;
 	}
 	
 	abstract public function __toString();
+
+    public function varExport($var)
+    {
+        switch(gettype($var))
+        {
+            case 'string':
+                return "'$var'";
+            case 'boolean':
+                return $var?'true':'false';
+            case 'array':
+                $t = $this;
+                array_walk($var,
+                        function(&$var) use($t){
+                            $var = $t->varExport($var);
+                        }
+                );
+                return 'array('.implode(',', $var).')';
+            default:
+                return (string)$var;
+        }
+    }
 }

@@ -6,13 +6,21 @@ namespace TrustedForms\CodeGenerator;
  *
  * @author tz-lom
  */
-class Input
+abstract class Input
 {
-	protected $rules = array();
+	protected $commands = array();
+    protected $form;
+    protected $name;
+
+    public function __construct($name,$form='$form')
+    {
+        $this->name = $name;
+        $this->form = $form;
+    }
 	
-	public function addRule(\TrustedForms\CodeGenerator\Rule $rule)
+	public function addCommand($cmd)
 	{
-		$this->rules[] = $rule;
+		$this->commands[] = $cmd;
 	}
 	
 	abstract public function __toString();

@@ -37,7 +37,7 @@ vr_definition(def) ::= CSS(css) class_transformations(set).		{
 																}
 
 validation_reporter(rep) ::= vr_definition(def).							{ rep = array(def); }
-validation_reporter(rep) ::= validation_reporter(old) vr_definition(def).	{ rep=old; rep[]=def; }
+validation_reporter(rep) ::= validation_reporter(old) vr_definition(def).	{ rep=array_merge(old,def); }
 
 validator(v) ::= validation_rule(cmd).									{ v = array('rule'=>cmd , 'reporter'=>NULL ); }
 validator(v) ::= validation_rule(cmd) COLON validation_reporter(rep).	{ v = array('rule'=>cmd , 'reporter'=>rep ); }
@@ -60,5 +60,5 @@ rules(set) ::= rules(old) COMA opt_rules(rule).		{ set=old; set[]=rule; }
 
 element_rules_definition(def) ::= CSS(css) COLON rules(r).	{ def = array('element'=>css->value , 'rules'=>r ); }
 
-translation_unit ::= element_rules_definition(def).						{ var_dump(def); /*$this->addInputCheck(def);*/ }
-translation_unit ::= translation_unit element_rules_definition(def).	{ var_dump(def); /*$this->addInputCheck(def);*/ }
+translation_unit ::= element_rules_definition(def).						{ $this->generator->addInputCheck(def); }
+translation_unit ::= translation_unit element_rules_definition(def).	{ $this->generator->addInputCheck(def); }
