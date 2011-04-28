@@ -18,12 +18,13 @@ class Generator
 	/**
 	 * @var array
 	 */
-	protected $inputs;
+	protected $inputs = array();
 	
 	
     protected $specialRules =   array(
                                     '||' => 'specOrRule',
-                                    'defaultErrorReport' => 'defaultErrorReport'
+                                    'defaultErrorReport' => 'defaultErrorReport',
+                                    '' => ''
                                 );
 
 	public function __construct(TemplateManipulator $tpl,CodeWriter $writer)
