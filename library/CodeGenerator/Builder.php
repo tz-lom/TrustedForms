@@ -47,8 +47,9 @@ class Builder
 
                 $this->template->removeInstruction();
             }
-            catch(ErrorException $e)
+            catch(\ParceTokenException $e)
             {
+                echo $e->getMessage(),':',$e->getLine(),"\n";
             }
             fclose($tempfile);
             $instructions = $this->template->nextInstruction();

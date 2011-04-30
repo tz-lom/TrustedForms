@@ -4,6 +4,14 @@
 
 %right CSS COLON.
 
+%include {
+class ParceTokenException extends ErrorException{};
+}
+
+%syntax_error { throw new ParceTokenException($yyminor->value,$yymajor,0,'',$yyminor->line); }
+%stack_overflow { throw new ParceTokenException($yyminor->value,$yymajor,0,'',$yyminor->line); }
+%parse_failure { throw new ParceTokenException($yyminor->value,$yymajor,0,'',$yyminor->line); }
+
 start ::= translation_unit.
 
 parameter(p) ::= STRING(v).			{ p = v->value; }

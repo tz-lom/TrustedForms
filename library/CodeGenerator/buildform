@@ -1,0 +1,49 @@
+#!/bin/env php
+<?php
+
+spl_autoload_register(function($classname){
+	if(strpos($classname,'TrustedForms\\CodeGenerator\\')===0)
+	{
+		require_once __DIR__.DIRECTORY_SEPARATOR.str_replace('\\', DIRECTORY_SEPARATOR, substr($classname, 27)).'.php';
+	}
+});
+
+require_once(__DIR__.'/../../3dparty/phpQuery/phpQuery/phpQuery.php');
+
+$options = getopt('',array(
+    'source:',
+    'code::',
+    'tplType::',
+    'oCode::',
+    'oTpl::'
+));
+
+function usage()
+{
+    echo "Usage: -source=filename\n";
+    exit();
+}
+
+if(empty($options['source'])) usage();
+
+$options = array_merge(array('tplType' => 'phpQueryTemplate',
+                             'code' => 'PHPCode'
+                        ),
+                        $options);
+
+if(empty($options['oCode']))
+{
+    $options['oCode'] = $options['source'].'.validate.php';
+}
+if(empty($options['oTpl']))
+{
+    $options['oTpl'] = $options['source'].'.tpl';
+}
+
+
+$builder = new \TrustedForms\CodeGenerator\Builder($options['tplType'],$options['code']);
+
+$builder->buildFile(file_get_contents($options['source']));
+
+file_put_contents($options['oTpl'], $builder->getResultTemplate());
+file_put_contents($options['oCode'], $builder->getResultValidator());
