@@ -121,5 +121,15 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
 		$errors = $this->object->getErrors();
 		$this->assertEquals('message', $errors[0]->getMessage());
 	}
+     public function testNotExistingValues()
+	{
+		$validator = new \TrustedForms\ArrayValidator();
+		$validator['test'] = new \TrustedForms\VariableValidator();
+		$validator['test']->addToChain(new \TrustedForms\ValueChecks\ValueRequired());
+		$validator->checkArray(array());	
+		
+		$this->assertTrue($validator->isError());
+		
+	}
 
 }
