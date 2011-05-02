@@ -126,10 +126,11 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
 		$validator = new \TrustedForms\ArrayValidator();
 		$validator['test'] = new \TrustedForms\VariableValidator();
 		$validator['test']->addToChain(new \TrustedForms\ValueChecks\ValueRequired());
+		$validator['skip'] = new \TrustedForms\VariableValidator(); // а этот может быть и не задан ошибку
 		$validator->checkArray(array());	
 		
 		$this->assertTrue($validator->isError());
-		
+		$this->assertEquals(1,count($validator->getErrors()));
 	}
 
 }
