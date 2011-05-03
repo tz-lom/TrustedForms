@@ -85,11 +85,52 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
         $errors = $this->object->getErrors();
 		$this->assertEquals(1,count($errors));
         $this->assertEquals('Variable [key] not exists', $errors[0]->getMessage());
+		
+		$this->object->handleUndefinedKeys(\TrustedForms\ArrayValidator::IGNORE_UNDEFINED_ELEMENT);
+		$this->object->checkArray(array(
+			'int'	=> 42,
+			'str'	=> 'test',
+			'key'	=> 'value'
+		));
+		$this->assertFalse($this->object->isError());
+		$this->assertTrue(isset($this->object['int']));
+		$this->assertFalse(isset($this->object['key']));
+		
+		$this->object->handleUndefinedKeys(\TrustedForms\ArrayValidator::ADD_UNDEFINED_ELEMENT);
+		$this->object->checkArray(array(
+			'int'	=> 42,
+			'str'	=> 'test',
+			'key'	=> 'value'
+		));
+		$this->assertFalse($this->object->isError());
+		$this->assertTrue(isset($this->object['int']));
+		$this->assertTrue(isset($this->object['key']));
 	}
 
     public function testInstantiation()
     {
         $this->assertInstanceOf('TrustedForms\ArrayValidator', \TrustedForms\ArrayValidator::instance());
     }
+	
+	public function testManualErrorReporter()
+	{
+		$this->object->setErrorReporter(new \TrustedForms\ErrorReporter('message'));
+		$this->assertEquals('message', $this->object->getErrorReporter()->getMessage());
+		$this->object->handleUndefinedKeys(\TrustedForms\ArrayValidator::REPORT_UNDEFINED_ELEMENT);
+		$this->assertFalse($this->object->checkArray(array('key'=>'value')));
+		$errors = $this->object->getErrors();
+		$this->assertEquals('message', $errors[0]->getMessage());
+	}
+     public function testNotExistingValues()
+	{
+		$validator = new \TrustedForms\ArrayValidator();
+		$validator['test'] = new \TrustedForms\VariableValidator();
+		$validator['test']->addToChain(new \TrustedForms\ValueChecks\ValueRequired());
+		$validator['skip'] = new \TrustedForms\VariableValidator(); // а этот может быть и не задан ошибку
+		$validator->checkArray(array());	
+		
+		$this->assertTrue($validator->isError());
+		$this->assertEquals(1,count($validator->getErrors()));
+	}
 
 }
