@@ -117,7 +117,9 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
 		$this->object->setErrorReporter(new \TrustedForms\ErrorReporter('message'));
 		$this->assertEquals('message', $this->object->getErrorReporter()->getMessage());
 		$this->object->handleUndefinedKeys(\TrustedForms\ArrayValidator::REPORT_UNDEFINED_ELEMENT);
-		$this->assertFalse($this->object->checkArray(array('key'=>'value')));
+		$this->assertFalse($this->object->checkArray(array('int'=>1,
+															'str'=>'text',
+															'key'=>'value')));
 		$errors = $this->object->getErrors();
 		$this->assertEquals('message', $errors[0]->getMessage());
 	}
