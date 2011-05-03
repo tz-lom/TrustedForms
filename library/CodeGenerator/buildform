@@ -46,4 +46,4 @@ $builder = new \TrustedForms\CodeGenerator\Builder($options['tplType'],$options[
 $builder->buildFile(file_get_contents($options['source']));
 
 file_put_contents($options['oTpl'], $builder->getResultTemplate());
-file_put_contents($options['oCode'], $builder->getResultValidator());
+file_put_contents($options['oCode'], "<?php\n".$builder->getResultValidator());

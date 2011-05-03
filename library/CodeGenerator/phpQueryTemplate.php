@@ -88,15 +88,17 @@ class phpQueryTemplate implements TemplateManipulator
          * @todo lookup for escape codes
          */
         $el = $this->pq->find("[name=$name]");
+        
+        $name = str_replace("'", "\\'", $name);
         if($el->is('input'))
         {
             $val = $el->attr('value');
-            $el->attrPHP('value',"if({$this->formContainer}[{$name}]->haveValue()) { echo {$this->formContainer}[{$name}]->value(); } else { ?>{$val}<?php }");
+            $el->attrPHP('value',"if({$this->formContainer}['{$name}']->haveValue()) { echo {$this->formContainer}['{$name}']->value(); } else { ?>{$val}<?php }");
         }
         if($el->is('textarea'))
         {
             $val = $el->html();
-            $el->php("if({$this->formContainer}[{$name}]->haveValue()) { echo {$this->formContainer}[{$name}]->value(); } else { ?>{$val}<?php }");
+            $el->php("if({$this->formContainer}['{$name}']->haveValue()) { echo {$this->formContainer}['{$name}']->value(); } else { ?>{$val}<?php }");
         }
         if($el->is('select'))
         {
@@ -157,5 +159,32 @@ class phpQueryTemplate implements TemplateManipulator
         $this->flagCache[$shortHash] = $id;
         $takenFromCache = false;
         return $prefix.$id;
+    }
+    
+    public function getAllForms()
+    {
+        return $this->pq->find('form')->elements;
+    }
+    
+    public function compareElements($a,$b)
+    {
+        return $a->isSameNode($b);
+    }
+    
+    public function getFormForElement($css)
+    {
+        $el = $this->pq->find($css);
+        $form = $el->parent('form');
+        return $form->elements[0];
+    }
+    
+    public function isForm($css)
+    {
+        return $this->pq->find($css)->is('form');
+    }
+    
+    public function getElement($css)
+    {
+        return $this->pq->find($css)->elements[0];
     }
 }

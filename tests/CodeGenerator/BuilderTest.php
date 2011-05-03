@@ -2,7 +2,7 @@
 
 namespace TrustedForms\CodeGenerator;
 
-require_once '../autoload.php';
+require_once 'autoload.php';
 
 class BuilderTest extends \PHPUnit_Framework_TestCase
 {

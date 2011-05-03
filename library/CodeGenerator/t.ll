@@ -1,4 +1,8 @@
-<form>
+<form id="f1">
+<!--
+@#f1@:
+name="$test"
+-->
 
 <div id="err"></div>
 

@@ -12,7 +12,7 @@ abstract class Input
     protected $form;
     protected $name;
 
-    public function __construct($name,$form='$form')
+    public function __construct($name,$form)
     {
         $this->name = $name;
         $this->form = $form;

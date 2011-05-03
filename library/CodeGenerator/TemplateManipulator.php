@@ -63,6 +63,52 @@ interface TemplateManipulator
      * @return string Unique identifier
 	 */
 	public function removeClassFromElement($css,$class);
+    
+    /**
+     * Returns array of form element descriptions,
+     * descriptions may vary due to realization
+     * of interface, but compareElements must correctly
+     * compare them
+     * 
+     * @return array
+     */
+    public function getAllForms();
+    
+    /**
+     * Compares two element descriptors, returns true if they are equal
+     * 
+     * @var element descriptor $a
+     * @var element descriptor $b
+     * @return boolean
+     */
+    public function compareElements($a,$b);
+    
+    /**
+     * Returns element descriptor that belongs to <form> element
+     * that owns element described by $css selector
+     * 
+     * @var string $css
+     * @return element descriptor
+     */
+    public function getFormForElement($css);
+    
+    /**
+     * Returns wether element is form or not
+     * 
+     * @var string $css
+     * @return boolean
+     */
+    public function isForm($css);
+    
+    /**
+     * Returns element descriptor
+     * 
+     * @var string $css
+     * @return element descriptor
+     */
+    public function getElement($css);
+    
+    public function setFormContainer($name);
 
 }
 

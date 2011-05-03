@@ -27,6 +27,7 @@ class Builder
     public function buildFile($source)
     {
         $this->template->setHTML($source);
+        $this->generator->prepare();
         $instructions = $this->template->firstInstruction();
         while($instructions)
         {
