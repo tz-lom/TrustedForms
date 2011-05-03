@@ -94,10 +94,10 @@ class Generator
             // get name of input
             $name = $this->tpl->getNameOfElement($definition['element']);
             $formName = $this->getFormName($this->tpl->getFormForElement($definition['element']));
-            $this->tpl->addValueReplacement($name);
-
-            $input = $this->writer->newInput($name,$formName);
             $this->tpl->setFormContainer($formName);
+            
+            $this->tpl->addValueReplacement($name);
+            $input = $this->writer->newInput($name,$formName);
             
             foreach($definition['rules'] as $rule)
             {
@@ -167,6 +167,10 @@ class Generator
     public function generateFile()
     {
         $code = '';
+        foreach($this->forms as $form)
+        {
+            $code.="{$form['name']} = new \\TrustedForms\\FormValidator();\n";
+        }
         foreach($this->inputs as $input)
         {
             $code.=(string)$input;

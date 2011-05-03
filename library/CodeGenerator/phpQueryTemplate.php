@@ -22,7 +22,7 @@ class phpQueryTemplate implements TemplateManipulator
     /**
      * @var string
      */
-    protected $formContainer = '$form';
+    protected $formContainer = '';
 
     /**
      * @var array[string]
@@ -93,12 +93,12 @@ class phpQueryTemplate implements TemplateManipulator
         if($el->is('input'))
         {
             $val = $el->attr('value');
-            $el->attrPHP('value',"if({$this->formContainer}['{$name}']->haveValue()) { echo {$this->formContainer}['{$name}']->value(); } else { ?>{$val}<?php }");
+            $el->attrPHP('value',"if({$this->formContainer}['{$name}']->isChecked()) { echo {$this->formContainer}['{$name}']->value(); } else { ?>{$val}<?php }");
         }
         if($el->is('textarea'))
         {
             $val = $el->html();
-            $el->php("if({$this->formContainer}['{$name}']->haveValue()) { echo {$this->formContainer}['{$name}']->value(); } else { ?>{$val}<?php }");
+            $el->php("if({$this->formContainer}['{$name}']->isChecked()) { echo {$this->formContainer}['{$name}']->value(); } else { ?>{$val}<?php }");
         }
         if($el->is('select'))
         {

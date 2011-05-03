@@ -22,9 +22,11 @@ class ErrorReporter
 
 	/**
      *
-     * @param String $message Сообщение об ошибке задаётся в формате printf , где $1 - значение на котором произошла ошибка
+     * @param String $message Сообщение об ошибке задаётся в формате printf
+     *               $1 - значение на котором произошла ошибка
+     *               $2 - имя переменной содержащей ошибку
      */
-    public function __construct($message)
+    public function __construct($message = '$2%s: invalid value $1%s')
 	{
 		$this->message = $message;
 	}
@@ -59,9 +61,9 @@ class ErrorReporter
         return $this;
     }
 
-    public static function instance($message)
+    public static function instance($message = '$2%s: invalid value $1%s')
     {
-        return new self($message);
+        return new static($message);
     }
 }
 
