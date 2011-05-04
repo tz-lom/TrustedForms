@@ -71,16 +71,6 @@ abstract class ValidationChainItem
 	}
 
 	/**
-	 * @todo нужен ли этот метод?
-	 *
-	 * @param mixed $value
-	 */
-	protected function reportError($value)
-	{
-		$this->reportedError = $this->getReporter()->setErrorValue($value);
-	}
-
-	/**
 	 * Возвращает произошла ли ошибка
 	 * @return bool
 	 */

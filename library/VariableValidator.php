@@ -58,6 +58,7 @@ class VariableValidator
 	public function clearChain()
 	{
 		$this->chain = array();
+		$this->checked = false;
 		return $this;
 	}
 

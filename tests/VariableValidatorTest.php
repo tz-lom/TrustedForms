@@ -142,5 +142,15 @@ class VariableValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('value: a', $var1->getError()->getMessage());
         $this->assertEquals('value: b', $var2->getError()->getMessage());
     }
+	
+	public function testClearChain()
+	{
+		$this->object->addToChain(new \TrustedForms\ValueChecks\IsNumeric());
+		$this->object->setValue('"value"');
+		$this->assertFalse($this->object->isCorrect());
+		$this->object->clearChain();
+		$this->object->setValue('"value"');
+		$this->assertTrue($this->object->isCorrect());
+	}
 
 }
