@@ -6,7 +6,7 @@ class Input extends \TrustedForms\CodeGenerator\Input
 {
 	public function __toString()
 	{
-		$code = "{$this->form}[{$this->name}] = \TrustedForms\VariableValidator::instance()->";
+		$code = "{$this->form}['{$this->name}'] = \TrustedForms\VariableValidator::instance()";
         foreach($this->commands as $cmd)
         {
             $code.="\n\t->";

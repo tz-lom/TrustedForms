@@ -19,6 +19,7 @@ class FormErrorReporter extends \TrustedForms\ErrorReporter
     public function addFlag($flagName,$value=NULL)
     {
         $this->flags[$flagName] = $value;
+        return $this;
     }
 
     public function getFlags()

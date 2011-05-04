@@ -8,6 +8,7 @@ include 'instructions.php';
 %function nextToken
 %line
 %char
+%state COMMENT
 %class VILexer
 
 D	=	[0-9]
@@ -16,6 +17,10 @@ L	=	[a-zA-Z_]
 %%
 
 <YYINITIAL> //[^\r\n]*      { /* do nothing on comments*/ }
+
+<YYINITIAL> "/*"			{ $this->yybegin(self::COMMENT); }
+<COMMENT>   "*/"            { $this->yybegin(self::YYINITIAL); }
+<COMMENT>   (.|[\r\n])      { }
 
 <YYINITIAL> "="				{ return $this->createToken(VIParser::TK_EQUALS); }
 <YYINITIAL> "("				{ return $this->createToken(VIParser::TK_LBRACKET); }

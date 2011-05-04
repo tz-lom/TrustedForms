@@ -37,6 +37,10 @@ class JLexToken {
     $this->value = $value;
     $this->type = $type;
   }
+  
+  function __toString() {
+      return $this->value;
+  }
 }
 
 class JLexBase {

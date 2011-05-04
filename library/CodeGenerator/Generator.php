@@ -18,12 +18,14 @@ class Generator
 	/**
 	 * @var array
 	 */
-	protected $inputs;
-	
+	protected $inputs = array();
+    
+    protected $forms = array();
 	
     protected $specialRules =   array(
                                     '||' => 'specOrRule',
-                                    'defaultErrorReport' => 'defaultErrorReport'
+                                    'defaultErrorReport' => 'defaultErrorReport',
+                                    '' => ''
                                 );
 
 	public function __construct(TemplateManipulator $tpl,CodeWriter $writer)
@@ -31,19 +33,78 @@ class Generator
 		$this->tpl = $tpl;
 		$this->writer = $writer;
 	}
-	
-	public function addInputCheck($definition)
-	{
-		// get name of input
-		$name = $this->tpl->getNameOfElement($definition['element']);
-        $this->tpl->addValueReplacement($name);
+    
+    public function prepare()
+    {
+        $forms = $this->tpl->getAllForms();
+        foreach($forms as $form)
+        {
+            $this->forms[] = array('element'=>$form,'name'=>NULL,'outJScode'=>true);
+        }
+        if(count($this->forms)==1)
+        {
+            $this->forms[0]['name']='$form';
+        }
+    }
+    
+    protected function getFormId($el)
+    {
+        foreach($this->forms as $i=>$form)
+        {
+            if($this->tpl->compareElements($form['element'],$el))
+            {
+                return $i;
+            }
+        }
+        return NULL;
+    }
+    
+    protected function getFormName($el)
+    {
+        $form = $this->getFormId($el);
+        return ($form!==NULL)?$this->forms[$form]['name']:NULL;
+    }
 
-        $input = $this->writer->newInput($name);
-		foreach($definition['rules'] as $rule)
-		{
-			$input->addCommand($this->parceRule($rule));
-		}
-		$this->inputs[] = $input;
+
+    public function addInputCheck($definition)
+	{
+        if($this->tpl->isForm($definition['element']))
+        {
+            //this is form
+            $form = &$this->forms[$this->getFormId($this->tpl->getElement($definition['element']))];
+            //parse params for this form
+            foreach($definition['rules'] as $rule)
+            {
+                switch($rule['rule']['name'])
+                {
+                    case 'name':
+                        $form['name'] = $rule['rule']['params'][0];
+                        break;
+                    case 'enableJS':
+                        $form['outJScode'] = (bool) $rule['rule']['params'][0];
+                        break;
+                    default :
+                        // show error message
+                        echo 'Invalid form parameter:',$rule['rule']['name'],"\n";
+                }
+            }
+        }
+        else
+        {
+            // get name of input
+            $name = $this->tpl->getNameOfElement($definition['element']);
+            $formName = $this->getFormName($this->tpl->getFormForElement($definition['element']));
+            $this->tpl->setFormContainer($formName);
+            
+            $this->tpl->addValueReplacement($name);
+            $input = $this->writer->newInput($name,$formName);
+            
+            foreach($definition['rules'] as $rule)
+            {
+                $input->addCommand($this->parceRule($rule));
+            }
+            $this->inputs[] = $input;
+        }
 	}
 	
 	protected function parceRule($rule)
@@ -106,6 +167,10 @@ class Generator
     public function generateFile()
     {
         $code = '';
+        foreach($this->forms as $form)
+        {
+            $code.="{$form['name']} = new \\TrustedForms\\FormValidator();\n";
+        }
         foreach($this->inputs as $input)
         {
             $code.=(string)$input;

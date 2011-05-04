@@ -43,6 +43,15 @@ class VariableValidator
 		$this->reporter = new \TrustedForms\ErrorReporter('Value %s is incorrect');
         $this->inputValue = $defaultValue;
 	}
+    
+    /**
+     *
+     * @return TrustedForms\VariableValidator 
+     */
+    public static function instance()
+    {
+        return new self;
+    }
 
     /**
      *
