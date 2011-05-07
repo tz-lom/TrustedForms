@@ -1,4 +1,4 @@
-#!/bin/env php
+#!/usr/bin/php
 <?php
 
 spl_autoload_register(function($classname){

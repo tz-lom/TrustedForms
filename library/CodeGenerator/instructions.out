@@ -1,0 +1,357 @@
+State 0:
+          start ::= * translation_unit
+          element_rules_definition ::= * CSS COLON rules
+          translation_unit ::= * element_rules_definition
+          translation_unit ::= * translation_unit element_rules_definition
+
+                           CSS shift  15
+                         start accept
+              translation_unit shift  9
+      element_rules_definition shift  41
+
+State 1:
+          validation_rule ::= * IDENTIFIER
+          validation_rule ::= * IDENTIFIER EQUALS parameter
+          validation_rule ::= * IDENTIFIER EQUALS LBRACKET param_list RBRACKET
+          validator ::= * validation_rule
+          validator ::= * validation_rule COLON validation_reporter
+          opt_rules ::= * validator
+          opt_rules ::= * opt_rules OR validator
+          rules ::= * opt_rules
+          rules ::= * rules COMA opt_rules
+          element_rules_definition ::= CSS COLON * rules
+
+                    IDENTIFIER shift  16
+               validation_rule shift  17
+                     validator shift  38
+                     opt_rules shift  18
+                         rules shift  19
+
+State 2:
+          validation_rule ::= * IDENTIFIER
+          validation_rule ::= * IDENTIFIER EQUALS parameter
+          validation_rule ::= * IDENTIFIER EQUALS LBRACKET param_list RBRACKET
+          validator ::= * validation_rule
+          validator ::= * validation_rule COLON validation_reporter
+          opt_rules ::= * validator
+          opt_rules ::= * opt_rules OR validator
+          rules ::= rules COMA * opt_rules
+
+                    IDENTIFIER shift  16
+               validation_rule shift  17
+                     validator shift  38
+                     opt_rules shift  20
+
+State 3:
+          parameter ::= * STRING
+          parameter ::= * HTML
+          parameter ::= * NUMBER
+          parameter ::= * IDENTIFIER
+          param_list ::= * parameter
+          param_list ::= * param_list COMA parameter
+          validation_rule ::= IDENTIFIER EQUALS LBRACKET * param_list RBRACKET
+
+                        STRING shift  21
+                          HTML shift  22
+                        NUMBER shift  23
+                    IDENTIFIER shift  24
+                     parameter shift  26
+                    param_list shift  14
+
+State 4:
+          vr_ct_rule ::= * PLUS vr_ct_class_name
+          vr_ct_rule ::= * MINUS vr_ct_class_name
+          class_transformations ::= * vr_ct_rule
+          class_transformations ::= * class_transformations vr_ct_rule
+          vr_definition ::= CSS * HTML
+          vr_definition ::= CSS * class_transformations
+
+                          HTML shift  35
+                          PLUS shift  10
+                         MINUS shift  11
+                    vr_ct_rule shift  33
+         class_transformations shift  12
+
+State 5:
+          vr_definition ::= * CSS HTML
+          vr_definition ::= * CSS class_transformations
+          validation_reporter ::= * vr_definition
+          validation_reporter ::= * validation_reporter vr_definition
+          validator ::= validation_rule COLON * validation_reporter
+
+                           CSS shift  4
+                 vr_definition shift  36
+           validation_reporter shift  13
+
+State 6:
+          validation_rule ::= * IDENTIFIER
+          validation_rule ::= * IDENTIFIER EQUALS parameter
+          validation_rule ::= * IDENTIFIER EQUALS LBRACKET param_list RBRACKET
+          validator ::= * validation_rule
+          validator ::= * validation_rule COLON validation_reporter
+          opt_rules ::= opt_rules OR * validator
+
+                    IDENTIFIER shift  16
+               validation_rule shift  17
+                     validator shift  39
+
+State 7:
+          parameter ::= * STRING
+          parameter ::= * HTML
+          parameter ::= * NUMBER
+          parameter ::= * IDENTIFIER
+          validation_rule ::= IDENTIFIER EQUALS * parameter
+          validation_rule ::= IDENTIFIER EQUALS * LBRACKET param_list RBRACKET
+
+                        STRING shift  21
+                          HTML shift  22
+                        NUMBER shift  23
+                    IDENTIFIER shift  24
+                      LBRACKET shift  3
+                     parameter shift  25
+
+State 8:
+          parameter ::= * STRING
+          parameter ::= * HTML
+          parameter ::= * NUMBER
+          parameter ::= * IDENTIFIER
+          param_list ::= param_list COMA * parameter
+
+                        STRING shift  21
+                          HTML shift  22
+                        NUMBER shift  23
+                    IDENTIFIER shift  24
+                     parameter shift  27
+
+State 9:
+      (0) start ::= translation_unit *
+          element_rules_definition ::= * CSS COLON rules
+          translation_unit ::= translation_unit * element_rules_definition
+
+                             $ reduce 0
+                           CSS shift  15
+      element_rules_definition shift  40
+
+State 10:
+          vr_ct_class_name ::= * IDENTIFIER
+          vr_ct_class_name ::= * STRING
+          vr_ct_rule ::= PLUS * vr_ct_class_name
+
+                        STRING shift  30
+                    IDENTIFIER shift  29
+              vr_ct_class_name shift  31
+
+State 11:
+          vr_ct_class_name ::= * IDENTIFIER
+          vr_ct_class_name ::= * STRING
+          vr_ct_rule ::= MINUS * vr_ct_class_name
+
+                        STRING shift  30
+                    IDENTIFIER shift  29
+              vr_ct_class_name shift  32
+
+State 12:
+          vr_ct_rule ::= * PLUS vr_ct_class_name
+          vr_ct_rule ::= * MINUS vr_ct_class_name
+          class_transformations ::= class_transformations * vr_ct_rule
+     (17) vr_definition ::= CSS class_transformations *
+
+                          PLUS shift  10
+                         MINUS shift  11
+                    vr_ct_rule shift  34
+                     {default} reduce 17
+
+State 13:
+          vr_definition ::= * CSS HTML
+          vr_definition ::= * CSS class_transformations
+          validation_reporter ::= validation_reporter * vr_definition
+     (21) validator ::= validation_rule COLON validation_reporter *
+
+                           CSS shift  4
+                 vr_definition shift  37
+                     {default} reduce 21
+
+State 14:
+          param_list ::= param_list * COMA parameter
+          validation_rule ::= IDENTIFIER EQUALS LBRACKET param_list * RBRACKET
+
+                          COMA shift  8
+                      RBRACKET shift  28
+
+State 15:
+          element_rules_definition ::= CSS * COLON rules
+
+                         COLON shift  1
+
+State 16:
+      (7) validation_rule ::= IDENTIFIER *
+          validation_rule ::= IDENTIFIER * EQUALS parameter
+          validation_rule ::= IDENTIFIER * EQUALS LBRACKET param_list RBRACKET
+
+                        EQUALS shift  7
+                     {default} reduce 7
+
+State 17:
+     (20) validator ::= validation_rule *
+          validator ::= validation_rule * COLON validation_reporter
+
+                         COLON shift  5
+                     {default} reduce 20
+
+State 18:
+          opt_rules ::= opt_rules * OR validator
+     (24) rules ::= opt_rules *
+
+                            OR shift  6
+                     {default} reduce 24
+
+State 19:
+          rules ::= rules * COMA opt_rules
+     (26) element_rules_definition ::= CSS COLON rules *
+
+                          COMA shift  2
+                     {default} reduce 26
+
+State 20:
+          opt_rules ::= opt_rules * OR validator
+     (25) rules ::= rules COMA opt_rules *
+
+                            OR shift  6
+                     {default} reduce 25
+
+State 21:
+      (1) parameter ::= STRING *
+
+                     {default} reduce 1
+
+State 22:
+      (2) parameter ::= HTML *
+
+                     {default} reduce 2
+
+State 23:
+      (3) parameter ::= NUMBER *
+
+                     {default} reduce 3
+
+State 24:
+      (4) parameter ::= IDENTIFIER *
+
+                     {default} reduce 4
+
+State 25:
+      (8) validation_rule ::= IDENTIFIER EQUALS parameter *
+
+                     {default} reduce 8
+
+State 26:
+      (5) param_list ::= parameter *
+
+                     {default} reduce 5
+
+State 27:
+      (6) param_list ::= param_list COMA parameter *
+
+                     {default} reduce 6
+
+State 28:
+      (9) validation_rule ::= IDENTIFIER EQUALS LBRACKET param_list RBRACKET *
+
+                     {default} reduce 9
+
+State 29:
+     (10) vr_ct_class_name ::= IDENTIFIER *
+
+                     {default} reduce 10
+
+State 30:
+     (11) vr_ct_class_name ::= STRING *
+
+                     {default} reduce 11
+
+State 31:
+     (12) vr_ct_rule ::= PLUS vr_ct_class_name *
+
+                     {default} reduce 12
+
+State 32:
+     (13) vr_ct_rule ::= MINUS vr_ct_class_name *
+
+                     {default} reduce 13
+
+State 33:
+     (14) class_transformations ::= vr_ct_rule *
+
+                     {default} reduce 14
+
+State 34:
+     (15) class_transformations ::= class_transformations vr_ct_rule *
+
+                     {default} reduce 15
+
+State 35:
+     (16) vr_definition ::= CSS HTML *
+
+                     {default} reduce 16
+
+State 36:
+     (18) validation_reporter ::= vr_definition *
+
+                     {default} reduce 18
+
+State 37:
+     (19) validation_reporter ::= validation_reporter vr_definition *
+
+                     {default} reduce 19
+
+State 38:
+     (22) opt_rules ::= validator *
+
+                     {default} reduce 22
+
+State 39:
+     (23) opt_rules ::= opt_rules OR validator *
+
+                     {default} reduce 23
+
+State 40:
+     (28) translation_unit ::= translation_unit element_rules_definition *
+
+                     {default} reduce 28
+
+State 41:
+     (27) translation_unit ::= element_rules_definition *
+
+                     {default} reduce 27
+
+----------------------------------------------------
+Symbols:
+    0: $:
+    1: CSS
+    2: COLON
+    3: STRING
+    4: HTML
+    5: NUMBER
+    6: IDENTIFIER
+    7: COMA
+    8: EQUALS
+    9: LBRACKET
+   10: RBRACKET
+   11: PLUS
+   12: MINUS
+   13: OR
+   14: error:
+   15: start: CSS
+   16: translation_unit: CSS
+   17: parameter: STRING HTML NUMBER IDENTIFIER
+   18: param_list: STRING HTML NUMBER IDENTIFIER
+   19: validation_rule: IDENTIFIER
+   20: vr_ct_class_name: STRING IDENTIFIER
+   21: vr_ct_rule: PLUS MINUS
+   22: class_transformations: PLUS MINUS
+   23: vr_definition: CSS
+   24: validation_reporter: CSS
+   25: validator: IDENTIFIER
+   26: opt_rules: IDENTIFIER
+   27: rules: IDENTIFIER
+   28: element_rules_definition: CSS
