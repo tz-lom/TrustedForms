@@ -43,7 +43,7 @@ TrustedForms.prototype = {
                 $el.addClass(args);
             },
             'removeClass': function($el,args){
-                $el.addClass(args);
+                $el.removeClass(args);
             }
         };
         this.errorHide = {
@@ -60,15 +60,15 @@ TrustedForms.prototype = {
             this.validators[item.name] = item.validator;
         }
     },
-    checkAll: function(formName){
+    checkAll: function(){
         this.hideErrors();
         var result = true;
         var self = this;
         jQuery.each(this.checks,function(i,field){
-            if(formName==undefined || this.form == formName)
+            //if(formName==undefined || this.form == formName)
                 result &= self.checkField(field);
         });
-        return result;
+        return result==true;
     },
     checkField: function(field){
         var $el = jQuery(field.form+' [name='+field.name+']'); //@todo: don't forget to escape "name" in generator
@@ -91,12 +91,12 @@ TrustedForms.prototype = {
         var $el = jQuery(field.form+' [name='+field.name+']');
         var self = this;
         $el.bind('change',function(){ //@todo : on focus lost, not change
-            self.checkField(field);
+            self.checkAll();
         });
         var $form = jQuery(field.form);
         if(!$form.data('TrustedFormsAlreadyBinded')){
-            $form.bind('onSubmit',function(){
-                self.checkAll(field.form);
+            $form.bind('submit',function(){
+                return self.checkAll();
             });
         }
             
