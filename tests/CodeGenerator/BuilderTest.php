@@ -25,7 +25,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
                 <!-- variouse comment -->
             </form>
         ');
-        echo $builder->getResultTemplate();
-        echo $builder->getResultValidator();
+        //echo $builder->getResultTemplate();
+        //echo $builder->getResultValidator();
     }
 }

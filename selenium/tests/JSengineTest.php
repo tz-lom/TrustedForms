@@ -10,30 +10,17 @@ class JSengineTest extends PHPUnit_Extensions_SeleniumTestCase
 
     function setUp()
     {
-        $this->setBrowser("*chrome");
-        $this->setBrowserUrl("http://selenium.tests.local/");
+		$this->setBrowser("*chrome");
+        $this->setBrowserUrl("http://selenium.tests.local");
     }
 
-    function testMyTestCase()
+    function testSimpleIntValidation()
     {
         $this->open("/");
-        $this->addScript("", "
-TrustedForms.check({
-    name: 'int',
-    form : '#form1',
-    tests: [
-        {
-             test: 'isNumber',
-             arguments: [],
-             error: [
-                 {element: '[name=int]',type:'addClass',argument: 'error'}
-             ]
-        }
-      ]
-});
-        ");
-        $this->waitForPageToLoad("1000");
-        $this->assertEquals("", $this->getAttribute("css=[name=int]@class"));
+		$this->type("int", "abc");
+		$this->assertEquals("error", $this->getAttribute("int@class"));
+		$this->type("int", "1");
+		$this->assertEquals(" ", $this->getAttribute("int@class"));
     }
 
 }
