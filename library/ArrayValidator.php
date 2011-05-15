@@ -129,6 +129,11 @@ class ArrayValidator implements \ArrayAccess
             {
                 $var->setValue($array[$name]);
             }
+	      else 
+	    {
+  		$var->setValue( new \TrustedForms\Exceptions\ValueNotExists());
+	    }
+	  
             if(!$var->isCorrect())
             {
                 $this->errorPool[] = $var->getError();
