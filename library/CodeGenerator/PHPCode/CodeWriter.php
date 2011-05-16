@@ -18,4 +18,15 @@ class CodeWriter implements \TrustedForms\CodeGenerator\CodeWriter
 	{
 		return new \TrustedForms\CodeGenerator\PHPCode\Rule($name,$param);
 	}
+	
+	public function formDefinition($name)
+	{
+		return "{$name} = new \\TrustedForms\\FormValidator();\n";
+	}
+	
+	public function newJSvalidation($form,$element,$rules)
+	{
+		
+	}
+	
 }

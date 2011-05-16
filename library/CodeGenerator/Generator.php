@@ -88,6 +88,7 @@ class Generator
                         echo 'Invalid form parameter:',$rule['rule']['name'],"\n";
                 }
             }
+			
         }
         else
         {
@@ -104,6 +105,13 @@ class Generator
                 $input->addCommand($this->parceRule($rule));
             }
             $this->inputs[] = $input;
+			
+			// add JS validation
+			
+			$form = $this->getFormId($definition['element']);
+			
+			$this->js[] = new $this->writer->newJSvalidation($form['css'],$definition['element'],$defenition['rules']);
+			
         }
 	}
 	
@@ -169,7 +177,7 @@ class Generator
         $code = '';
         foreach($this->forms as $form)
         {
-            $code.="{$form['name']} = new \\TrustedForms\\FormValidator();\n";
+            $code.=$this->writer->formDefinition($form['name']);
         }
         foreach($this->inputs as $input)
         {
