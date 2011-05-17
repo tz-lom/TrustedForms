@@ -14,4 +14,3 @@ class ValueRequired extends \TrustedForms\ValidationChainItem
 		return !($value instanceof \TrustedForms\Exceptions\ValueNotExists);
 	}
 }
-

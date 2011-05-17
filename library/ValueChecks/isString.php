@@ -2,7 +2,7 @@
 
 namespace TrustedForms\ValueChecks;
 
-class IsString extends \TrustedForms\ValidationChainItem
+class isString extends \TrustedForms\ValidationChainItem
 {
     /**
      *
@@ -14,4 +14,3 @@ class IsString extends \TrustedForms\ValidationChainItem
         return is_string($value);
     }
 }
-

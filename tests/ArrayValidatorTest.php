@@ -16,7 +16,7 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
         $this->object = new \TrustedForms\ArrayValidator();
         $this->object['int'] = new \TrustedForms\VariableValidator();
         $this->object['int']->addReporter(new \TrustedForms\ErrorReporter('int'))
-                            ->addToChain(new \TrustedForms\ValueChecks\IsNumeric())
+                            ->addToChain(new \TrustedForms\ValueChecks\isNumeric())
 							->addToChain(new \TrustedForms\ValueTransformers\ToInteger());
         $this->object['str'] = new \TrustedForms\VariableValidator();
         $this->object['str']->addReporter(new \TrustedForms\ErrorReporter('str'))

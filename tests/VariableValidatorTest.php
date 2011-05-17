@@ -36,7 +36,7 @@ class VariableValidatorTest extends \PHPUnit_Framework_TestCase
 
 	public function testNoErrorWhenCheckAddedWithoutReporter()
 	{
-		$this->object->addToChain(new \TrustedForms\ValueChecks\IsNumeric());
+		$this->object->addToChain(new \TrustedForms\ValueChecks\isNumeric());
 		$this->object->setValue('"value"');
 		$this->assertFalse($this->object->isCorrect());
 		$this->assertInstanceOf('\TrustedForms\ErrorReporter',$this->object->getError());
@@ -45,28 +45,28 @@ class VariableValidatorTest extends \PHPUnit_Framework_TestCase
 
 	public function testLazyValuePass()
 	{
-		$this->object->addToChain(new \TrustedForms\ValueChecks\IsNumeric());
+		$this->object->addToChain(new \TrustedForms\ValueChecks\isNumeric());
 		$this->object->setValue('42');
 		$this->assertEquals('42',$this->object->value());
 	}
 
 	public function testLazyValueFails()
 	{
-		$this->object->addToChain(new \TrustedForms\ValueChecks\IsNumeric());
+		$this->object->addToChain(new \TrustedForms\ValueChecks\isNumeric());
 		$this->object->setValue('test');
 		$this->assertNull($this->object->value());
 	}
 
 	public function testLazyGetErrorPass()
 	{
-		$this->object->addToChain(new \TrustedForms\ValueChecks\IsNumeric());
+		$this->object->addToChain(new \TrustedForms\ValueChecks\isNumeric());
 		$this->object->setValue('test');
 		$this->assertInstanceOf('\TrustedForms\ErrorReporter',$this->object->getError());
 	}
 
 	public function testLazyGetErrorFails()
 	{
-		$this->object->addToChain(new \TrustedForms\ValueChecks\IsNumeric());
+		$this->object->addToChain(new \TrustedForms\ValueChecks\isNumeric());
 		$this->object->setValue('42');
 		$this->assertNull($this->object->getError());
 	}
@@ -74,7 +74,7 @@ class VariableValidatorTest extends \PHPUnit_Framework_TestCase
 	public function testAdditionOfCheck()
 	{
 		$this->object->addReporter(new \TrustedForms\ErrorReporter('Error occured'));
-		$this->object->addToChain(new \TrustedForms\ValueChecks\IsNumeric());
+		$this->object->addToChain(new \TrustedForms\ValueChecks\isNumeric());
 		$this->object->setValue('42');
 		$this->assertEquals(true,$this->object->isCorrect());
 		$this->assertEquals('42',$this->object->value());
@@ -94,7 +94,7 @@ class VariableValidatorTest extends \PHPUnit_Framework_TestCase
 	{
 		$this->object->addReporter(new \TrustedForms\ErrorReporter('Error occured'));
 		$this->object->addToChain(new \TrustedForms\ValueTransformers\Trim());
-		$this->object->addToChain(new \TrustedForms\ValueChecks\IsNumeric());
+		$this->object->addToChain(new \TrustedForms\ValueChecks\isNumeric());
 		$this->object->addToChain(new \TrustedForms\ValueTransformers\ToInteger());
 		$this->object->setValue(' 42 ');
 		$this->assertEquals(true, $this->object->isCorrect());
@@ -111,7 +111,7 @@ class VariableValidatorTest extends \PHPUnit_Framework_TestCase
 	public function testGetError()
 	{
 		$this->object->addReporter(new \TrustedForms\ErrorReporter('Error occured'));
-		$this->object->addToChain(new \TrustedForms\ValueChecks\IsNumeric());
+		$this->object->addToChain(new \TrustedForms\ValueChecks\isNumeric());
 		$this->object->setValue('string');
 		$this->assertFalse($this->object->isCorrect());
 		$this->assertInstanceOf('TrustedForms\ErrorReporter',$this->object->getError());
@@ -130,11 +130,11 @@ class VariableValidatorTest extends \PHPUnit_Framework_TestCase
 
         $var1 = new \TrustedForms\VariableValidator();
         $var1->addReporter($err);
-        $var1->addToChain(new \TrustedForms\ValueChecks\IsNumeric());
+        $var1->addToChain(new \TrustedForms\ValueChecks\isNumeric());
         
         $var2 = new \TrustedForms\VariableValidator();
         $var2->addReporter($err);
-        $var2->addToChain(new \TrustedForms\ValueChecks\IsNumeric());
+        $var2->addToChain(new \TrustedForms\ValueChecks\isNumeric());
 
         $var1->setValue('a');
         $var2->setValue('b');
@@ -145,7 +145,7 @@ class VariableValidatorTest extends \PHPUnit_Framework_TestCase
 	
 	public function testClearChain()
 	{
-		$this->object->addToChain(new \TrustedForms\ValueChecks\IsNumeric());
+		$this->object->addToChain(new \TrustedForms\ValueChecks\isNumeric());
 		$this->object->setValue('"value"');
 		$this->assertFalse($this->object->isCorrect());
 		$this->object->clearChain();

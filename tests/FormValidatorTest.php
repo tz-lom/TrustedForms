@@ -38,7 +38,7 @@ class FormValidatorTest extends \PHPUnit_Framework_TestCase
         $err = new FormErrorReporter('msg');
         $err->addFlag('flg');
         $form['key']->addReporter($err);
-        $form['key']->addToChain(new \TrustedForms\ValueChecks\IsNumeric());
+        $form['key']->addToChain(new \TrustedForms\ValueChecks\isNumeric());
         $this->assertFalse($form->checkArray(array('key'=>'value')));
         $this->assertTrue($form->isFlag('flg'));
     }
