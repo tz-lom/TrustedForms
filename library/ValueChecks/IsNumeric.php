@@ -13,5 +13,7 @@ class IsNumeric extends \TrustedForms\ValidationChainItem
 	{
         return is_numeric($value);
     }
+	
+	const jsValidator = 'return {value:value,passed:/^\d+$/.test(value)};';
 }
 

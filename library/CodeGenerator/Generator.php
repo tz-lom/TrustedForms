@@ -104,7 +104,7 @@ class Generator
             $this->tpl->setFormContainer($formName);
             
             $this->tpl->addValueReplacement($name);
-            $input = $this->writer->newInput($name,$formName);
+            $input = $this->writer->newInput($name,$formName,$definition['element']);
             
             foreach($definition['rules'] as $rule)
             {
@@ -114,9 +114,7 @@ class Generator
 			
 			// @todo: add JS validation
 			
-			$form = $this->getFormId($definition['element']);
-			
-			$this->js[] = new $this->writer->newJSvalidation($form['css'],$definition['element'],$defenition['rules']);
+			$this->js[] = $input;
 			
         }
 	}
@@ -189,16 +187,20 @@ class Generator
         {
             $code.=(string)$input;
         }
-        $jscode = '';
+        return $code;
+    }
+	
+	public function generateJSvalidator()
+	{
+		$jscode = '';
         $tests = array();
         foreach($this->js as $js)
         {
             $tests = array_merge($tests,$js->getAllTestNames());
             $jscode.=$js->toJScode();
         }        
-        $code .= $this->writer->includeJSvalidators(array_unique($tests),$jscode);
-        return $code;
-    }
+        return $this->writer->includeJSvalidators(array_unique($tests),$jscode);
+	}
 
     public function defaultErrorReport($params,$reporter)
     {

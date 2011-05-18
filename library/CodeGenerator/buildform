@@ -2,9 +2,12 @@
 <?php
 
 spl_autoload_register(function($classname){
-	if(strpos($classname,'TrustedForms\\CodeGenerator\\')===0)
+	
+	$sourceBase = 'TrustedForms\\';
+	
+	if(strpos($classname,$sourceBase)===0)
 	{
-		require_once __DIR__.DIRECTORY_SEPARATOR.str_replace('\\', DIRECTORY_SEPARATOR, substr($classname, 27)).'.php';
+		require_once dirname(__DIR__).DIRECTORY_SEPARATOR.str_replace('\\', DIRECTORY_SEPARATOR, substr($classname, strlen($sourceBase))).'.php';
 	}
 });
 

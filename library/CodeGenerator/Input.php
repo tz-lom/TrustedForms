@@ -11,11 +11,13 @@ abstract class Input
 	protected $commands = array();
     protected $form;
     protected $name;
+	protected $element;
 
-    public function __construct($name,$form)
+    public function __construct($name,$form,$element)
     {
         $this->name = $name;
         $this->form = $form;
+		$this->element = $element;
     }
 	
 	public function addCommand($cmd)

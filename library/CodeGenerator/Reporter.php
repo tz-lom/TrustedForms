@@ -14,7 +14,7 @@ abstract class Reporter
      * @var array[action,cmd,target,value,class] 
      * @todo: remaster this shity array, it is awful
      */
-    protected $source = NULL;
+    protected $sources = NULL;
 	
 	public function addFlag($name,$value=NULL)
 	{
@@ -24,7 +24,7 @@ abstract class Reporter
     
     public function addSourceNotify($notify)
     {
-        $this->source = $notify;
+        $this->sources[] = $notify;
         return $this;
     }
 	

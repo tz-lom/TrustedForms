@@ -7,8 +7,7 @@
  * });
  *
  * TrustedForms.check({
- *      name: 'name',
- *      form : '#form',
+ *      element: 'name',
  *      tests: [
  *          {
  *              test: 'isNumber',
@@ -71,7 +70,7 @@ TrustedForms.prototype = {
         return result==true;
     },
     checkField: function(field){
-        var $el = jQuery(field.form+' [name='+field.name+']'); //@todo: don't forget to escape "name" in generator
+        var $el = jQuery(field.element); 
         var res = {value: $el.val(), passed: true};
         for(var i=0; res.passed && i<field.tests.length;i++){
             res = this.performTest(field.tests[i],res.value);
@@ -88,12 +87,12 @@ TrustedForms.prototype = {
     check: function(field){
         this.checks.push(field);
         //@todo: append checks to form AND elements of form
-        var $el = jQuery(field.form+' [name='+field.name+']');
+        var $el = jQuery(field.element);
         var self = this;
         $el.bind('change',function(){ //@todo : on focus lost, not change
             self.checkAll();
         });
-        var $form = jQuery(field.form);
+        var $form = $el.parent('form');
         if(!$form.data('TrustedFormsAlreadyBinded')){
             $form.bind('submit',function(){
                 return self.checkAll();
