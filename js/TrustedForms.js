@@ -6,8 +6,7 @@
  *  }
  * });
  *
- * TrustedForms.check([
- * {
+ * TrustedForms.check({
  *      name: 'name',
  *      form : '#form',
  *      tests: [
@@ -18,10 +17,11 @@
  *                  {element: '#id1',type:'addClass',argument: 'class'},
  *                  {element: '#id1',type:'addClass',argument: 'class2'},
  *                  {element: '#id1',type:'removeClass',argument: 'class3'}
+ * // @todo: introduce error type 'message'
  *              ]
  *          }
  *      ]
- * }]);
+ * });
  *
  */
 

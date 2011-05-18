@@ -13,4 +13,13 @@ class Rule extends \TrustedForms\CodeGenerator\Rule
         }
         return "new \\TrustedForms\\ValueChecks\\{$this->name}($params)";
     }
+    
+    public function toJScode()
+    {
+        return array(
+            'test'      => $this->name,
+            'arguments' => $this->params,
+            'error'     => $this->reporter
+        );
+    }
 }

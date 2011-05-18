@@ -20,6 +20,12 @@ class Generator
 	 */
 	protected $inputs = array();
     
+    /**
+     *
+     * @var array
+     */
+    protected $js = array();
+    
     protected $forms = array();
 	
     protected $specialRules =   array(
@@ -106,7 +112,7 @@ class Generator
             }
             $this->inputs[] = $input;
 			
-			// add JS validation
+			// @todo: add JS validation
 			
 			$form = $this->getFormId($definition['element']);
 			
@@ -158,7 +164,7 @@ class Generator
                     $flag = $this->tpl->removeClassFromElement($notify['target'],$notify['class']);
                 }
 			}
-            $rep->addFlag($flag,$value);
+            $rep->addFlag($flag,$value)->addSourceNotify($notify);
 		}
         return $rep;
 	}
@@ -183,6 +189,14 @@ class Generator
         {
             $code.=(string)$input;
         }
+        $jscode = '';
+        $tests = array();
+        foreach($this->js as $js)
+        {
+            $tests = array_merge($tests,$js->getAllTestNames());
+            $jscode.=$js->toJScode();
+        }        
+        $code .= $this->writer->includeJSvalidators(array_unique($tests),$jscode);
         return $code;
     }
 

@@ -14,4 +14,36 @@ class Reporter extends \TrustedForms\CodeGenerator\Reporter
         }
         return $code;
     }
+    
+    public function toJScode()
+    {
+        $ret = array();
+        if($this->source['action']=='message')
+        {
+            return array(
+                'element'   => $this->source['target'],
+                'type'      => $this->source['message'],
+                'argument'  => $this->source['value']
+            );
+        }
+        else
+        {
+            if($this->source['cmd']=='add')
+            {
+                return array(
+                    'element'   => $this->source['target'],
+                    'type'      => $this->source['addClass'],
+                    'argument'  => $this->source['class']
+                );
+            }
+            if($this->source['cmd']=='remove')
+            {
+                return array(
+                    'element'   => $this->source['target'],
+                    'type'      => $this->source['removeClass'],
+                    'argument'  => $this->source['class']
+                );
+            }
+        }
+    }
 }
