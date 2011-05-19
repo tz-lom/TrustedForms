@@ -23,5 +23,45 @@ class Input extends \TrustedForms\CodeGenerator\Input
         $code.=";\n";
         return $code;
 	}
+    
+    public function getAllTestNames()
+    {
+        $res = array();
+        foreach($this->commands as $cmd)
+        {
+            if($cmd instanceof \TrustedForms\CodeGenerator\Rule)
+            {
+                $res[$cmd->getName()]= true;
+            }
+        }
+        return array_keys($res);
+    }
+    
+    public function toJScode()
+    {
+        $input = array('name' => $this->name, 'form' => '?' , 'tests' => array());
+        $reporter = array();
+        foreach($this->commands as $cmd)
+        {
+            if($cmd instanceof \TrustedForms\CodeGenerator\Reporter)
+            {
+                $reporter = $cmd;
+            }
+            if($cmd instanceof \TrustedForms\CodeGenerator\Rule)
+            {
+                if($cmd->isDefaultReporter())
+                {
+                    $c = clone $cmd;
+                    $c->addReporter($reporter);
+                    $this->input['tests'][] = $c->toJScode();
+                }
+                else
+                {
+                    $this->input['tests'][] = $cmd->toJScode();
+                }
+            }
+        }
+        return "TrustedForms.check(".json_encode($input).");\n";
+    }
 }
 

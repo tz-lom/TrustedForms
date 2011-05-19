@@ -20,6 +20,12 @@ class Generator
 	 */
 	protected $inputs = array();
     
+    /**
+     *
+     * @var array
+     */
+    protected $js = array();
+    
     protected $forms = array();
 	
     protected $specialRules =   array(
@@ -88,6 +94,7 @@ class Generator
                         echo 'Invalid form parameter:',$rule['rule']['name'],"\n";
                 }
             }
+			
         }
         else
         {
@@ -104,6 +111,13 @@ class Generator
                 $input->addCommand($this->parceRule($rule));
             }
             $this->inputs[] = $input;
+			
+			// @todo: add JS validation
+			
+			$form = $this->getFormId($definition['element']);
+			
+			$this->js[] = new $this->writer->newJSvalidation($form['css'],$definition['element'],$defenition['rules']);
+			
         }
 	}
 	
@@ -150,7 +164,7 @@ class Generator
                     $flag = $this->tpl->removeClassFromElement($notify['target'],$notify['class']);
                 }
 			}
-            $rep->addFlag($flag,$value);
+            $rep->addFlag($flag,$value)->addSourceNotify($notify);
 		}
         return $rep;
 	}
@@ -169,12 +183,20 @@ class Generator
         $code = '';
         foreach($this->forms as $form)
         {
-            $code.="{$form['name']} = new \\TrustedForms\\FormValidator();\n";
+            $code.=$this->writer->formDefinition($form['name']);
         }
         foreach($this->inputs as $input)
         {
             $code.=(string)$input;
         }
+        $jscode = '';
+        $tests = array();
+        foreach($this->js as $js)
+        {
+            $tests = array_merge($tests,$js->getAllTestNames());
+            $jscode.=$js->toJScode();
+        }        
+        $code .= $this->writer->includeJSvalidators(array_unique($tests),$jscode);
         return $code;
     }
 

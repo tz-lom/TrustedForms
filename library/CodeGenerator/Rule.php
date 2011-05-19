@@ -17,11 +17,21 @@ abstract class Rule
 		$this->name = $name;
 		$this->params = $params;
 	}
+    
+    public function getName()
+    {
+        return $this->name;
+    }
 	
 	public function addReporter( $reporter)
 	{
 		$this->reporter = $reporter;
 	}
+    
+    public function isDefaultReporter()
+    {
+        return $this->reporter==NULL;
+    }
 	
 	abstract public function __toString();
 

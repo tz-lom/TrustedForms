@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>TrustedForms tests</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <style type="text/css">
+            .error {
+                border: 1px solid red;
+            }
+        </style>
+    </head>
+    <body>
+        <script type="text/javascript" src="jquery.js"></script>
+        <script type="text/javascript" src="js/TrustedForms.js"></script>
+        
+        <form id="form1">
+            <input type="text" name="string" value="abc" class="" />
+            <input type="text" name="int" value="123" class="" />
+            <textarea name="bigtext" class=""></textarea>
+            <select name="dropdown" class="">
+                <option value="a">1</option>
+                <option value="b">10</option>
+                <option value="c">11</option>
+            </select>
+            <input type="submit" />
+        </form>
+        
+        <script type="text/javascript">
+            TrustedForms.register({
+                name:'isNumber',
+                validator: function(val,config){
+                    return {value:val,passed:/^\d+$/.test(val)};
+                }
+            });
+            
+            TrustedForms.check(
+{
+    name: 'int',
+    form : '#form1',
+    tests: [
+        {
+             test: 'isNumber',
+             arguments: [],
+             error: [
+                 {element: '[name=int]',type:'addClass',argument: 'error'}
+             ]
+        }
+      ]
+});
+
+        TrustedForms.checkAll('#form1');
+
+            
+        </script>
+        
+    </body>
+</html>
