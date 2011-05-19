@@ -2,7 +2,7 @@
 
 namespace TrustedForms\ValueChecks;
 
-class maxText extends \TrustedForms\ValidationChainItem
+class isMaxLength extends \TrustedForms\ValidationChainItem
 {
     /**
      *In $this->config[0] must be set the maximum amount of symbols 

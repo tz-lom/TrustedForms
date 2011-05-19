@@ -2,7 +2,7 @@
 
 namespace TrustedForms\ValueChecks;
 
-class isFloat extends \TrustedForms\ValidationChainItem
+class isInteger extends \TrustedForms\ValidationChainItem
 {
     /**
      *
@@ -11,6 +11,6 @@ class isFloat extends \TrustedForms\ValidationChainItem
      */
     protected function doProcess(&$value)
 	{
-        return is_float($value);
+        return is_integer($value);
     }
 }

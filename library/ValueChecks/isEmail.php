@@ -2,7 +2,7 @@
 
 namespace TrustedForms\ValueChecks;
 
-class IsEmail extends \TrustedForms\ValidationChainItem
+class isEmail extends \TrustedForms\ValidationChainItem
 {
     /**
      *
@@ -11,6 +11,6 @@ class IsEmail extends \TrustedForms\ValidationChainItem
      */
     protected function doProcess(&$value)
 	{
-        return (bool)(preg_match("/\S+@[a-zA-Z]{3,20}\.[a-zA-Z]{2,10}/is", $value));
+        return (bool)(preg_match("/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/", $value));
     }
 }
