@@ -63,6 +63,16 @@ class Builder
         return $this->template->getHTML();
     }
     
+    public function getTemplateWithoutJS()
+    {
+        return $this->template->getHTML();
+    }
+    
+    public function getJSvalidator()
+    {
+        return $this->generator->generateJSvalidator();
+    }
+    
     public function getResultValidator()
     {
         return $this->generator->generateFile();
