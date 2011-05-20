@@ -8,6 +8,13 @@ namespace TrustedForms;
  */
 abstract class ValidationChainItem
 {
+	
+	/**
+	 * эквивалентный JS валидатор
+	 * @var string
+	 */
+	const jsValidator = NULL;
+	
     /**
      * @var ErrorReporter
      */

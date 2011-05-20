@@ -4,9 +4,9 @@ namespace TrustedForms\CodeGenerator\PHPCode;
 
 class CodeWriter implements \TrustedForms\CodeGenerator\CodeWriter
 {
-	public function newInput($name,$form)
+	public function newInput($name,$form,$element)
 	{
-		return new \TrustedForms\CodeGenerator\PHPCode\Input($name,$form);
+		return new \TrustedForms\CodeGenerator\PHPCode\Input($name,$form,$element);
 	}
 	
 	public function newReporter()
@@ -26,17 +26,16 @@ class CodeWriter implements \TrustedForms\CodeGenerator\CodeWriter
 	
 	public function includeJSvalidators($tests,$validators)
 	{
-        $jsCode = "\n<script type=\"text/javascript\">\nTrustedForms";
+        $jsCode = "TrustedForms";
 		foreach($tests as $test)
         {
             $clsName = '\\TrustedForms\\ValueChecks\\'.$test;
-            $c = new $clsName;
             //@todo: add support of undefined JS validators
-            $jsCode.='.register(name:'.json_encode($test).',validator:function(value,config){'.$c->jsValidator.'})';
+            $jsCode.='.register({name:'.json_encode($test).',validator:function(value,config){'.$clsName::jsValidator.'}})';
         }
-        $jsCode.="\n";
+        $jsCode.=";\n";
         $jsCode.=$validators;
-        return $jsCode."\n</script>\n";
+        return $jsCode;
 	}
 	
 }

@@ -109,6 +109,8 @@ interface TemplateManipulator
     public function getElement($css);
     
     public function setFormContainer($name);
+	
+	public function appendJSvalidator($validator);
 
 }
 

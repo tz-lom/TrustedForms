@@ -39,7 +39,7 @@ class Input extends \TrustedForms\CodeGenerator\Input
     
     public function toJScode()
     {
-        $input = array('name' => $this->name, 'form' => '?' , 'tests' => array());
+        $input = array('element' => $this->element , 'tests' => array());
         $reporter = array();
         foreach($this->commands as $cmd)
         {
@@ -53,11 +53,11 @@ class Input extends \TrustedForms\CodeGenerator\Input
                 {
                     $c = clone $cmd;
                     $c->addReporter($reporter);
-                    $this->input['tests'][] = $c->toJScode();
+                    $input['tests'][] = $c->toJScode();
                 }
                 else
                 {
-                    $this->input['tests'][] = $cmd->toJScode();
+                    $input['tests'][] = $cmd->toJScode();
                 }
             }
         }

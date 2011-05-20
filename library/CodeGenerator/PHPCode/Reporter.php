@@ -18,32 +18,34 @@ class Reporter extends \TrustedForms\CodeGenerator\Reporter
     public function toJScode()
     {
         $ret = array();
-        if($this->source['action']=='message')
-        {
-            return array(
-                'element'   => $this->source['target'],
-                'type'      => $this->source['message'],
-                'argument'  => $this->source['value']
-            );
-        }
-        else
-        {
-            if($this->source['cmd']=='add')
-            {
-                return array(
-                    'element'   => $this->source['target'],
-                    'type'      => $this->source['addClass'],
-                    'argument'  => $this->source['class']
-                );
-            }
-            if($this->source['cmd']=='remove')
-            {
-                return array(
-                    'element'   => $this->source['target'],
-                    'type'      => $this->source['removeClass'],
-                    'argument'  => $this->source['class']
-                );
-            }
-        }
+		foreach($this->sources as $error)
+			if($error['action']=='message')
+			{
+				$ret[] = array(
+					'element'   => $error['target'],
+					'type'      => 'message',
+					'argument'  => $error['value']
+				);
+			}
+			else
+			{
+				if($error['cmd']=='add')
+				{
+					$ret[] = array(
+						'element'   => $error['target'],
+						'type'      => 'addClass',
+						'argument'  => $error['class']
+					);
+				}
+				if($error['cmd']=='remove')
+				{
+					$ret[] = array(
+						'element'   => $error['target'],
+						'type'      => 'removeClass',
+						'argument'  => $error['class']
+					);
+				}
+			}
+		return $ret;
     }
 }

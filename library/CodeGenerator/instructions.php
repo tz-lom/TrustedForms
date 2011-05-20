@@ -333,52 +333,51 @@ static $yy_default = array(
         break;
       case 5: /* param_list ::= parameter */
       case 14: /* class_transformations ::= vr_ct_rule */
-      case 18: /* validation_reporter ::= vr_definition */
       case 24: /* rules ::= opt_rules */
 #line 22 "instructions.y"
 { $yygotominor = array($this->yystack[$this->yyidx + 0]->minor); }
-#line 324 "instructions.php"
+#line 323 "instructions.php"
         break;
       case 6: /* param_list ::= param_list COMA parameter */
       case 25: /* rules ::= rules COMA opt_rules */
 #line 23 "instructions.y"
 { $yygotominor=$this->yystack[$this->yyidx + -2]->minor; $yygotominor[]=$this->yystack[$this->yyidx + 0]->minor; }
-#line 330 "instructions.php"
+#line 329 "instructions.php"
         break;
       case 7: /* validation_rule ::= IDENTIFIER */
 #line 25 "instructions.y"
 { $yygotominor = array('name'=>$this->yystack[$this->yyidx + 0]->minor->value , 'params'=> array() );}
-#line 335 "instructions.php"
+#line 334 "instructions.php"
         break;
       case 8: /* validation_rule ::= IDENTIFIER EQUALS parameter */
 #line 26 "instructions.y"
 { $yygotominor = array('name'=>$this->yystack[$this->yyidx + -2]->minor->value , 'params'=> array($this->yystack[$this->yyidx + 0]->minor) ); }
-#line 340 "instructions.php"
+#line 339 "instructions.php"
         break;
       case 9: /* validation_rule ::= IDENTIFIER EQUALS LBRACKET param_list RBRACKET */
 #line 27 "instructions.y"
 { $yygotominor = array('name'=>$this->yystack[$this->yyidx + -4]->minor->value , 'params'=> $this->yystack[$this->yyidx + -1]->minor ); }
-#line 345 "instructions.php"
+#line 344 "instructions.php"
         break;
       case 12: /* vr_ct_rule ::= PLUS vr_ct_class_name */
 #line 32 "instructions.y"
 { $yygotominor = array('cmd'=>'add'	, 'class'=>$this->yystack[$this->yyidx + 0]->minor); }
-#line 350 "instructions.php"
+#line 349 "instructions.php"
         break;
       case 13: /* vr_ct_rule ::= MINUS vr_ct_class_name */
 #line 33 "instructions.y"
 { $yygotominor = array('cmd'=>'remove'	, 'class'=>$this->yystack[$this->yyidx + 0]->minor); }
-#line 355 "instructions.php"
+#line 354 "instructions.php"
         break;
       case 15: /* class_transformations ::= class_transformations vr_ct_rule */
 #line 36 "instructions.y"
 { $yygotominor=$this->yystack[$this->yyidx + -1]->minor; $yygotominor[]=$this->yystack[$this->yyidx + 0]->minor; }
-#line 360 "instructions.php"
+#line 359 "instructions.php"
         break;
       case 16: /* vr_definition ::= CSS HTML */
 #line 38 "instructions.y"
-{ $yygotominor = array('target'=>$this->yystack[$this->yyidx + -1]->minor->value , 'action'=>'message' , 'value'=>$this->yystack[$this->yyidx + 0]->minor->value ); }
-#line 365 "instructions.php"
+{ $yygotominor = array(array('target'=>$this->yystack[$this->yyidx + -1]->minor->value , 'action'=>'message' , 'value'=>$this->yystack[$this->yyidx + 0]->minor->value )); }
+#line 364 "instructions.php"
         break;
       case 17: /* vr_definition ::= CSS class_transformations */
 #line 39 "instructions.y"
@@ -389,26 +388,27 @@ static $yy_default = array(
 																		$yygotominor[] = array_merge(array('target'=>$this->yystack[$this->yyidx + -1]->minor->value , 'action'=>'classes'),$action);
 																	}
 																}
-#line 376 "instructions.php"
+#line 375 "instructions.php"
+        break;
+      case 18: /* validation_reporter ::= vr_definition */
+      case 22: /* opt_rules ::= validator */
+#line 47 "instructions.y"
+{ $yygotominor = $this->yystack[$this->yyidx + 0]->minor; }
+#line 381 "instructions.php"
         break;
       case 19: /* validation_reporter ::= validation_reporter vr_definition */
 #line 48 "instructions.y"
 { $yygotominor=array_merge($this->yystack[$this->yyidx + -1]->minor,$this->yystack[$this->yyidx + 0]->minor); }
-#line 381 "instructions.php"
+#line 386 "instructions.php"
         break;
       case 20: /* validator ::= validation_rule */
 #line 50 "instructions.y"
 { $yygotominor = array('rule'=>$this->yystack[$this->yyidx + 0]->minor , 'reporter'=>NULL ); }
-#line 386 "instructions.php"
+#line 391 "instructions.php"
         break;
       case 21: /* validator ::= validation_rule COLON validation_reporter */
 #line 51 "instructions.y"
 { $yygotominor = array('rule'=>$this->yystack[$this->yyidx + -2]->minor , 'reporter'=>$this->yystack[$this->yyidx + 0]->minor ); }
-#line 391 "instructions.php"
-        break;
-      case 22: /* opt_rules ::= validator */
-#line 53 "instructions.y"
-{ $yygotominor = $this->yystack[$this->yyidx + 0]->minor; }
 #line 396 "instructions.php"
         break;
       case 23: /* opt_rules ::= opt_rules OR validator */

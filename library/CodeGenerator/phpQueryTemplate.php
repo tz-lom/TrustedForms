@@ -187,4 +187,9 @@ class phpQueryTemplate implements TemplateManipulator
     {
         return $this->pq->find($css)->elements[0];
     }
+	
+	public function appendJSvalidator($validator)
+	{
+		$this->pq->append(pq("<script type=\"text/javascript\">\n$validator\n</script>"));
+	}
 }
