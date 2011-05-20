@@ -118,7 +118,13 @@ TrustedForms.prototype = {
             });
         });
         this.errors = new Array;
-    }
+    },
+	reset: function(){
+		this.hideErrors();
+		this.validators = new Object;
+		this.checks = new Array;
+		this.errors = new Array;
+	}
 }
 
 window.TrustedForms = new TrustedForms;

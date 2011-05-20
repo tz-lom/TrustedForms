@@ -4,33 +4,59 @@ require_once('../../tests/autoload.php');
 
 //define('SKIP_SELENIUM_TESTS',true);
 
+
+class SeleniumUndoControll extends PHPUnit_Extensions_SeleniumTestCase_Driver
+{
+	public function __destruct()
+	{
+		$this->stop();
+	}
+}
+
+/**
+ * @backupGlobals disabled
+ */
 class TestValidators extends PHPUnit_Framework_TestCase
 {
     protected $description;
     protected $form;
-    protected $selenium;
+    static $selenium = NULL;
     
-    public function __construct($name = NULL, array $data = array(), $dataName = '')
+    public function setUp()
     {
-        parent::__construct($name, $data, $dataName);
-        if(!defined('SKIP_SELENIUM_TESTS'))
+        if(!self::$selenium && !defined('SKIP_SELENIUM_TESTS'))
         {
             try
             {
-                $this->selenium = new RunnerValidatorSelenium($name,$data,$dataName,array());
-                $this->selenium->setBrowser("*chrome");
-                $this->selenium->setBrowserUrl("http://selenium.tests.local");
-                $this->selenium->open('/testValidator.html');
+                self::$selenium = new SeleniumUndoControll();
+				self::$selenium->setHost('localhost');
+				self::$selenium->setPort(4444);
+				self::$selenium->setTimeout(30);
+				self::$selenium->setHttpTimeout(45);
+				self::$selenium->setTestId('TestValidators');
+                self::$selenium->setBrowser("*chrome");
+                self::$selenium->setBrowserUrl("http://selenium.tests.local");
+				
+				$tcMock = $this->getMock('PHPUnit_Extensions_SeleniumTestCase');
+				
+				self::$selenium->setTestCase($tcMock);
+				
+                self::$selenium->start();
+                self::$selenium->open('/testValidator.html');
             }
             catch(PHPUnit_Framework_Exception $e)
             {
+				self::$selenium->stop();
+				self::$selenium = NULL;
                 define('SKIP_SELENIUM_TESTS',true);
             }
         }
     }
+	
     
     protected function prepareTest($description)
     {
+		if($this->description==$description) return;
         $this->description = $description;
         $source = <<<HEREDOC
 <form>
@@ -52,8 +78,8 @@ HEREDOC;
         // insert JS into form
         if(!defined('SKIP_SELENIUM_TESTS'))
         {
-            $this->selenium->addScript('TrustedForms.reset();');
-            $this->selenium->addScript($builder->getJSvalidator());
+            self::$selenium->runScript('TrustedForms.reset();');
+            self::$selenium->runScript($builder->getJSvalidator());
         }
         
     }
@@ -66,41 +92,68 @@ HEREDOC;
         $this->assertEquals(
                 $result,
                 $this->form['value']->isCorrect(),
-                "Test `{$this->description}` is't ".($result?'pass':'fail')." on `{$data}` in PHP module"
+                "Test `{$this->description}` don't ".($result?'pass':'fail')." on `{$data}` in PHP module"
         );
         if(!defined('SKIP_SELENIUM_TESTS'))
         {
-            $this->selenium->type('value',$data);
-            $this->selenium->assertEquals(
-                    $result,
-                    $this->getAttribute("value@class")=='error',
-                    "Test `{$this->description}` is't ".($result?'pass':'fail')." on `{$data}` in JS module"
-            );
+            self::$selenium->type('value',$data);
+			if((strpos(self::$selenium->getAttribute("value@class"),'error')===false)!=$result)
+			{
+				$this->fail("Test `{$this->description}` don't ".($result?'pass':'fail')." on `{$data}` in JS module");
+			}
         }
     }
     
-    public function testIsNumeric()
+    public function testSelenium()
     {
-        $this->prepareTest('IsNumeric');
-        $this->performTest('2',true);
-        $this->performTest('a',false);
+		if(defined('SKIP_SELENIUM_TESTS'))
+		{
+			$this->fail('Selenium tests are not executed due to error with selenium (or they are disabled)');
+		}
     }
+    
+	/**
+	 * @dataProvider validatorsInfo
+	 */
+	public function testValidator($validator,$data,$result)
+	{
+		$this->prepareTest($validator);
+		$this->performTest($data, $result);
+	}
+
+
+	/**
+	 * Useful to create tests definitions
+	 * 
+	 * @param array $tests			array where tests will be added
+	 * @param string $definition	String describing test
+	 * @param array $pass			Correct values
+	 * @param array $fails			Incorrect values
+	 */
+	protected function genTestConfig(&$tests,$definition,$pass,$fails)
+	{
+		foreach($pass as $data)
+		{
+			$tests[] = array($definition,$data,true);
+		}
+		foreach($fails as $data)
+		{
+			$tests[] = array($definition,$data,false);
+		}
+	}
+	
+	public function validatorsInfo()
+	{
+		$tests = array();
+		
+		$this->genTestConfig(
+				$tests,
+				'isNumeric',
+				array('2','3.14','0','-3','-2.18','0.12','-0.17','+3.24','1.6e5','-1.1e-2'),
+				array('a','-a','0.1z')
+		);
+		
+		return $tests;
+	}
 }
 
-class RunnerValidatorSelenium extends PHPUnit_Extensions_SeleniumTestCase
-{
-/*    public function load($url)
-    {
-        return parent::load($url);
-    }
-    
-    public function getAttribute($attr)
-    {
-        return $this->__call('load',array($attr));
-    }
-    
-    public function addScript($script)
-    {
-        return $this->__call('load',array($script));
-    }*/
-}
