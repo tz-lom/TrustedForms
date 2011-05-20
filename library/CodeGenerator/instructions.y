@@ -35,7 +35,7 @@ vr_ct_rule(t) ::= MINUS vr_ct_class_name(c).	{ t = array('cmd'=>'remove'	, 'clas
 class_transformations(set) ::= vr_ct_rule(t).								{ set = array(t); }
 class_transformations(set) ::= class_transformations(old) vr_ct_rule(t).	{ set=old; set[]=t; }
 
-vr_definition(def) ::= CSS(css) HTML(html).						{ def = array('target'=>css->value , 'action'=>'message' , 'value'=>html->value ); }
+vr_definition(def) ::= CSS(css) HTML(html).						{ def = array(array('target'=>css->value , 'action'=>'message' , 'value'=>html->value )); }
 vr_definition(def) ::= CSS(css) class_transformations(set).		{
 																	def = array();
 																	foreach(set as $action)
@@ -44,7 +44,7 @@ vr_definition(def) ::= CSS(css) class_transformations(set).		{
 																	}
 																}
 
-validation_reporter(rep) ::= vr_definition(def).							{ rep = array(def); }
+validation_reporter(rep) ::= vr_definition(def).							{ rep = def; }
 validation_reporter(rep) ::= validation_reporter(old) vr_definition(def).	{ rep=array_merge(old,def); }
 
 validator(v) ::= validation_rule(cmd).									{ v = array('rule'=>cmd , 'reporter'=>NULL ); }
