@@ -63,7 +63,8 @@ class TestValidators extends PHPUnit_Framework_TestCase
    <input type="text" name="value" id="in">
    <!--
    @#in@:
-    $description : @#in@+error
+	defaultErrorReport: @#in@+error ,
+    $description
    -->
 </form>
 HEREDOC;
