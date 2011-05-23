@@ -1,3 +1,53 @@
-TrustedForms
+Library is in stage of early development, please support us and submit bug reports
 
-under development
+TrustedForms
+Library for creating complex form validators for checking on client and server side.
+
+For example:
+
+create template looking like this:
+
+<form>
+	<input id="age" type="text" name="age" /><span id="errage"></span>
+	<!--
+		@#age@:
+			isNumeric: @#errage@<< Age must be number >> @#age@+error,
+			inRange = (1,150) : @#errage@<< This cann't be your age >> @#age@+error
+	-->
+	<input type="submit/>
+</form>
+
+
+here you can see some HTML comment with instructions for validation
+
+now compile it:
+
+$: ./TrustedForms/library/CodeGenerator/buildform --source=<<template file>>
+
+compiler will create "<<template file>>.tpl" and "<<template file>>.validate.php" in directory with <<template file>>
+
+now you can simply use them:
+
+<!DOCTYPE HTML>
+<head>
+    <title>test</title>
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" src="TrustedForms.js"></script>
+    <style type="text/css">
+    .error { border: 1px solid red; }
+    </style>
+</head>
+<body>
+    <?php
+    require_once('autoload.php'); // place your own project autoloader here
+    require_once('template.validate.php');
+    if($form->checkArray($_REQUEST))
+	{
+		echo 'age is: ', $form['age']->value();
+    }
+    require_once('template.tpl');
+    ?>
+</body>
+
+As you can see, tests are working in browser AND in PHP (try to turn off JavaScript).
+You can easily check your form and be shure that all test are passed,form values are correctly transformed and filtered
