@@ -152,5 +152,14 @@ class VariableValidatorTest extends \PHPUnit_Framework_TestCase
 		$this->object->setValue('"value"');
 		$this->assertTrue($this->object->isCorrect());
 	}
+	
+	public function testAddToChainWithReporter()
+	{
+		$reporter = new ErrorReporter('test message');
+		$this->object->addToChain(new ValueChecks\isNumeric(), $reporter);
+		$this->object->setValue('not integer');
+		$this->assertFalse($this->object->isCorrect());
+		$this->assertSame($reporter, $this->object->getError());
+	}
 
 }

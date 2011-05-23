@@ -147,11 +147,26 @@ HEREDOC;
 	{
 		$tests = array();
 		
+		/*
+		 * isNumeric
+		 */
+		
 		$this->genTestConfig(
 				$tests,
 				'isNumeric',
 				array('2','3.14','0','-3','-2.18','0.12','-0.17','+3.24','1.6e5','-1.1e-2'),
 				array('a','-a','0.1z')
+		);
+		
+		/*
+		 * inRange
+		 */
+		
+		$this->genTestConfig(
+				$tests,
+				'inRange = (1,5)',
+				array('2','3','4.5','0.45e1','1','5'),
+				array('0','-4','6','5.1')
 		);
 		
 		return $tests;
