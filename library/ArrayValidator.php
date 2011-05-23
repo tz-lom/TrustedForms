@@ -1,4 +1,11 @@
 <?php
+/**
+ * @version 0.0.1
+ * @link http://github.com/tz-lom/TrustedForms
+ * @author Nuzhdin Urii <nuzhdin.urii@gmail.com>
+ * @license http://www.opensource.org/licenses/mit-license.php MIT License
+ * @package TrustedForms
+ */
 
 namespace TrustedForms;
 
@@ -37,6 +44,10 @@ class ArrayValidator implements \ArrayAccess
      * @var array of \TrustedForms\ErrorReporter
      */
     protected $errorPool;
+	/**
+	 * @var boolean
+	 */
+	protected $skipEmptyArray = false;
 
     public function  __construct()
     {
@@ -100,6 +111,8 @@ class ArrayValidator implements \ArrayAccess
     {
         $this->errorPool = array();
 		
+		if($this->skipEmptyArray && count($array)==0) return false;
+		
 		$undescribedKeys = array_diff_key($array,$this->variables);
 		if(count($undescribedKeys))
 		{
@@ -161,11 +174,26 @@ class ArrayValidator implements \ArrayAccess
 
 	/**
 	 * Задаёт способ обратотки ключей проверяемого массива для которых нет валидатора
+	 * 
 	 * @param \TrustedForms\ArrayValidator::const $mode
+	 * @return ArrayValidator
 	 */
 	public function handleUndefinedKeys($mode)
 	{
 		$this->undefKeysMode = $mode;
+		return $this;
+	}
+	
+	/**
+	 * If array is empty it can be skipped, useful for form validation when no data passed to form
+	 * 
+	 * @param boolean $skip
+	 * @return ArrayValidator 
+	 */
+	public function skipEmptyArray($skip)
+	{
+		$this->skipEmptyArray = $bool;
+		return $this;
 	}
 
     /**

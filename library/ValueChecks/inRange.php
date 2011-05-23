@@ -2,29 +2,18 @@
 
 namespace TrustedForms\ValueChecks;
 
-class isNumericRange extends \TrustedForms\ValidationChainItem
+/**
+ * Checks whether the number is in desired range
+ * @param lower bound
+ * @param upper bound
+ */
+class inRange extends \TrustedForms\ValidationChainItem
 {
-    /**
-     *
-     * 
-     *
-     * $this->config[0] - minimum of range
-     * $this->config[1] - maximum of range
-     *
-     *
-     *
-     * @param mixed $value
-     * @return bool 
-     */
-protected function doProcess(&$value)
-{
-        if (is_numeric($value)) {
-		if ($this->config[0] > $value || $this->config[1] < $value) { return false; }
-		else { return true; }
+	const jsValidator = 'return {value:value,passed:parseFloat(config[0])<=value && value<=parseFloat(config[1])}';
+	
+	protected function doProcess(&$value)
+	{
+		return ( $this->config[0] <= $value  && $value <= $this->config[1]);
 	}
-	else {
-		return false;
-	}	
-}
 
 }

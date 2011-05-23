@@ -43,11 +43,17 @@ TrustedForms.prototype = {
             },
             'removeClass': function($el,args){
                 $el.removeClass(args);
-            }
+            },
+			'message': function($el,args){
+				//@todo: implement this
+			}
         };
         this.errorHide = {
             'addClass': this.errorDisplay['removeClass'],
-            'removeClass': this.errorDisplay['addClass']
+            'removeClass': this.errorDisplay['addClass'],
+			'message': function($el,args){
+				//@todo: implement this
+			}
         };
     },
     register: function(item){
@@ -58,6 +64,7 @@ TrustedForms.prototype = {
         } else {
             this.validators[item.name] = item.validator;
         }
+		return this;
     },
     checkAll: function(){
         this.hideErrors();

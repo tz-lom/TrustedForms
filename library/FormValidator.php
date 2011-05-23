@@ -1,15 +1,21 @@
 <?php
+/**
+ * @version 0.0.1
+ * @link http://github.com/tz-lom/TrustedForms
+ * @author Nuzhdin Urii <nuzhdin.urii@gmail.com>
+ * @license http://www.opensource.org/licenses/mit-license.php MIT License
+ * @package TrustedForms
+ */
 
 namespace TrustedForms;
 
-/**
- * Description of FormValidator
- *
- * @author tz-lom
- */
 class FormValidator extends \TrustedForms\ArrayValidator
 {
     protected $flags = array();
+	/**
+	 * It is very useful, you can call checkArray without mentioning is form displayed first or not
+	 */
+	protected $skipEmptyArray = true;
 
     public function setFlag($flagName,$value=NULL)
     {

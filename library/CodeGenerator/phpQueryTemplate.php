@@ -1,4 +1,11 @@
 <?php
+/**
+ * @version 0.0.1
+ * @link http://github.com/tz-lom/TrustedForms
+ * @author Nuzhdin Urii <nuzhdin.urii@gmail.com>
+ * @license http://www.opensource.org/licenses/mit-license.php MIT License
+ * @package TrustedForms\CodeGenerator
+ */
 
 namespace TrustedForms\CodeGenerator;
 
@@ -93,7 +100,7 @@ class phpQueryTemplate implements TemplateManipulator
         if($el->is('input'))
         {
             $val = $el->attr('value');
-            $el->attrPHP('value',"if({$this->formContainer}['{$name}']->isChecked()) { echo {$this->formContainer}['{$name}']->value(); } else { ?>{$val}<?php }");
+            $el->attrPHP('value',"if({$this->formContainer}['{$name}']->isChecked()) { if({$this->formContainer}['{$name}']->isCorrect()) { echo {$this->formContainer}['{$name}']->value(); } else { echo htmlentities({$this->formContainer}['{$name}']->inputValue()); } } else { ?>{$val}<?php }");
         }
         if($el->is('textarea'))
         {
