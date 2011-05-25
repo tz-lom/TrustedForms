@@ -19,6 +19,8 @@ class Reporter extends \TrustedForms\CodeGenerator\Reporter
             $value = var_export($value,true);
             $code.="->addFlag('{$flag}',{$value})";
         }
+        $json = json_encode($this->toJScode());
+        $code.="->setJSONdescription('{$json}')";
         return $code;
     }
     

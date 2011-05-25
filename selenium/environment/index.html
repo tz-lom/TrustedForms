@@ -22,14 +22,15 @@
                 <option value="b">10</option>
                 <option value="c">11</option>
             </select>
+            <input name="userpc" class=""/>
             <input type="submit" />
         </form>
 
 		
-		<script type="text/javascript">                                                                                                                               
-TrustedForms.register({name:"IsNumeric",validator:function(value,config){return {value:value,passed:/^\d+$/.test(value)};}});                                     
-TrustedForms.check({"element":"[name=int]","tests":[{"test":"IsNumeric","arguments":[],"error":[{"element":"[name=int]","type":"addClass","argument":"error"}]}]});           
-                                                                                                                                                              
+<script type="text/javascript">                                                                                                                               
+TrustedForms.register({name:"IsNumeric",validator:function(value,config){return {value:value,passed:/^\d+$/.test(value)};}});
+TrustedForms.check({"element":"[name=int]","tests":[{"test":"IsNumeric","arguments":[],"error":[{"element":"[name=int]","type":"addClass","argument":"error"}]}]});
+TrustedForms.check({element:"[name=userpc]","tests":[{test:'rpcTest',arguments:['data'],error:[]}]});
 </script>  
         
     </body>

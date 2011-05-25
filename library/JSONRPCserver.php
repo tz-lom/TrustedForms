@@ -13,57 +13,31 @@ class JSONRPCserver
 {
     protected $form;
     
-    public function __construct($form=array())
+    public function __construct(FormValidator $form)
     {
         $this->form = $form;
     }
-    
-    protected function parceValidationItem($validator)
-    {
-        $arguments = $validator->arguments;
-        foreach($arguments as &$arg)
-        {
-            if(is_object($arg))
-                $arg = $this->parceValidationItem ($arg);
-        }
         
-        $class = 'ValueChecks\\'.$validator->test;
-        $v = new $class($arguments);
-        $v->setReporter(new ErrorReporter($validator->error));
-        return $v;
-    }
-    
-    public function compileDescription($jsonDescription)
+    public function checkField($name,$value)
     {
-        $validators = json_decode($jsonDescription);
-        $test = new VariableValidator();
-        
-        foreach($validators as $validator)
-        {
-            $test->addToChain($this->parceValidationItem($validator));
-        }
-        return $test;
-    }
-    
-    public function checkField(VariableValidator $test,$value)
-    {
-        $test->setValue($value);
-                
-        if($test->isCorrect())
+        if(!isset($this->form[$name]))
+            return array('passed'=>false,'error'=> "There is no field [$name]");
+        $this->form[$name]->setValue($value);
+        if($this->form[$name]->isCorrect())
         {
             return array('passed'=>true);
         }
         else
         {
-            return array('passed'=>false , 'error' => $test->getError()->getMessage());
-        }
+            return array('passed'=>false , 'error' => json_decode($this->form[$name]->getError()->getJSONdescription()));
+        }        
     }
     
     public function processRPCcall()
     {
         $request = json_decode(file_get_contents('php://input'));
         $result = array('passed'=>false,'error'=>null);
-        switch($request->mode)
+        /*switch($request->mode)
         {
             case 'fromSource':
                 $result = $this->checkField(
@@ -71,8 +45,12 @@ class JSONRPCserver
                             $request->value
                        );
                 break;
-        }
+            case 'fromDefinition':
+                break;
+        }*/
+        $result = $this->checkField($request->name, $request->value);
         //$request['id'] = $request->id;
+        
         header('content-type: text/javascript');
         echo json_encode($result);
     }

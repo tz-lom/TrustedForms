@@ -17,6 +17,7 @@ namespace TrustedForms;
 class FormErrorReporter extends \TrustedForms\ErrorReporter
 {
     protected $flags = array();
+    protected $asJSON = '';
 	
 	public function __construct($message = '%2$s :: value `%1$s` is incorrect')
 	{
@@ -47,5 +48,16 @@ class FormErrorReporter extends \TrustedForms\ErrorReporter
                 },
                 $this->getMessage());
         return $ret;
+    }
+    
+    public function setJSONdescription($json)
+    {
+        $this->asJSON = $json;
+        return $this;
+    }
+    
+    public function getJSONdescription()
+    {
+        return $this->asJSON;
     }
 }

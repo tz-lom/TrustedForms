@@ -38,6 +38,8 @@ class Input extends \TrustedForms\CodeGenerator\Input
         {
             if($cmd instanceof \TrustedForms\CodeGenerator\Rule)
             {
+                $clsName = '\\TrustedForms\\ValueChecks\\'.$cmd->getName();
+                if(!$clsName::jsValidator) return array();
                 $res[$cmd->getName()]= true;
             }
         }
@@ -46,6 +48,34 @@ class Input extends \TrustedForms\CodeGenerator\Input
     
     public function toJScode()
     {
+        //test if all validators have JS realisation
+        $allHaveJS = true;
+        foreach($this->commands as $cmd)
+        {
+            if($cmd instanceof \TrustedForms\CodeGenerator\Rule)
+            {
+                $clsName = '\\TrustedForms\\ValueChecks\\'.$cmd->getName();
+                if($clsName::jsValidator)
+                {
+                    $allHaveJS = false;
+                    break;
+                }
+            }
+        }
+        
+        if(!$allHaveJS)
+        {
+            $input = array(
+                'element' => $this->element ,
+                'tests' => array(
+                    'test'      => 'rpcTest',
+                    'arguments' => array($this->name),
+                    'error'     => array()
+                )
+            );
+            return "TrustedForms.check(".  json_encode($input).");\n";
+        }
+        
         $input = array('element' => $this->element , 'tests' => array());
         $reporter = array();
         foreach($this->commands as $cmd)

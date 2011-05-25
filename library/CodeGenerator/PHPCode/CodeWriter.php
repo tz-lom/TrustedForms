@@ -33,14 +33,17 @@ class CodeWriter implements \TrustedForms\CodeGenerator\CodeWriter
 	
 	public function includeJSvalidators($tests,$validators)
 	{
-        $jsCode = "TrustedForms";
-		foreach($tests as $test)
+        $jsCode = '';
+        if(count($tests)>0)
         {
-            $clsName = '\\TrustedForms\\ValueChecks\\'.$test;
-            //@todo: add support of undefined JS validators
-            $jsCode.='.register({name:'.json_encode($test).',validator:function(value,config){'.$clsName::jsValidator.'}})';
+            $jsCode = "TrustedForms";
+            foreach($tests as $test)
+            {
+                $clsName = '\\TrustedForms\\ValueChecks\\'.$test;
+                $jsCode.='.register({name:'.json_encode($test).',validator:function(value,config){'.$clsName::jsValidator.'}})';
+            }
+            $jsCode.=";\n";
         }
-        $jsCode.=";\n";
         $jsCode.=$validators;
         return $jsCode;
 	}
