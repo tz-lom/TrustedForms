@@ -55,7 +55,7 @@ class Input extends \TrustedForms\CodeGenerator\Input
             if($cmd instanceof \TrustedForms\CodeGenerator\Rule)
             {
                 $clsName = '\\TrustedForms\\ValueChecks\\'.$cmd->getName();
-                if($clsName::jsValidator)
+                if(!$clsName::jsValidator)
                 {
                     $allHaveJS = false;
                     break;

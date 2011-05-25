@@ -168,6 +168,12 @@ HEREDOC;
 				array('2','3','4.5','0.45e1','1','5'),
 				array('0','-4','6','5.1')
 		);
+        $this->genTestConfig(
+				$tests,
+				'inRange = (-2,2)',
+				array('1','0','-2'),
+				array('','a','-3a')
+		);
 		
 		return $tests;
 	}

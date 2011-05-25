@@ -9,10 +9,11 @@ namespace TrustedForms\ValueChecks;
  */
 class inRange extends \TrustedForms\ValidationChainItem
 {
-	const jsValidator = 'return {value:value,passed:parseFloat(config[0])<=value && value<=parseFloat(config[1])}';
+	const jsValidator = 'var v=parseFloat(value);return {value:value,passed:isNaN(v)?false:(parseFloat(config[0])<=v && v<=parseFloat(config[1]))}';
 	
 	protected function doProcess(&$value)
 	{
+        if(!is_numeric($value)) return false;
 		return ( $this->config[0] <= $value  && $value <= $this->config[1]);
 	}
 
