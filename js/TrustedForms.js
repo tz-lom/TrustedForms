@@ -34,7 +34,8 @@ var TrustedForms = function(){
 
 TrustedForms.prototype = {
     init: function(){
-        this.validators = new Object;
+        this.rpcServer = '/jsonrpc/validators';
+        this.validators = {rpcTest: this.rpcTest};
         this.errors = new Array;
         this.checks = new Array;
         this.errorDisplay = {
@@ -128,10 +129,32 @@ TrustedForms.prototype = {
     },
 	reset: function(){
 		this.hideErrors();
-		this.validators = new Object;
-		this.checks = new Array;
-		this.errors = new Array;
-	}
+		this.init();
+	},
+    rpcTest: function(value,options){
+        var self = this,
+            data = options;
+        data.value = value;
+        data = JSON.stringify(data);
+        jQuery.ajax({
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json',
+            url: this.rpcServer,
+            cache: false,
+            processData: false,
+            data: data,
+            error: function(json){
+                //@todo: nice features here please xD
+            },
+            success: function(json){
+                if(!json.passed){
+                    if(json.error) self.showError(json.error);
+                }
+            }
+        });
+        return true;
+    }
 }
 
 window.TrustedForms = new TrustedForms;
