@@ -79,7 +79,7 @@ HEREDOC;
         // insert JS into form
         if(!defined('SKIP_SELENIUM_TESTS'))
         {
-            self::$selenium->runScript('TrustedForms.reset();');
+            self::$selenium->runScript('TrustedForms.reset();TrustedForms.register({item:"rpcTest",validator:function(){ return {value:value,passed:true}; }});');
             self::$selenium->runScript($builder->getJSvalidator());
         }
         
@@ -111,6 +111,52 @@ HEREDOC;
 		{
 			$this->fail('Selenium tests are not executed due to error with selenium (or they are disabled)');
 		}
+    }
+    
+    public function testIsEqualToField()
+    {
+        $source = <<<HEREDOC
+<form>
+   <input type="text" name="value" id="in">
+   <input type="text" name="value2" id="in2">
+   <!--
+   @#in@:
+	defaultErrorReport: @#in@+error ,
+    isEqualToField=value2
+   @#in2@:
+    required: @#in@+error
+   -->
+</form>
+HEREDOC;
+        
+        $builder = new \TrustedForms\CodeGenerator\Builder('phpQueryTemplate','PHPCode');
+        $builder->buildFile($source);
+        
+        eval($builder->getResultValidator()); // here $form will be defined
+        
+        $form->checkArray(array(
+            'value'     => 'one',
+            'value2'    => 'two'
+        ));
+        $this->assertTrue($form->isError());
+        
+        $form->checkArray(array(
+            'value'     => 'two',
+            'value2'    => 'two'
+        ));
+        $this->assertFalse($form->isError());
+        
+        // insert JS into form
+        if(!defined('SKIP_SELENIUM_TESTS'))
+        {
+            self::$selenium->runScript('TrustedForms.reset();');
+            self::$selenium->runScript($builder->getJSvalidator());
+            self::$selenium->type('value2','two');
+            self::$selenium->type('value','one');
+            $this->assertFalse(strpos(self::$selenium->getAttribute("value@class"),'error')===false);
+            self::$selenium->type('value','two');
+            $this->assertTrue(strpos(self::$selenium->getAttribute("value@class"),'error')===false);
+        }
     }
     
 	/**

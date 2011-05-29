@@ -40,6 +40,15 @@ class VariableValidator
      * @var boolean
      */
     protected $correct = false;
+    
+    /**
+     * @var ArrayValidator Pointer to owner objet
+     */
+    protected $owner = NULL;
+    /**
+     * @var boolean Used to prevent circles in validator
+     */
+    protected $circularSemaphore = false;
 
     /**
      *
@@ -88,6 +97,7 @@ class VariableValidator
         {
             $item->setReporter($this->reporter);
         }
+        $item->setOwner($this);
 		$this->chain[] = $item;
 		return $this;
 	}
@@ -104,6 +114,7 @@ class VariableValidator
         $this->checked = false;
         $this->correct = false;
 		$this->occuredError = NULL;
+        $this->circularSemaphore = false;
         return $this;
     }
 
@@ -115,6 +126,8 @@ class VariableValidator
     {
         if(!$this->checked)
         {
+            if($this->circularSemaphore) throw new Exceptions\CircularValidator;
+            $this->circularSemaphore = true;
             $this->correct = true;
 			$this->value = $this->inputValue;
 			foreach($this->chain as $item)
@@ -126,6 +139,7 @@ class VariableValidator
 					break;
 				}
             }
+            $this->circularSemaphore = false;
         }
         $this->checked = true;
         return $this->correct;
@@ -182,4 +196,26 @@ class VariableValidator
 	{
 		return $this->checked;
 	}
+    
+    /**
+     * Set owner binding
+     *
+     * @param ArrayValidator $validator
+     * @return VariableValidator 
+     */
+    public function setOwner(ArrayValidator &$owner)
+    {
+        $this->owner = $owner;
+        return $this;
+    }
+    
+    /**
+     * Return owner of validator
+     *
+     * @return ArrayValidator
+     */
+    public function getOwner()
+    {
+        return $this->owner;
+    }
 }
