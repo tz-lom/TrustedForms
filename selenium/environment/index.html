@@ -29,6 +29,13 @@
 		
 <script type="text/javascript">                                                                                                                               
 TrustedForms.register({name:"IsNumeric",validator:function(value,config){return {value:value,passed:/^\d+$/.test(value)};}});
+
+TrustedForms.register({name:"isEqualToField",validator:
+        function(value,config){
+        return {value:value,passed:this.getValue(config[0])==value};
+    }});
+
+TrustedForms.check({element:"[name=string]",tests:[{test:"isEqualToField",arguments:["int"],"error":[{element:"[name=string]",type:'addClass',argument:'error'}]}]});
 TrustedForms.check({"element":"[name=int]","tests":[{"test":"IsNumeric","arguments":[],"error":[{"element":"[name=int]","type":"addClass","argument":"error"}]}]});
 TrustedForms.check({element:"[name=userpc]","tests":[{test:'rpcTest',arguments:['data'],error:[]}]});
 </script>  

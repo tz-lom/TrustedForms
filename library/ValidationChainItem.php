@@ -28,7 +28,11 @@ abstract class ValidationChainItem
     protected $reporter;
 	protected $reportedError = false;
     protected $config = array();
-
+    /**
+     * @var VariableValidator
+     */
+    protected $owner;
+    
 
     /**
      * @param array $config Параметры для валидатора
@@ -101,5 +105,21 @@ abstract class ValidationChainItem
 	{
 		return $this->reportedError;
 	}
+    
+    /**
+     * Returns VariableValidator that contains that validator
+     * 
+     * @return VariableValidator
+     */
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+    
+    public function setOwner(VariableValidator &$owner)
+    {
+        $this->owner = $owner;
+        return $this;
+    }
 }
 

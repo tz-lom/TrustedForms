@@ -88,9 +88,10 @@ class ArrayValidator implements \ArrayAccess
      */
     public function offsetSet($offset,$value)
     {
-        if(! $value instanceof \TrustedForms\VariableValidator || is_null($offset))
+        if(! $value instanceof \TrustedForms\VariableValidator)
             trigger_error('ArrayValidator items must be inherited from VariableValidator');
         $this->variables[$offset] = $value;
+        $this->variables[$offset]->setOwner($this);
     }
 
     /**

@@ -73,17 +73,35 @@ TrustedForms.prototype = {
         var self = this;
         jQuery.each(this.checks,function(i,field){
             //if(formName==undefined || this.form == formName)
-                result &= self.checkField(field);
+                result &= self.checkField(field,true);
         });
         return result==true;
     },
-    checkField: function(field){
+    checkFieldById: function(id){
+        this.hideErrors(); // @todo: ohh,this is buggy thing
+        this.checkField(this.checks[id],true);
+    },
+    checkField: function(field,ignoreChecked){
+        if(field.checked && !ignoreChecked) return;
+        if(field.circleSemaphore){
+            field.circleSemaphore = false;
+            throw 'CircleValidation';
+        }
+        field.circleSemaphore = true;
         var $el = jQuery(field.element); 
         var res = {value: $el.val(), passed: true};
         for(var i=0; res.passed && i<field.tests.length;i++){
             res = this.performTest(field.tests[i],res.value);
         }
-        return res.passed;
+        field.checked = true;
+        field.circleSemaphore = false;
+        if(res.passed){
+            field.value = res.value;
+            return true;
+        }else{
+            field.value = undefined;
+            return false;
+        }
     },
     performTest: function(test, value){
         var res = this.validators[test.test].call(this,value,test.arguments);
@@ -93,12 +111,16 @@ TrustedForms.prototype = {
         return res;
     },
     check: function(field){
-        this.checks.push(field);
+        var id = this.checks.push(field)-1;
         //@todo: append checks to form AND elements of form
         var $el = jQuery(field.element);
+        this.checks[id].name = $el.attr('name');
+        this.checks[id].circleSemaphore = false;
+        this.checks[id].value = undefined;
+        this.checks[id].checked = false;
         var self = this;
         $el.bind('change',function(){ //@todo : on focus lost, not change
-            self.checkAll();
+            self.checkFieldById(id);
         });
         var $form = $el.parent('form');
         if(!$form.data('TrustedFormsAlreadyBinded')){
@@ -152,6 +174,18 @@ TrustedForms.prototype = {
             }
         });
         return true;
+    },
+    getValue: function(name){
+        var self = this;
+        var val = undefined;
+        jQuery.each(this.checks,function(i,check){
+           if(check.name==name){
+               self.checkField(check);
+               val = check.value;
+               return false;
+           } 
+        });
+        return val;
     }
 }
 
