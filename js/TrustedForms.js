@@ -36,7 +36,7 @@ TrustedForms.prototype = {
     init: function(){
         this.rpcServer = '/jsonrpc/validate.php';
         this.validators = {rpcTest: this.rpcTest};
-        this.errors = new Array;
+      //  this.errors = new Array;
         this.checks = new Array;
         this.errorDisplay = {
             'addClass' : function($el,args){
@@ -78,7 +78,8 @@ TrustedForms.prototype = {
         return result==true;
     },
     checkFieldById: function(id){
-        this.hideErrors(); // @todo: ohh,this is buggy thing
+        //this.hideErrors(); // @todo: ohh,this is buggy thing
+        this.hideError(id);
         this.checkField(this.checks[id],true);
     },
     checkField: function(field,ignoreChecked){
@@ -91,7 +92,11 @@ TrustedForms.prototype = {
         var $el = jQuery(field.element); 
         var res = {value: $el.val(), passed: true};
         for(var i=0; res.passed && i<field.tests.length;i++){
-            res = this.performTest(field.tests[i],res.value);
+            //res = this.performTest(field.tests[i],res.value);
+            res = this.validators[field.tests[i].test].call(this,res.value,field.tests[i].arguments);
+            if(!res.passed){
+                field.displayedError = this.showError(field.tests[i].error);
+            }
         }
         field.checked = true;
         field.circleSemaphore = false;
@@ -118,6 +123,7 @@ TrustedForms.prototype = {
         this.checks[id].circleSemaphore = false;
         this.checks[id].value = undefined;
         this.checks[id].checked = false;
+        this.checks[id].displayedError = undefined;
         var self = this;
         $el.bind('change',function(){ //@todo : on focus lost, not change
             self.checkFieldById(id);
@@ -132,20 +138,27 @@ TrustedForms.prototype = {
         return this;
     },
     showError: function(error){
-        this.errors.push(error);
+       // this.errors.push(error);
         var self = this;
         jQuery.each(error,function(i,error){
             var $el = jQuery(error.element);
             self.errorDisplay[error.type]($el,error.argument);
         });
+        return error;
+    },
+    hideError: function(id){
+        if(!this.checks[id].displayedError) return;
+        var self = this;
+        jQuery.each(this.checks[id].displayedError,function(i,error){
+            var $el = jQuery(error.element);
+            self.errorHide[error.type]($el,error.argument);
+        });
+        this.checks[id].displayedError = undefined;
     },
     hideErrors: function(){
         var self = this;
-        jQuery.each(this.errors,function(i,errors){
-            jQuery.each(errors,function(i,error){
-                var $el = jQuery(error.element);
-                self.errorHide[error.type]($el,error.argument);
-            });
+        jQuery.each(this.checks,function(i,field){
+            self.hideError(i);
         });
         this.errors = new Array;
     },
