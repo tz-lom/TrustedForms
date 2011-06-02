@@ -59,6 +59,10 @@ class Builder
             {
                 echo $e->getMessage(),':',$e->getLine(),"\n";
             }
+            catch(\ReadTokenException $e)
+            {
+                echo $e->getMessage(),"\n";
+            }
             fclose($tempfile);
             $instructions = $this->template->nextInstruction();
         }

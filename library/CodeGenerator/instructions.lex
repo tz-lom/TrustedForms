@@ -10,6 +10,8 @@
 include 'jlex.php';
 include 'instructions.php';
 
+class ReadTokenException extends Exception {}
+
 %%
 
 %full
@@ -59,4 +61,4 @@ L	=	[a-zA-Z_]
 								}
 
 <YYINITIAL> [ \t\v\n\f\r] {}
-.			{ /*skip*/ }
+.			{ throw new ReadTokenException("Invalid character [{$this->yytext()}] at {$this->yyline}:{$this->yycol}"); }

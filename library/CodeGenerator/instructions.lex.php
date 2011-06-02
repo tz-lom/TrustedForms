@@ -8,6 +8,7 @@
  */
 include 'jlex.php';
 include 'instructions.php';
+class ReadTokenException extends Exception {}
 
 
 class VILexer extends JLexBase  {
@@ -207,7 +208,7 @@ array(
 						case -2:
 							break;
 						case 2:
-							{ /*skip*/ }
+							{ throw new ReadTokenException("Invalid character [{$this->yytext()}] at {$this->yyline}:{$this->yycol}"); }
 						case -3:
 							break;
 						case 3:
@@ -295,7 +296,7 @@ array(
 						case -21:
 							break;
 						case 22:
-							{ /*skip*/ }
+							{ throw new ReadTokenException("Invalid character [{$this->yytext()}] at {$this->yyline}:{$this->yycol}"); }
 						case -22:
 							break;
 						case 23:
@@ -307,19 +308,19 @@ array(
 						case -24:
 							break;
 						case 26:
-							{ /*skip*/ }
+							{ throw new ReadTokenException("Invalid character [{$this->yytext()}] at {$this->yyline}:{$this->yycol}"); }
 						case -25:
 							break;
 						case 28:
-							{ /*skip*/ }
+							{ throw new ReadTokenException("Invalid character [{$this->yytext()}] at {$this->yyline}:{$this->yycol}"); }
 						case -26:
 							break;
 						case 30:
-							{ /*skip*/ }
+							{ throw new ReadTokenException("Invalid character [{$this->yytext()}] at {$this->yyline}:{$this->yycol}"); }
 						case -27:
 							break;
 						case 32:
-							{ /*skip*/ }
+							{ throw new ReadTokenException("Invalid character [{$this->yytext()}] at {$this->yyline}:{$this->yycol}"); }
 						case -28:
 							break;
 						default:
