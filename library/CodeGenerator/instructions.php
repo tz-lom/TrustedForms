@@ -59,7 +59,7 @@ static $yy_lookahead = array(
   const YY_SHIFT_MAX = 20;
 static $yy_shift_ofst = array(
  /*     0 */    12,    3,    3,   11,   15,   22,    3,   -3,   11,   33,
- /*    10 */    34,   34,   27,   22,   35,   47,   28,   48,   38,   45,
+ /*    10 */    34,   34,   27,   -4,   35,   47,   28,   48,   38,   45,
  /*    20 */    38,
 );
   const YY_REDUCE_USE_DFLT = -16;
@@ -270,7 +270,7 @@ static $yy_default = array(
   private function __overflow_dead_code() 
   {
 #line 12 "instructions.y"
- throw new ParceTokenException($yyminor->value,$yymajor,0,'',$yyminor->line); 
+ throw new ParceTokenException('Stack overflow: '.$yyminor->value,$yymajor,0,'',$yyminor->line); 
 #line 258 "instructions.php"
   }
 
@@ -465,7 +465,7 @@ static $yy_default = array(
       $this->yy_pop_parser_stack();
 
 #line 13 "instructions.y"
- throw new ParceTokenException($yyminor->value,$yymajor,0,'',$yyminor->line); 
+ throw new ParceTokenException('Parse failure: '.$yyminor->value,$yymajor,0,'',$yyminor->line); 
 #line 453 "instructions.php"
   }
 
@@ -473,7 +473,7 @@ static $yy_default = array(
   {
     $message = 'Unexpected ' . $this->yy_token_name($yymajor) . '(' . $yyminor . ')';
 #line 11 "instructions.y"
- throw new ParceTokenException($yyminor->value,$yymajor,0,'',$yyminor->line); 
+ throw new ParceTokenException('Syntax error: '.$yyminor->value,$yymajor,0,'',$yyminor->line); 
 #line 461 "instructions.php"
   }
 

@@ -11,11 +11,8 @@ name="$test"
 @#i1@:
  isEqualToField=ta : @#i1@+err
  
--->
-
-<!--
 @#i2@:
- required : @#i2@+err
+ isIP = (IS_IPV4,FLAG_IPV6) : @#i2@+err
 -->
 
 <!-- simple comment -->
