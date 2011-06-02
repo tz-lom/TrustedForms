@@ -7,10 +7,11 @@ namespace TrustedForms\ValueChecks;
  */
 class isNumeric extends \TrustedForms\ValidationChainItem
 {
+    const jsValidator = 'function is_numeric( mixed_var ) { return !isNaN( mixed_var ); } return {value:value, passed: is_numeric(value) }';
+    
     protected function doProcess(&$value)
 	{
         return is_numeric($value);
     }
 	
-	const jsValidator = 'return {value:value,passed:/^[+-]?\d+(\.\d+(e[+-]?\d+)?)?$|^0x[0-9a-f]+$/i.test(value)};';
 }

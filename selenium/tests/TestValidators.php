@@ -214,13 +214,104 @@ HEREDOC;
 				array('2','3','4.5','0.45e1','1','5'),
 				array('0','-4','6','5.1')
 		);
+		/*
+		 * inRange
+		 */
+		
         $this->genTestConfig(
 				$tests,
 				'inRange = (-2,2)',
 				array('1','0','-2'),
 				array('','a','-3a')
 		);
+		/*
+		 * isEmail
+		 */
 		
+
+		$this->genTestConfig(
+				$tests,
+				'isEmail',
+				array('prowoke@rambler.ru','tochiba@yandex.ru','tackeshi@mail.ru'),
+				array('SUper!!!','d@!.ru','31232')
+		);
+		/*
+		 * isFloat
+		 */
+		
+			$this->genTestConfig(
+				$tests,
+				'isFloat',
+				array(2.213,12.43,2.223),
+				array('!!!','zdasd','31232')
+		);
+
+		/*
+		 * isInteger
+		 */
+		
+			$this->genTestConfig(
+				$tests,
+				'isInteger',
+				array(0,-1,3),
+				array('23.123',12321.123123,'sadasd')
+		);
+		/*
+		 * isURL
+		 */
+			$this->genTestConfig(
+				$tests,
+				'isURL',
+				array('http://www.google.com','http://www.microsoft.com/en-us/default.aspx'),
+				array('www.google',12321.123123,'google.com')
+		);
+		/*
+		 * isString
+		 */
+			$this->genTestConfig(
+				$tests,
+				'isString',
+				array('string','how much money?'),
+				array(324.3234,23,-321)
+		);
+		/*
+		 * isMaxLength
+		 */
+			$this->genTestConfig(
+				$tests,
+				'isMaxLength = (5)',
+				array('stri','321'),
+				array('THIS IS SPARTAAAAAAAAAAAAAAAAAA!!!!!!!!!','teststring','123123124')
+		);
+		
+		
+		/*
+		 * isIP
+		 */
+			$this->genTestConfig(
+				$tests,
+				'isIP = (FLAG_IPV4)',
+				array('195.244.233.12','011.111.135.245'),
+				array('2312','256.255.255.255','fe80::200:f8ff:fe21:67cf')
+		);
+		/*
+		 * isIP
+		 */
+			$this->genTestConfig(
+				$tests,
+				'isIP = (FLAG_IPV6)',
+				array('fe80::200:f8ff:fe21:67cf','2001:0db8:11a3:09d7:1f34:8a2e:07a0:765d'),
+				array('ze80::200:f8ff:fe21:67cf','255.255.255.255','lolipop')
+		);
+		/*
+		 * isIP
+		 */
+			$this->genTestConfig(
+				$tests,
+				'isIP = (IS_IPV4,FLAG_IPV6)',
+				array('195.244.233.102','2001:0db8:11a3:09d7:1f34:8a2e:07a0:765d'),
+				array('2312','255.2225.255.255','lolipop')
+		);
 		return $tests;
 	}
 }
