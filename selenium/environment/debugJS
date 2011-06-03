@@ -1,0 +1,13 @@
+<h1>Debug note</h1>
+<p>
+You can freely change content of this file, it is masked with .gitignore and will not be tracked.
+Use this for easy debug of JS validators or JS TrustedForms library.
+</p>
+<form>
+   <input type="text" name="value" id="in">
+   <!--
+   @#in@:
+	defaultErrorReport: @#in@+error ,
+    isEmail
+   -->
+</form>

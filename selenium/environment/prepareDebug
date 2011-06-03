@@ -1,0 +1,2 @@
+#!/bin/bash
+../../library/CodeGenerator/buildform --source=debugJS
