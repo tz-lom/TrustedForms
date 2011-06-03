@@ -228,11 +228,10 @@ HEREDOC;
 		 * isEmail
 		 */
 		
-
 		$this->genTestConfig(
 				$tests,
 				'isEmail',
-				array('prowoke@rambler.ru','tochiba@yandex.ru','tackeshi@mail.ru'),
+				array('ssru','tochiba@yandex.ru','tackeshi@mail.ru'),
 				array('SUper!!!','d@!.ru','31232')
 		);
 		/*
@@ -254,7 +253,7 @@ HEREDOC;
 				$tests,
 				'isInteger',
 				array(0,-1,3),
-				array('23.123',12321.123123,'sadasd')
+				array('',12321.123123,'sadasd','NaN')
 		);
 		/*
 		 * isURL

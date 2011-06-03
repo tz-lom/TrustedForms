@@ -16,5 +16,3 @@ class isFloat extends \TrustedForms\ValidationChainItem
         return is_float($value);
     }
 }
-
-
