@@ -1,6 +1,6 @@
 <h1>Debug note</h1>
 <p>
-You can freely change content of this file, it is masked with .gitignore and will not be tracked.
+You can freely change content of this file, but before rename it to "debugJS".
 Use this for easy debug of JS validators or JS TrustedForms library.
 </p>
 <form>
