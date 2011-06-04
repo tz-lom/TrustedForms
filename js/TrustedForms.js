@@ -125,9 +125,9 @@ TrustedForms.prototype = {
         this.checks[id].checked = false;
         this.checks[id].displayedError = undefined;
         var self = this;
-        $el.bind('change',function(){ //@todo : on focus lost, not change
+        $el.bind('performElementValidation',function(){ //@todo : probably this method drops speed,but it is quite usefull
             self.checkFieldById(id);
-        });
+        }).bind('change',function(){$(this).trigger('performElementValidation')});
         var $form = $el.parent('form');
         if(!$form.data('TrustedFormsAlreadyBinded')){
             $form.bind('submit',function(){
