@@ -265,15 +265,6 @@ HEREDOC;
 				array('www.google',12321.123123,'google.com')
 		);
 		/*
-		 * isString
-		 */
-			$this->genTestConfig(
-				$tests,
-				'isString',
-				array('string','how much money?'),
-				array(324.3234,23,-321)
-		);
-		/*
 		 * isMaxLength
 		 */
 			$this->genTestConfig(
