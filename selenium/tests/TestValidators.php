@@ -231,7 +231,7 @@ HEREDOC;
 		$this->genTestConfig(
 				$tests,
 				'isEmail',
-				array('ssru','tochiba@yandex.ru','tackeshi@mail.ru'),
+				array('prowoke@rambler.ru','tochiba@yandex.ru','tackeshi@mail.ru'),
 				array('SUper!!!','d@!.ru','31232')
 		);
 		/*
