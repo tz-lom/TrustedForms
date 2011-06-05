@@ -181,11 +181,11 @@ HEREDOC;
 	{
 		foreach($pass as $data)
 		{
-			$tests[] = array($definition,$data,true);
+			$tests[] = array($definition,(string)$data,true);
 		}
 		foreach($fails as $data)
 		{
-			$tests[] = array($definition,$data,false);
+			$tests[] = array($definition,(string)$data,false);
 		}
 	}
 	
@@ -231,8 +231,13 @@ HEREDOC;
 		$this->genTestConfig(
 				$tests,
 				'isEmail',
+<<<<<<< HEAD
 				array('prowoke@rambler.ru','tochiba@yandex.ru','tackeshi@mail.ru'),
 				array('SUper!!!','d@!.ru','31232')
+=======
+				array('test@mailserver.ru','test.server@[127.0.0.1]'),
+				array('text','d@!.ru','31232')
+>>>>>>> 77de20bf8210dd6a3b3d28b39ddfbeb8e9186218
 		);
 		/*
 		 * isFloat
@@ -261,7 +266,7 @@ HEREDOC;
 			$this->genTestConfig(
 				$tests,
 				'isURL',
-				array('http://www.google.com','http://www.microsoft.com/en-us/default.aspx'),
+				array('http://www.google.com','https://www.github.com/tz-lom/TrustedForms'),
 				array('www.google',12321.123123,'google.com')
 		);
 		/*
