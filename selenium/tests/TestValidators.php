@@ -231,13 +231,8 @@ HEREDOC;
 		$this->genTestConfig(
 				$tests,
 				'isEmail',
-<<<<<<< HEAD
-				array('prowoke@rambler.ru','tochiba@yandex.ru','tackeshi@mail.ru'),
-				array('SUper!!!','d@!.ru','31232')
-=======
 				array('test@mailserver.ru','test.server@[127.0.0.1]'),
 				array('text','d@!.ru','31232')
->>>>>>> 77de20bf8210dd6a3b3d28b39ddfbeb8e9186218
 		);
 		/*
 		 * isFloat
