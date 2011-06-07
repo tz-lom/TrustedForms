@@ -241,8 +241,8 @@ HEREDOC;
 			$this->genTestConfig(
 				$tests,
 				'isFloat',
-				array(2.213,12.43,2.223),
-				array('!!!','zdasd','31232')
+				array(+2.213,-12.43,'2.0','-99.2'),
+				array('!!!','22','0','+2')
 		);
 
 		/*
