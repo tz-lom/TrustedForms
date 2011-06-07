@@ -24,10 +24,10 @@ class isInteger extends \TrustedForms\ValidationChainItem
 		return false;		
 	}
 }
- return { value: to_numeric(value), passed: to_numeric(value)? true : false }";
+ return { value: value, passed: to_numeric(value)? true : false }";
 
     protected function doProcess(&$value)
 	{
-        return is_integer($value);
+        return preg_match('/^[+-]?[0-9]+\.?[0]*$/i',$value);
     }
 }
