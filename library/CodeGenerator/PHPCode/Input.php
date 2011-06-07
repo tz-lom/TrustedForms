@@ -46,7 +46,7 @@ class Input extends \TrustedForms\CodeGenerator\Input
         return array_keys($res);
     }
     
-    public function toJScode()
+    public function toJScode($generator)
     {
         //test if all validators have JS realisation
         $allHaveJS = true;
@@ -65,11 +65,13 @@ class Input extends \TrustedForms\CodeGenerator\Input
         
         if(!$allHaveJS)
         {
+            $rpc = $generator->getFormRPC($this->element);
+            
             $input = array(
                 'element' => $this->element ,
                 'tests' => array(
                     'test'      => 'rpcTest',
-                    'arguments' => array($this->name),
+                    'arguments' => array($rpc,$this->name),
                     'error'     => array()
                 )
             );
