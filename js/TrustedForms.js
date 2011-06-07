@@ -34,7 +34,6 @@ var TrustedForms = function(){
 
 TrustedForms.prototype = {
     init: function(){
-        this.rpcServer = '/jsonrpc/validate.php';
         this.validators = {rpcTest: this.rpcTest};
       //  this.errors = new Array;
         this.checks = new Array;
@@ -168,12 +167,12 @@ TrustedForms.prototype = {
 	},
     rpcTest: function(value,options){
         var self = this,
-            dat = JSON.stringify({name: options[0],value:value});
+            dat = JSON.stringify({name: options[1],value:value});
         jQuery.ajax({
             type: 'POST',
             dataType: 'json',
             contentType: 'application/json',
-            url: this.rpcServer,
+            url: options[0],
             cache: false,
             processData: false,
             data: dat,

@@ -54,7 +54,7 @@ class Generator
         $forms = $this->tpl->getAllForms();
         foreach($forms as $form)
         {
-            $this->forms[] = array('element'=>$form,'name'=>NULL,'outJScode'=>true);
+            $this->forms[] = array('element'=>$form,'name'=>NULL,'outJScode'=>true,'rpcServer'=>'/jsonrpc/validate.php');
         }
         if(count($this->forms)==1)
         {
@@ -78,6 +78,12 @@ class Generator
     {
         $form = $this->getFormId($el);
         return ($form!==NULL)?$this->forms[$form]['name']:NULL;
+    }
+    
+    public function getFormRPC($element)
+    {
+        $form = $this->forms[$this->getFormId($this->tpl->getFormForElement($element))];
+        return $form['rpcServer'];
     }
 
 
@@ -106,6 +112,9 @@ class Generator
                     break;
                 case 'enableJS':
                     $form['outJScode'] = (bool) $rule['rule']['params'][0];
+                    break;
+                case 'rpcServer':
+                    $form['rpcServer'] = $rule['rule']['params'][0];
                     break;
                 default :
                     // show error message
@@ -217,7 +226,7 @@ class Generator
         foreach($this->js as $js)
         {
             $tests = array_merge($tests,$js->getAllTestNames());
-            $jscode.=$js->toJScode();
+            $jscode.=$js->toJScode($this);
         }        
         return $this->writer->includeJSvalidators(array_unique($tests),$jscode);
 	}
