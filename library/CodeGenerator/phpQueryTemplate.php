@@ -197,6 +197,7 @@ class phpQueryTemplate implements TemplateManipulator
 	
 	public function appendJSvalidator($validator)
 	{
-		$this->pq->append(pq("<script type=\"text/javascript\">\n$validator\n</script>"));
+        if($validator)
+            $this->pq->append(pq("<script type=\"text/javascript\">\n$validator\n</script>"));
 	}
 }

@@ -25,7 +25,8 @@ abstract class Input
 	
 	public function addCommand($cmd)
 	{
-		$this->commands[] = $cmd;
+        if($cmd!==NULL)
+            $this->commands[] = $cmd;
 	}
 	
 	abstract public function __toString();

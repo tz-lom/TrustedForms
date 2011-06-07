@@ -38,8 +38,10 @@ class Generator
     protected $specialRules =   array(
                                     '||' => 'specOrRule',
                                     'defaultErrorReport' => 'defaultErrorReport',
-                                    '' => ''
+                                    'disableJSvalidation' => 'disableJSvalidation'
                                 );
+    
+    protected $addJSvalidation = true;
 
 	public function __construct(TemplateManipulator $tpl,CodeWriter $writer)
 	{
@@ -83,50 +85,61 @@ class Generator
 	{
         if($this->tpl->isForm($definition['element']))
         {
-            //this is form
-            $form = &$this->forms[$this->getFormId($this->tpl->getElement($definition['element']))];
-            //parse params for this form
-            foreach($definition['rules'] as $rule)
-            {
-                switch($rule['rule']['name'])
-                {
-                    case 'name':
-                        $form['name'] = $rule['rule']['params'][0];
-                        break;
-                    case 'enableJS':
-                        $form['outJScode'] = (bool) $rule['rule']['params'][0];
-                        break;
-                    default :
-                        // show error message
-                        echo 'Invalid form parameter:',$rule['rule']['name'],"\n";
-                }
-            }
-			
+            $this->addFormDescription($definition);
         }
         else
         {
-            // get name of input
-            $name = $this->tpl->getNameOfElement($definition['element']);
-            $formName = $this->getFormName($this->tpl->getFormForElement($definition['element']));
-            $this->tpl->setFormContainer($formName);
-            
-            $this->tpl->addValueReplacement($name);
-            $input = $this->writer->newInput($name,$formName,$definition['element']);
-            
-            foreach($definition['rules'] as $rule)
-            {
-                $input->addCommand($this->parceRule($rule));
-            }
-            $this->inputs[] = $input;
-			
-			// @todo: add JS validation
-			
-			$this->js[] = $input;
-			
+            $this->addFieldDescription($definition);
         }
 	}
-	
-	protected function parceRule($rule)
+    
+    protected function addFormDescription($definition)
+    {
+        $form = &$this->forms[$this->getFormId($this->tpl->getElement($definition['element']))];
+        //parse params for this form
+        foreach($definition['rules'] as $rule)
+        {
+            switch($rule['rule']['name'])
+            {
+                case 'name':
+                    $form['name'] = $rule['rule']['params'][0];
+                    break;
+                case 'enableJS':
+                    $form['outJScode'] = (bool) $rule['rule']['params'][0];
+                    break;
+                default :
+                    // show error message
+                    echo 'Invalid form parameter:',$rule['rule']['name'],"\n";
+            }
+        }
+    }
+    
+    protected function addFieldDescription($definition)
+    {
+        $this->addJSvalidation = true; // keep this flag up , it can be lowered by validation rule
+        
+        $name = $this->tpl->getNameOfElement($definition['element']);
+        $form = $this->forms[$this->getFormId($this->tpl->getFormForElement($definition['element']))];
+        $formName = $form['name'];
+        $this->tpl->setFormContainer($formName);
+
+        $this->tpl->addValueReplacement($name);
+        $input = $this->writer->newInput($name,$formName,$definition['element']);
+
+        foreach($definition['rules'] as $rule)
+        {
+            $input->addCommand($this->parceRule($rule));
+        }
+        $this->inputs[] = $input;
+        
+        if($this->addJSvalidation && $form['outJScode'])
+        {
+            $this->js[] = $input; // add if not switched off
+        }
+    }
+
+
+    protected function parceRule($rule)
 	{
 		$reporter = $this->parceReporter($rule['reporter']);
 
@@ -212,5 +225,11 @@ class Generator
     public function defaultErrorReport($params,$reporter)
     {
         return $reporter;
+    }
+    
+    protected function disableJSvalidation()
+    {
+        $this->addJSvalidation = false;
+        return NULL;
     }
 }
