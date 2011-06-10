@@ -9,10 +9,15 @@ class isFloat extends \TrustedForms\ValidationChainItem
      * @param mixed $value
      * @return bool 
      */
-    const jsValidator = "function is_float (numb) { return typeof numb == 'number' && numb != ~~numb; } return { value:value, passed: is_float(value) }";
+    const jsValidator = "return { value: value, passed: value.match(/^[+-]?[0-9]+(\.[0-9]+)?$/)? true: false }";
 	
     protected function doProcess(&$value)
 	{
-        return is_float($value);
+        if (preg_match('/^[+-]?[0-9]+(\.[0-9]+)?$/',$value)) {
+		settype($value,"float");		
+		return true;
+	} else {
+		return false;
+	}
     }
 }
