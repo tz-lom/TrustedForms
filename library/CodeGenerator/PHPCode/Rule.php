@@ -27,7 +27,7 @@ class Rule extends \TrustedForms\CodeGenerator\Rule
         return array(
             'test'      => $this->name,
             'arguments' => $this->params,
-            'error'     => $this->reporter->toJScode()
+            'error'     => ($this->reporter)?$this->reporter->toJScode():array()
         );
     }
 }
