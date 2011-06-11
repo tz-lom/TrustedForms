@@ -28,6 +28,7 @@ class Reporter extends \TrustedForms\CodeGenerator\Reporter
     {
         $ret = array();
 		foreach($this->sources as $error)
+        {
 			if($error['action']=='message')
 			{
 				$ret[] = array(
@@ -55,6 +56,7 @@ class Reporter extends \TrustedForms\CodeGenerator\Reporter
 					);
 				}
 			}
+        }
 		return $ret;
     }
 }

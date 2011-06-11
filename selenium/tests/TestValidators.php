@@ -241,8 +241,8 @@ HEREDOC;
 			$this->genTestConfig(
 				$tests,
 				'isFloat',
-				array(+2.213,-12.43,'2.0','-99.2'),
-				array('!!!','22','0','+2')
+				array('+2.213','-12.43','2.0','-99.2','22','0','+2'),
+				array('!!!','')
 		);
 
 		/*
@@ -280,17 +280,17 @@ HEREDOC;
 		 */
 			$this->genTestConfig(
 				$tests,
-				'isIP = (FLAG_IPV4)',
-				array('195.244.233.12','011.111.135.245'),
-				array('2312','256.255.255.255','fe80::200:f8ff:fe21:67cf')
+				'isIP = (IPv4)',
+				array('195.244.233.12','127.0.0.1'),
+				array('2312','256.255.255.255','fe80::200:f8ff:fe21:67cf','011.111.135.245')
 		);
 		/*
 		 * isIP
 		 */
 			$this->genTestConfig(
 				$tests,
-				'isIP = (FLAG_IPV6)',
-				array('fe80::200:f8ff:fe21:67cf','2001:0db8:11a3:09d7:1f34:8a2e:07a0:765d'),
+				'isIP = (IPv6)',
+				array('fe80::200:f8ff:fe21:67cf','2001:0db8:11a3:09d7:1f34:8a2e:07a0:765d','2001:0db8:11a3:09d7:1f34:8a2e:07a0::','::1'),
 				array('ze80::200:f8ff:fe21:67cf','255.255.255.255','lolipop')
 		);
 		/*
@@ -298,7 +298,6 @@ HEREDOC;
 		 */
 			$this->genTestConfig(
 				$tests,
-				'isIP',
 				array('195.244.233.102','2001:0db8:11a3:09d7:1f34:8a2e:07a0:765d'),
 				array('2312','255.2225.255.255','lolipop')
 		);
