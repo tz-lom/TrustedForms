@@ -11,9 +11,16 @@ namespace TrustedForms\CodeGenerator\AbstractTree;
 
 class Rules
 {
-    public function __construct()
+    protected $rules = array();
+
+    public function addCheck($r)
     {
-        
+        $this->rules[] = $r;
+        return $this;
+    }
+
+    static public function instance()
+    {
+        return new self;
     }
 }
-
