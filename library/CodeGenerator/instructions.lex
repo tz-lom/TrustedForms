@@ -35,10 +35,13 @@ L	=	[a-zA-Z_]
 <YYINITIAL> "="				{ return $this->createToken(VIParser::TK_EQUALS); }
 <YYINITIAL> "("				{ return $this->createToken(VIParser::TK_LBRACKET); }
 <YYINITIAL> ")"				{ return $this->createToken(VIParser::TK_RBRACKET); }
+<YYINITIAL> "["				{ return $this->createToken(VIParser::TK_SQUARE_LBRACKET); }
+<YYINITIAL> "]"				{ return $this->createToken(VIParser::TK_SQUARE_RBRACKET); }
+<YYINITIAL> "{"				{ return $this->createToken(VIParser::TK_CURLY_LBRACKET); }
+<YYINITIAL> "}"				{ return $this->createToken(VIParser::TK_CURLY_RBRACKET); }
 <YYINITIAL> "-"				{ return $this->createToken(VIParser::TK_MINUS); }
 <YYINITIAL> "+"				{ return $this->createToken(VIParser::TK_PLUS); }
 <YYINITIAL> ","				{ return $this->createToken(VIParser::TK_COMA); }
-<YYINITIAL> "||"			{ return $this->createToken(VIParser::TK_OR); }
 <YYINITIAL> ":"				{ return $this->createToken(VIParser::TK_COLON); }
 
 <YYINITIAL> <<(.)*>>	 	{
