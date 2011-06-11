@@ -218,11 +218,11 @@ HEREDOC;
 		 * inRange
 		 */
 		
-      		$this->genTestConfig(
-				$tests,
-				'inRange = (-2,2)',
-				array('1','0','-2'),
-				array('','a','-3a')
+        $this->genTestConfig(
+            $tests,
+            'inRange = (-2,2)',
+            array('1','0','-2'),
+            array('','a','-3a')
 		);
 		/*
 		 * isEmail
@@ -238,78 +238,76 @@ HEREDOC;
 		 * isFloat
 		 */
 		
-			$this->genTestConfig(
-				$tests,
-				'isFloat',
-				array('+2.213','-12.43','2.0','-99.2','22','0','+2'),
-				array('!!!','')
+        $this->genTestConfig(
+            $tests,
+            'isFloat',
+            array('+2.213','-12.43','2.0','-99.2','22','0','+2'),
+            array('!!!','')
 		);
 
 		/*
 		 * isInteger
 		 */
 		
-			$this->genTestConfig(
-				$tests,
-				'isInteger',
-				array('0','-1','3'),
-				array('',12321.123123,'sadasd','NaN')
+        $this->genTestConfig(
+            $tests,
+            'isInteger',
+            array('0','-1','3'),
+            array('',12321.123123,'sadasd','NaN')
 		);
 		/*
 		 * isURL
 		 */
-			$this->genTestConfig(
-				$tests,
-				'isURL',
-				array('http://www.google.com','https://www.github.com/tz-lom/TrustedForms'),
-				array('www.google',12321.123123,'google.com')
+        $this->genTestConfig(
+            $tests,
+            'isURL',
+            array('http://www.google.com','https://www.github.com/tz-lom/TrustedForms'),
+            array('www.google',12321.123123,'google.com')
 		);
 		/*
 		 * isMaxLength
 		 */
-			$this->genTestConfig(
-				$tests,
-				'isMaxLength = (5)',
-				array('stri','321'),
-				array('THIS IS SPARTAAAAAAAAAAAAAAAAAA!!!!!!!!!','teststring','123123124')
+        $this->genTestConfig(
+            $tests,
+            'isMaxLength = (5)',
+            array('stri','321'),
+            array('THIS IS SPARTAAAAAAAAAAAAAAAAAA!!!!!!!!!','teststring','123123124')
+		);
+			
+		/*
+		 * isIP
+		 */
+        $this->genTestConfig(
+            $tests,
+            'isIP = (IPv4)',
+            array('195.244.233.12','127.0.0.1'),
+            array('2312','256.255.255.255','fe80::200:f8ff:fe21:67cf','011.111.135.245')
+		);
+
+        $this->genTestConfig(
+            $tests,
+            'isIP = (IPv6)',
+            array('fe80::200:f8ff:fe21:67cf','2001:0db8:11a3:09d7:1f34:8a2e:07a0:765d','2001:0db8:11a3:09d7:1f34:8a2e:07a0::','::1'),
+            array('ze80::200:f8ff:fe21:67cf','255.255.255.255','lolipop')
 		);
 		
-		
-		/*
-		 * isIP
-		 */
-			$this->genTestConfig(
-				$tests,
-				'isIP = (IPv4)',
-				array('195.244.233.12','127.0.0.1'),
-				array('2312','256.255.255.255','fe80::200:f8ff:fe21:67cf','011.111.135.245')
+        $this->genTestConfig(
+            $tests,
+            'isIP = (IPv4,IPv6)',
+            array('195.244.233.102','2001:0db8:11a3:09d7:1f34:8a2e:07a0:765d'),
+            array('2312','255.2225.255.255','lolipop')
 		);
-		/*
-		 * isIP
-		 */
-			$this->genTestConfig(
-				$tests,
-				'isIP = (IPv6)',
-				array('fe80::200:f8ff:fe21:67cf','2001:0db8:11a3:09d7:1f34:8a2e:07a0:765d','2001:0db8:11a3:09d7:1f34:8a2e:07a0::','::1'),
-				array('ze80::200:f8ff:fe21:67cf','255.255.255.255','lolipop')
-		);
-		/*
-		 * isIP
-		 */
-			$this->genTestConfig(
-				$tests,
-				array('195.244.233.102','2001:0db8:11a3:09d7:1f34:8a2e:07a0:765d'),
-				array('2312','255.2225.255.255','lolipop')
-		);
+        
 		/*
 		*isAvailSymbols
 		*/ 
-			$this->genTestConfig(
-				$tests,
-				'isAvailSymbols = (abcdefghijklmnopqrstuvwxyz0123456789)',
-				array('t','0'),
-				array('Z','A','@')
+        $this->genTestConfig(
+            $tests,
+            'isAvailSymbols = abcdefghijklmnopqrstuvwxyz0123456789',
+            array('t','0'),
+            array('Z','A','@')
 		);
+        
 		return $tests;
 	}
 }
