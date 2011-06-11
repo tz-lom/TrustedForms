@@ -218,7 +218,7 @@ HEREDOC;
 		 * inRange
 		 */
 		
-        $this->genTestConfig(
+      		$this->genTestConfig(
 				$tests,
 				'inRange = (-2,2)',
 				array('1','0','-2'),
