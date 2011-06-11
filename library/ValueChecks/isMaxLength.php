@@ -11,10 +11,10 @@ namespace TrustedForms\ValueChecks;
 class isMaxLength extends \TrustedForms\ValidationChainItem
 {
  
-    const jsValidator = 'return {value:value,passed: value.length<=config[0]? true : false }';
+    const jsValidator = 'return {value:value,passed: value.length<=config[0] }';
 
     protected function doProcess(&$value)
 	{
-	return strlen($value)<=$this->config[0]? true : false;
+	return strlen($value)<=$this->config[0];
     }
 }

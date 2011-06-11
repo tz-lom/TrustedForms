@@ -9,7 +9,7 @@ class isInteger extends \TrustedForms\ValidationChainItem
      * @param mixed $value
      * @return bool 
      */
-    const jsValidator = " return { value: value, passed: value.match(/^[+-]?[0-9]+\.?[0]*$/)? true:false }";
+    const jsValidator = " return { value: value, passed: value.match(/^[+-]?[0-9]+\.?[0]*$/) }";
 
     protected function doProcess(&$value)
 	{

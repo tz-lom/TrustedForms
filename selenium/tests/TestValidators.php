@@ -298,7 +298,7 @@ HEREDOC;
 		 */
 			$this->genTestConfig(
 				$tests,
-				'isIP = (IS_IPV4,FLAG_IPV6)',
+				'isIP',
 				array('195.244.233.102','2001:0db8:11a3:09d7:1f34:8a2e:07a0:765d'),
 				array('2312','255.2225.255.255','lolipop')
 		);
@@ -306,10 +306,10 @@ HEREDOC;
 		*isAvailSymbols
 		*/ 
 			$this->genTestConfig(
-			$tests,
-			'isAvailSymbols = (abcdefghijklmnopqrstuvwxyz0123456789)',
-			array('t','0'),
-			array('Z','A','@')
+				$tests,
+				'isAvailSymbols = (abcdefghijklmnopqrstuvwxyz0123456789)',
+				array('t','0'),
+				array('Z','A','@')
 		);
 		return $tests;
 	}
