@@ -13,10 +13,19 @@ class RemoveClass extends \TrustedForms\CodeGenerator\AbstractTree\Reporter
 {
     protected $class;
     
-    public function addClass($class)
+    public function setClass($class)
     {
         $this->class = $class;
         return $this;
+    }
+    
+    public function toJScode()
+    {
+        return array(
+						'element'   => $this->element,
+						'type'      => 'removeClass',
+						'argument'  => $this->class
+					);
     }
 }
 

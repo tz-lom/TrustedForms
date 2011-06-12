@@ -13,10 +13,19 @@ class DisplayMessage extends \TrustedForms\CodeGenerator\AbstractTree\Reporter
 {
     protected $text;
     
-    public function addText($text)
+    public function setText($text)
     {
         $this->text = $text;
         return $this;
+    }
+    
+    public function toJScode()
+    {
+        return array(
+					'element'   => $this->element,
+					'type'      => 'message',
+					'argument'  => $this->text
+				);
     }
 }
 

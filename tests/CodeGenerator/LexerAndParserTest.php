@@ -1,6 +1,8 @@
 <?php
 
-require_once '../library/CodeGenerator/instructions.lex.php';
+namespace TrustedForms\CodeGenerator;
+
+require_once 'autoload.php';
 
 class LexerAndParserTest extends \PHPUnit_Framework_TestCase
 {
@@ -138,4 +140,190 @@ class LexerAndParserTest extends \PHPUnit_Framework_TestCase
 			)
 		);
 	}
+    
+    protected $actual = array();
+    public function addDefinition($definition)
+    {
+        $this->actual[] = $definition;
+    }
+
+
+    /**
+	 * @dataProvider parserTestProvider
+	 * @param string $code
+	 * @param array $result 
+	 */
+    public function testParser($code,$result)
+    {
+        
+        $tempfile = fopen('php://temp/','rw');
+        fwrite($tempfile, $code);
+        fseek($tempfile, 0);
+        
+        $lexer = new VILexer($tempfile);
+        $parser = new VIParser();
+        
+        $this->actual = array();
+        $parser->generator =  $this;
+
+        while($token = $lexer->nextToken())
+        {
+            $parser->doParse($token->type, $token);
+        }
+        $parser->doParse(0);
+        
+        fclose($tempfile);
+        
+        $this->assertEquals($result, $this->actual);
+    }
+    
+    public function parserTestProvider()
+    {
+        return array(
+            array(
+                'id {
+                    test,
+                    test2
+                }',
+                array(
+                    new AbstractTree\Field('id','',AbstractTree\Rules::instance()
+                                                        ->addCheck(AbstractTree\Check::instance('test'))
+                                                        ->addCheck(AbstractTree\Check::instance('test2'))
+                                          )
+                )
+            ),
+            array(
+                'id {
+                    test
+                }
+                
+                "id 2" {
+                    test2
+                }',
+                array(
+                    new AbstractTree\Field('id','',AbstractTree\Rules::instance()->addCheck(AbstractTree\Check::instance('test'))),
+                    new AbstractTree\Field('id 2','',AbstractTree\Rules::instance()->addCheck(AbstractTree\Check::instance('test2')))
+                )
+            ),
+            array(
+                '"id 1"<form> {
+                    test = 42,
+                    test2 = name,
+                    test3 = "some text",
+                    test4 = <<some html>>,
+                    test5 = (42 , name , "some text" , <<some html>>)
+                }',
+                array(
+                    new AbstractTree\Field('id 1','form', AbstractTree\Rules::instance()
+                                                        ->addCheck(AbstractTree\Check::instance('test' , array('42')))
+                                                        ->addCheck(AbstractTree\Check::instance('test2', array('name')))
+                                                        ->addCheck(AbstractTree\Check::instance('test3', array('some text')))
+                                                        ->addCheck(AbstractTree\Check::instance('test4', array('some html')))
+                                                        ->addCheck(AbstractTree\Check::instance('test5', array('42','name','some text','some html')))
+                                            )
+                )
+            ),
+            array(
+                '<"form 1">id {
+                    test : @#error@+class-class2+class3 @#error2@-class-class2 @#error3@<<message here>>
+                }',
+                array(
+                    new AbstractTree\Field('id','form 1', AbstractTree\Rules::instance()->addCheck(AbstractTree\Check::instance('test')->addReporters(array(
+                        AbstractTree\Reporters\AddClass::instance('#error')->setClass('class'),
+                        AbstractTree\Reporters\RemoveClass::instance('#error')->setClass('class2'),
+                        AbstractTree\Reporters\AddClass::instance('#error')->setClass('class3'),
+                        AbstractTree\Reporters\RemoveClass::instance('#error2')->setClass('class'),
+                        AbstractTree\Reporters\RemoveClass::instance('#error2')->setClass('class2'),
+                        AbstractTree\Reporters\DisplayMessage::instance('#error3')->setText('message here')
+                    ))))
+                )
+            ),
+            array(
+                '"field 1"<"form 2"> {
+                    test = simple,
+                    test = {
+                        inline,
+                        withReporter: @#error@+class @#err@-class,
+                        withAll = (42 , second) : @#err@<<message>> @#err2@+class-class2
+                    }
+                }
+                <"form 2"> {
+                    simple = 1 : @#err@<<message>>
+                }',
+                array(
+                    new AbstractTree\Field('field 1','form 2',  AbstractTree\Rules::instance()
+                                                            ->addCheck(AbstractTree\Check::instance('test',array('simple')))
+                                                            ->addCheck(AbstractTree\Check::instance('test',array(
+                                                                            AbstractTree\Rules::instance()
+                                                                                    ->addCheck(AbstractTree\Check::instance('inline'))
+                                                                                    ->addCheck(AbstractTree\Check::instance('withReporter')->addReporters(array(
+                                                                                        AbstractTree\Reporters\AddClass::instance('#error')->setClass('class'),
+                                                                                        AbstractTree\Reporters\RemoveClass::instance('#err')->setClass('class')
+                                                                                    )))
+                                                                                    ->addCheck(AbstractTree\Check::instance('withAll',array('42','second'))->addReporters(array(
+                                                                                        AbstractTree\Reporters\DisplayMessage::instance('#err')->setText('message'),
+                                                                                        AbstractTree\Reporters\AddClass::instance('#err2')->setClass('class'),
+                                                                                        AbstractTree\Reporters\RemoveClass::instance('#err2')->setClass('class')
+                                                                                    )))
+                                                                    )))
+                    ),
+                    new AbstractTree\Field('','form 2', AbstractTree\Rules::instance()->addCheck(AbstractTree\Check::instance('simple',array('1'))->addReporters(array( AbstractTree\Reporters\DisplayMessage::instance('#err')->setText('message') ))))
+                )
+            ),
+            array(
+                '<form>id{
+                    test = (
+                        {
+                            test2 = {
+                                test3 = 42: @#err@<<message>>
+                            },
+                            test3
+                        },
+                        {
+                            test4 = {
+                                test5 = {
+                                    test6 = {
+                                        test7 = {}
+                                    }
+                                }
+                            }
+                        }
+                    )
+                }',
+                array(
+                    new AbstractTree\Field('id','form',
+                            AbstractTree\Rules::instance()->addCheck(
+                                AbstractTree\Check::instance('test',array(
+                                    AbstractTree\Rules::instance()->addCheck(
+                                        AbstractTree\Check::instance('test2',array(
+                                            AbstractTree\Rules::instance()->addCheck(
+                                                AbstractTree\Check::instance('test3',array('42'))->addReporters(array(AbstractTree\Reporters\DisplayMessage::instance('#err')->setText('message')))
+                                            )
+                                        ))
+                                    )->addCheck(
+                                        AbstractTree\Check::instance('test3')
+                                    ),
+                                    AbstractTree\Rules::instance()->addCheck(
+                                        AbstractTree\Check::instance('test4',array(
+                                            AbstractTree\Rules::instance()->addCheck(
+                                                AbstractTree\Check::instance('test5',array(
+                                                    AbstractTree\Rules::instance()->addCheck(
+                                                        AbstractTree\Check::instance('test6',array(
+                                                            AbstractTree\Rules::instance()->addCheck(
+                                                                AbstractTree\Check::instance('test7',array(
+                                                                    AbstractTree\Rules::instance()
+                                                                ))
+                                                            )
+                                                        ))
+                                                    )
+                                                ))
+                                            )
+                                        ))
+                                    )
+                                ))
+                            ))
+                )
+            )
+        );
+    }
 }

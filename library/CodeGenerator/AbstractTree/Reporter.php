@@ -9,7 +9,7 @@
 
 namespace TrustedForms\CodeGenerator\AbstractTree;
 
-class Reporter
+abstract class Reporter
 {
     protected $element;
     
@@ -18,9 +18,17 @@ class Reporter
         $this->element = $css;
     }
     
+    /**
+     * Create object
+     * 
+     * @param string $css
+     * @return self
+     */
     static public function instance($css)
     {
-        return new self($css);
+        return new static($css);
     }
+    
+    abstract function toJScode();
 }
 

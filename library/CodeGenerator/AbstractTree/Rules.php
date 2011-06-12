@@ -13,7 +13,7 @@ class Rules
 {
     protected $rules = array();
 
-    public function addCheck($r)
+    public function addCheck(Check $r)
     {
         $this->rules[] = $r;
         return $this;
@@ -21,6 +21,16 @@ class Rules
 
     static public function instance()
     {
-        return new self;
+        return new static;
+    }
+    
+    public function toJScode()
+    {
+        
+    }
+    
+    public function toPHPcode()
+    {
+        
     }
 }

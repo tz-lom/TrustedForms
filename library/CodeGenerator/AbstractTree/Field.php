@@ -11,12 +11,43 @@ namespace TrustedForms\CodeGenerator\AbstractTree;
 
 class Field
 {
-    protected $css;
+    protected $field;
+    protected $form;
+    /**
+     * @var Rules
+     */
     protected $rules;
     
-    public function __construct($css, $rules)
+    public function __construct($field,$form,Rules $rules)
     {
-        $this->css = $css;
+        $this->field = $field;
+        $this->form = $form;
         $this->rules = $rules;
+    }
+    
+    public function getField()
+    {
+        return $this->field;
+    }
+    
+    public function getForm()
+    {
+        return $this->form;
+    }
+    
+    public function getRules()
+    {
+        return $this->rules;
+    }
+
+
+    public function toJScode()
+    {
+        
+    }
+    
+    public function toPHPcode()
+    {
+        
     }
 }

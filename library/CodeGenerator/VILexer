@@ -7,10 +7,9 @@
  * @package TrustedForms\CodeGenerator
  */
 
-include 'jlex.php';
-include 'instructions.php';
+namespace TrustedForms\CodeGenerator;
 
-class ReadTokenException extends Exception {}
+class ReadTokenException extends \Exception {}
 
 %%
 
@@ -35,8 +34,8 @@ L	=	[a-zA-Z_]
 <YYINITIAL> "="				{ return $this->createToken(VIParser::TK_EQUALS); }
 <YYINITIAL> "("				{ return $this->createToken(VIParser::TK_LBRACKET); }
 <YYINITIAL> ")"				{ return $this->createToken(VIParser::TK_RBRACKET); }
-<YYINITIAL> "["				{ return $this->createToken(VIParser::TK_SQUARE_LBRACKET); }
-<YYINITIAL> "]"				{ return $this->createToken(VIParser::TK_SQUARE_RBRACKET); }
+<YYINITIAL> "<"				{ return $this->createToken(VIParser::TK_ANGLE_LBRACKET); }
+<YYINITIAL> ">"				{ return $this->createToken(VIParser::TK_ANGLE_RBRACKET); }
 <YYINITIAL> "{"				{ return $this->createToken(VIParser::TK_CURLY_LBRACKET); }
 <YYINITIAL> "}"				{ return $this->createToken(VIParser::TK_CURLY_RBRACKET); }
 <YYINITIAL> "-"				{ return $this->createToken(VIParser::TK_MINUS); }

@@ -13,7 +13,7 @@ class Check
 {
     protected $name;
     protected $params;
-    protected $reporters;
+    protected $reporters = array();
     
     public function __construct($name,$params=array())
     {
@@ -21,10 +21,46 @@ class Check
         $this->name = $name;
     }
     
+    static public function instance($name,$params = array())
+    {
+        return new static($name,$params);
+    }
+
+
     public function addReporters($reporters)
     {
         $this->reporters = $reporters;
         return $this;
+    }
+    
+    public function toJScode()
+    {
+        $reporters = array();
+        foreach($this->reporters as $reporter)
+        {
+            $reporters[] = $reporter->toJScode();
+        }
+        
+        return array(
+            'test'      => $this->name,
+            'arguments' => $this->params,
+            'error'     => $reporters
+        );
+    }
+    
+    public function getName()
+    {
+        return $this->name;
+    }
+    
+    public function getParams()
+    {
+        return $this->params;
+    }
+    
+    public function getReporters()
+    {
+        return $this->reporters;
     }
 }
 
