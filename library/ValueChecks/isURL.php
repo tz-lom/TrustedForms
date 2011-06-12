@@ -11,7 +11,7 @@ class isURL extends \TrustedForms\ValidationChainItem
      */
 
    const jsValidator = "return { value:value, 
-passed: value.match(/^(?:http|ftp|https):\/\/(?:(?:(?:[a-z]+\.)?[a-z0-9-=-]+\.[a-z]{2,5})|(?:\d{3}\.\d{3}\.\d{3}\.\d{3}))(?::[0-9]+)?(?:[/a-z0-9?&%=]+)?$/i) }";
+passed: value.match(/^(?:http|ftp|https):\/\/((([a-z]+\.)?[a-z0-9-=-]+\.[a-z]{2,5})|(\d{3}\.\d{3}\.\d{3}\.\d{3}))(:[0-9]+)?([/a-z0-9?&%=-]+)?$/i) }";
 
     protected function doProcess(&$value)
 	{
