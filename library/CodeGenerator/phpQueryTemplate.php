@@ -170,7 +170,12 @@ class phpQueryTemplate implements TemplateManipulator
     
     public function getAllForms()
     {
-        return $this->pq->find('form')->elements;
+        $ret = array();
+        foreach($this->pq->find('form') as $form)
+        {
+            $ret[] = pq($form)->attr('name');
+        }
+        return $ret;
     }
     
     public function compareElements($a,$b)

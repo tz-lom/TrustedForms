@@ -48,6 +48,51 @@ class Check
         );
     }
     
+    public function toPHPcode(\TrustedForms\CodeGenerator\TemplateManipulator &$tpl, $inheritedReporters)
+    {
+        $code = '->addToChain(';
+        
+        $params = $this->varExport($this->params);
+		$code .= "new \\TrustedForms\\ValueChecks\\{$this->name}($params)";
+        
+        $reporters = $this->reporters?$this->reporters:$inheritedReporters;
+        return $code.','.$this->reportersToPHPcode($reporters,$tpl);
+    }
+    
+    protected function reportersToPHPcode($reporters,\TrustedForms\CodeGenerator\TemplateManipulator &$tpl)
+    {
+        $code = "\\TrustedForms\\FormErrorReporter::instance()";
+        $json = array();
+        foreach($reporters as $reporter)
+        {
+            $code.= $reporter->toPHPcode($tpl);
+            $json[] = $reporter->toJScode();
+        }
+        $code.='->setJSONdescription('.var_export(json_encode($json),true).')';
+        return $code;
+    }
+    
+    public function varExport($var)
+    {
+        switch(gettype($var))
+        {
+            case 'string':
+                return "'$var'";
+            case 'boolean':
+                return $var?'true':'false';
+            case 'array':
+                $t = $this;
+                array_walk($var,
+                        function(&$var) use($t){
+                            $var = $t->varExport($var);
+                        }
+                );
+                return 'array('.implode(',', $var).')';
+            default:
+                return $var->toPHPcode();
+        }
+    }
+
     public function getName()
     {
         return $this->name;

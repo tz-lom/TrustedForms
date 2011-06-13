@@ -29,6 +29,8 @@ abstract class Reporter
         return new static($css);
     }
     
-    abstract function toJScode();
+    abstract public function toJScode();
+    
+    abstract public function toPHPcode(\TrustedForms\CodeGenerator\TemplateManipulator &$tpl);
 }
 

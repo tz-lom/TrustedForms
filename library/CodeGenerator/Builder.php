@@ -9,13 +9,11 @@
 
 namespace TrustedForms\CodeGenerator;
 
-require_once 'instructions.lex.php';
-
 class Builder
 {
     protected $template;
     protected $generator;
-
+    protected $phpCache = NULL;
     
     public function errorHandler()
     {
@@ -43,8 +41,8 @@ class Builder
             fseek($tempfile, 0);
             try
             {
-                $lexer = new \VILexer($tempfile);
-                $parser = new \VIParser();
+                $lexer = new VILexer($tempfile);
+                $parser = new VIParser();
                 $parser->generator = $this->generator;
 
                 while($token = $lexer->nextToken())
@@ -55,11 +53,11 @@ class Builder
 
                 $this->template->removeInstruction();
             }
-            catch(\ParceTokenException $e)
+            catch(ParceTokenException $e)
             {
                 echo $e->getMessage(),':',$e->getLine(),"\n";
             }
-            catch(\ReadTokenException $e)
+            catch(ReadTokenException $e)
             {
                 echo $e->getMessage(),"\n";
             }
@@ -70,7 +68,8 @@ class Builder
     
     public function getResultTemplate()
     {
-		$this->template->appendJSvalidator($this->generator->generateJSvalidator());
+        $this->getResultValidator();
+		$this->template->appendJSvalidator($this->generator->generateJSvalidators());
         return $this->template->getHTML();
     }
     
@@ -81,11 +80,15 @@ class Builder
     
     public function getJSvalidator()
     {
-        return $this->generator->generateJSvalidator();
+        return $this->generator->generateJSvalidators();
     }
     
     public function getResultValidator()
     {
-        return $this->generator->generateFile();
+        if($this->phpCache===NULL)
+        {
+            $this->phpCache = $this->generator->generatePHPvalidators();
+        }
+        return $this->phpCache;
     }
 }

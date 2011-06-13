@@ -27,5 +27,12 @@ class RemoveClass extends \TrustedForms\CodeGenerator\AbstractTree\Reporter
 						'argument'  => $this->class
 					);
     }
+    
+    public function toPHPcode(\TrustedForms\CodeGenerator\TemplateManipulator &$tpl)
+    {
+        $code = '->addFlag(';
+        $code.= var_export($tpl->removeClassFromElement($this->element, $this->class),true);
+        return $code.",'')";
+    }
 }
 

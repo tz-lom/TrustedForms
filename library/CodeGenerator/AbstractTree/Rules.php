@@ -11,11 +11,11 @@ namespace TrustedForms\CodeGenerator\AbstractTree;
 
 class Rules
 {
-    protected $rules = array();
+    protected $checks = array();
 
-    public function addCheck(Check $r)
+    public function addCheck(Check $check)
     {
-        $this->rules[] = $r;
+        $this->checks[] = $check;
         return $this;
     }
 
@@ -24,13 +24,25 @@ class Rules
         return new static;
     }
     
+    public function getChecks()
+    {
+        return $this->checks;
+    }
+    
     public function toJScode()
     {
         
     }
     
-    public function toPHPcode()
+    public function toPHPcode(\TrustedForms\CodeGenerator\TemplateManipulator &$tpl)
     {
+        $code = '\TrustedForms\VariableValidator::instance()';
         
+        foreach($this->checks as $check)
+        {
+            $code.=$check->toPHPcode($tpl,'@todo: change me');
+        }
+        
+        return $code;
     }
 }

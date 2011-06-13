@@ -33,15 +33,16 @@ class Generator
      */
     protected $js = array();
     
+    /**
+     *
+     * @var array[AbstractTree\Form]
+     */
     protected $forms = array();
-	
-    protected $specialRules =   array(
-                                    '||' => 'specOrRule',
+/*	
+    protected $inputCommands =  array(
                                     'defaultErrorReport' => 'defaultErrorReport',
                                     'disableJSvalidation' => 'disableJSvalidation'
-                                );
-    
-    protected $addJSvalidation = true;
+                                );*/
 
 	public function __construct(TemplateManipulator $tpl,CodeWriter $writer)
 	{
@@ -49,19 +50,25 @@ class Generator
 		$this->writer = $writer;
 	}
     
+    /**
+     * Retrieve some basic info form template
+     */
     public function prepare()
     {
         $forms = $this->tpl->getAllForms();
+        // check if only one unnamed form (or form with empty name)
+        if(count($forms)!=count(array_unique($forms))) throw new \Exception(); // @todo: customize it
+        
         foreach($forms as $form)
         {
-            $this->forms[] = array('element'=>$form,'name'=>NULL,'outJScode'=>true,'rpcServer'=>'/jsonrpc/validate.php');
+            $this->forms[$form] = new AbstractTree\Form($form);
         }
-        if(count($this->forms)==1)
+        /*if(count($this->forms)==1)
         {
             $this->forms[0]['name']='$form';
-        }
+        }*/
     }
-    
+    /*
     protected function getFormId($el)
     {
         foreach($this->forms as $i=>$form)
@@ -84,12 +91,16 @@ class Generator
     {
         $form = $this->forms[$this->getFormId($this->tpl->getFormForElement($element))];
         return $form['rpcServer'];
-    }
+    }*/
 
-
-    public function addInputCheck($definition)
+    /**
+     * Main entrance from VIParser
+     * 
+     * @param AbstractTree\Field $definition 
+     */
+    public function addDefinition(AbstractTree\Field $definition)
 	{
-        if($this->tpl->isForm($definition['element']))
+        if($definition->getField()=='')
         {
             $this->addFormDescription($definition);
         }
@@ -99,35 +110,46 @@ class Generator
         }
 	}
     
-    protected function addFormDescription($definition)
+    /**
+     *
+     * @param AbstractTree\Field $definition 
+     */
+    protected function addFormDescription(AbstractTree\Field $definition)
     {
-        $form = &$this->forms[$this->getFormId($this->tpl->getElement($definition['element']))];
+        $form = &$this->forms[$definition->getForm()];
         //parse params for this form
-        foreach($definition['rules'] as $rule)
+        foreach($definition->getRules()->getChecks() as $check)
         {
-            switch($rule['rule']['name'])
+            switch($check->getName())
             {
-                case 'name':
-                    $form['name'] = $rule['rule']['params'][0];
+                case 'var':
+                    $params = $check->getParams();
+                    $form->setVar($params[0]);
                     break;
                 case 'enableJS':
-                    $form['outJScode'] = (bool) $rule['rule']['params'][0];
+                    $params = $check->getParams();
+                    $form->enableJS((bool) $params[0]);
                     break;
                 case 'rpcServer':
-                    $form['rpcServer'] = $rule['rule']['params'][0];
+                    $params = $check->getParams();
+                    $form->setRpcServer($params[0]);
                     break;
                 default :
                     // show error message
-                    echo 'Invalid form parameter:',$rule['rule']['name'],"\n";
+                    throw new \Exception(); // @todo: Invalid form parameter:',$rule['rule']['name'],"\n";
             }
         }
     }
     
-    protected function addFieldDescription($definition)
+    /**
+     *
+     * @param AbstractTree\Field $definition 
+     */
+    protected function addFieldDescription(AbstractTree\Field$definition)
     {
-        $this->addJSvalidation = true; // keep this flag up , it can be lowered by validation rule
+        $addJSvalidation = true; // keep this flag up , it can be lowered by validation rule
         
-        $name = $this->tpl->getNameOfElement($definition['element']);
+        /*$name = $this->tpl->getNameOfElement($definition['element']);
         $form = $this->forms[$this->getFormId($this->tpl->getFormForElement($definition['element']))];
         $formName = $form['name'];
         $this->tpl->setFormContainer($formName);
@@ -135,19 +157,39 @@ class Generator
         $this->tpl->addValueReplacement($name);
         $input = $this->writer->newInput($name,$formName,$definition['element']);
 
+         
         foreach($definition['rules'] as $rule)
         {
             $input->addCommand($this->parceRule($rule));
         }
-        $this->inputs[] = $input;
+        $this->inputs[] = $input;*/
         
-        if($this->addJSvalidation && $form['outJScode'])
+        $rules = new AbstractTree\Rules;
+        foreach($definition->getRules()->getChecks() as $check)
+        {
+            switch($check->getName())
+            {
+                case 'disableJSvalidation':
+                    $addJSvalidation = false;
+                    break;
+                default :
+                    $rules->addCheck($check);
+            }
+        }
+                                    
+        $def = new AbstractTree\Field($definition->getField(), $definition->getForm(), $rules);
+        
+        $def->setJSvalidation($addJSvalidation);
+        
+        $this->forms[$definition->getForm()]->addField($def);
+        
+        /*if($addJSvalidation && $form['outJScode'])
         {
             $this->js[] = $input; // add if not switched off
-        }
+        }*/
     }
 
-
+    /*
     protected function parceRule($rule)
 	{
 		$reporter = $this->parceReporter($rule['reporter']);
@@ -194,32 +236,35 @@ class Generator
             $rep->addFlag($flag,$value)->addSourceNotify($notify);
 		}
         return $rep;
-	}
+	}*/
 
-    protected function specOrRule($params,$reporter)
-    {
-        foreach($params as &$rule)
-        {
-            $rule = $this->parceRule($rule);
-        }
-        return $this->writer->newRule('paramOr',$params);
-    }
-
-    public function generateFile()
+    /**
+     *
+     * @return string
+     */
+    public function generatePHPvalidators()
     {
         $code = '';
-        foreach($this->forms as $form)
+        /*foreach($this->forms as $form)
         {
-            $code.=$this->writer->formDefinition($form['name']);
+            $code.= "{$form['var']} = new \\TrustedForms\\FormValidator();\n";
         }
         foreach($this->inputs as $input)
         {
-            $code.=(string)$input;
+            $code.=$input->toPHPcode();
+        }*/
+        foreach($this->forms as $form)
+        {
+            $code.= $form->toPHPcode(&$this->tpl);
         }
         return $code;
     }
 	
-	public function generateJSvalidator()
+    /**
+     *
+     * @return string
+     */
+	public function generateJSvalidators()
 	{
 		$jscode = '';
         $tests = array();
@@ -228,17 +273,26 @@ class Generator
             $tests = array_merge($tests,$js->getAllTestNames());
             $jscode.=$js->toJScode($this);
         }        
-        return $this->writer->includeJSvalidators(array_unique($tests),$jscode);
+        
+        $tests = array_unique($tests);
+        
+        $ret = '';
+        if(count($tests)>0)
+        {
+            $ret = "TrustedForms";
+            foreach($tests as $test)
+            {
+                $clsName = '\\TrustedForms\\ValueChecks\\'.$test;
+                $ret.='.register({name:'.json_encode($test).',validator:function(value,config){'.$clsName::jsValidator.'}})';
+            }
+            $ret.=";\n";
+        }
+        $ret.=$jscode;
+        return $ret;
 	}
 
     public function defaultErrorReport($params,$reporter)
     {
         return $reporter;
-    }
-    
-    protected function disableJSvalidation()
-    {
-        $this->addJSvalidation = false;
-        return NULL;
     }
 }

@@ -18,6 +18,9 @@ class Field
      */
     protected $rules;
     
+    protected $jsEnabled = true;
+
+
     public function __construct($field,$form,Rules $rules)
     {
         $this->field = $field;
@@ -46,8 +49,16 @@ class Field
         
     }
     
-    public function toPHPcode()
+    public function toPHPcode(Form &$form,\TrustedForms\CodeGenerator\TemplateManipulator &$tpl)
     {
-        
+        $tpl->addValueReplacement($this->field); // @todo: and form name too
+        $code = "{$form->getVar()}['{$this->field}'] = ";
+        $code.= $this->rules->toPHPcode($tpl);
+        return $code.";\n";
+    }
+    
+    public function setJSvalidation($bool)
+    {
+        $this->jsEnabled = $bool;
     }
 }

@@ -27,5 +27,14 @@ class DisplayMessage extends \TrustedForms\CodeGenerator\AbstractTree\Reporter
 					'argument'  => $this->text
 				);
     }
+    
+    public function toPHPcode(\TrustedForms\CodeGenerator\TemplateManipulator &$tpl)
+    {
+        $code = '->addFlag(';
+        $code.= var_export($tpl->addMessageToElement($this->element),true);
+        $code.= ',';
+        $code.= var_export($this->text,true);
+        return $code.')';
+    }
 }
 
