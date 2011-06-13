@@ -46,15 +46,30 @@ class Field
 
     public function toJScode()
     {
-        $obj->code = '';
         $obj->validators = array();
-        
+        $desc = array(
+                'element'   => "[name={$this->field}]",
+                'tests'     => array()
+            );
         foreach($this->rules->getChecks() as $check)
         {
             $descr = $check->toJScode();
+            if($descr===NULL)
+            {
+                $obj->validators = array();
+                $desc['tests'] = array(
+                    array(
+                        'test'      => 'rpcTest',
+                        'arguments' => array('@todo: $rpc',$this->name), //@todo: correct
+                        'error'     => array()
+                    )
+                );
+                break;
+            }
             $obj->validators = array_merge($obj->validators,$descr->validators);
-            $obj->code.= 'TrustedForms.check('.json_encode($descr->code).");\n";
+            $desc['tests'][] = $descr->code;
         }
+        $obj->code= 'TrustedForms.check('.json_encode($desc).");\n";
         return $obj;
     }
     

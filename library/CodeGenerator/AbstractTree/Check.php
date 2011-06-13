@@ -42,11 +42,7 @@ class Check
         
         if($check::jsValidator===NULL)
         {
-            $obj->code = array(
-                    'test'      => 'rpcTest',
-                    'arguments' => array('@todo: $rpc',$this->name), //@todo: correct
-                    'error'     => array()
-            );
+            return NULL;
         }
         else
         {

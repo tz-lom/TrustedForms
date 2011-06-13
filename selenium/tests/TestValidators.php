@@ -2,7 +2,7 @@
 
 require_once('../../tests/autoload.php');
 
-define('SKIP_SELENIUM_TESTS',true);
+//define('SKIP_SELENIUM_TESTS',true);
 
 
 class SeleniumUndoControll extends PHPUnit_Extensions_SeleniumTestCase_Driver
@@ -65,7 +65,7 @@ class TestValidators extends PHPUnit_Framework_TestCase
    
         <form> { var = "\$form" }
    
-   <form>in {
+   <form>value {
 //        defaultErrorReport: @#in@+error ,
         $description: @#in@+error
    }
@@ -127,11 +127,11 @@ HEREDOC;
    
     <form>{ var= "\$form" }
     
-   <form>in {
+   <form>value {
     isEqualToField=value2: @#in@+error 
    }
    
-   <form>in2 {
+   <form>value2 {
     required: @#in@+error
    }
    -->
