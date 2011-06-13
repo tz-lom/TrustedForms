@@ -30,9 +30,10 @@ interface TemplateManipulator
     /**
      * Adds code that replaces value of element in form with value from form validator
      *
-     * @var string $name
+     * @var string $field
+     * @var string $form
      */
-    public function addValueReplacement($name);
+    public function addValueReplacement($field,$form);
 
 	/**
 	 * Registers output of unique identifier as alternative text to element specified by selector

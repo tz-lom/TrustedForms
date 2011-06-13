@@ -76,7 +76,7 @@ class Field
     
     public function toPHPcode(Form &$form,\TrustedForms\CodeGenerator\TemplateManipulator &$tpl)
     {
-        $tpl->addValueReplacement($this->field); // @todo: and form name too
+        $tpl->addValueReplacement($this->field,$this->form);
         $code = "{$form->getVar()}['{$this->field}'] = ";
         $code.= $this->rules->toPHPcode($tpl);
         return $code.";\n";

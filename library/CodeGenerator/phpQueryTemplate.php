@@ -83,23 +83,21 @@ class phpQueryTemplate implements TemplateManipulator
         $this->formContainer = $fc;
     }
 
-    public function addValueReplacement($name)
+    public function addValueReplacement($field,$form)
     {
-        /**
-         * @todo lookup for escape codes
-         */
-        $el = $this->pq->find("[name=$name]");
+        $selector = $form?('form[name="'.$form.'"] [name="'.$field.'"]'):('[name="'.$field.'"]');
+        $el = $this->pq->find($selector);
         
-        $name = str_replace("'", "\\'", $name);
+        $name = var_export($field,true);
         if($el->is('input'))
         {
             $val = $el->attr('value');
-            $el->attrPHP('value',"if({$this->formContainer}['{$name}']->isChecked()) { if({$this->formContainer}['{$name}']->isCorrect()) { echo {$this->formContainer}['{$name}']->value(); } else { echo htmlentities({$this->formContainer}['{$name}']->inputValue()); } } else { ?>{$val}<?php }");
+            $el->attrPHP('value',"if({$this->formContainer}[{$name}]->isChecked()) { if({$this->formContainer}[{$name}]->isCorrect()) { echo {$this->formContainer}[{$name}]->value(); } else { echo htmlentities({$this->formContainer}[{$name}]->inputValue()); } } else { ?>{$val}<?php }");
         }
         if($el->is('textarea'))
         {
             $val = $el->html();
-            $el->php("if({$this->formContainer}['{$name}']->isChecked()) { echo {$this->formContainer}['{$name}']->value(); } else { ?>{$val}<?php }");
+            $el->php("if({$this->formContainer}[{$name}]->isChecked()) { echo {$this->formContainer}[{$name}]->value(); } else { ?>{$val}<?php }");
         }
         if($el->is('select'))
         {
@@ -112,10 +110,11 @@ class phpQueryTemplate implements TemplateManipulator
 	public function addMessageToElement($css)
     {
         $flag = $this->getFlagName('msg', "message@$css",$fromCache);
+        $flag = var_export($flag,true);
         if(!$fromCache)
         {
             $el = $this->pq->find($css);
-            $el->appendPHP("echo {$this->formContainer}->getFlag('{$flag}');");
+            $el->appendPHP("echo {$this->formContainer}->getFlag({$flag});");
         }
         return $flag;
     }
@@ -125,7 +124,9 @@ class phpQueryTemplate implements TemplateManipulator
         $flag = $this->getFlagName('clsAdd', "+$class@$css",$fromCache);
         if(!$fromCache)
         {
-            $this->pq->find($css)->addClassPHP("if({$this->formContainer}->isFlag('{$flag}')) echo '{$class}';");
+            $flag = var_export($flag,true);
+            $class = var_export($class,true);
+            $this->pq->find($css)->addClassPHP("if({$this->formContainer}->isFlag({$flag})) echo {$class};");
         }
         return $flag;
     }
@@ -141,7 +142,9 @@ class phpQueryTemplate implements TemplateManipulator
                 if($pq->hasClass($class))
                 {
                     $pq->removeClass($class);
-                    $pq->addClassPHP("if(! {$this->formContainer}->isFlag('{$flag}')) echo '{$class}';");
+                    $flag = var_export($flag,true);
+                    $class = var_export($class,true);
+                    $pq->addClassPHP("if(! {$this->formContainer}->isFlag({$flag})) echo {$class};");
                 }
             }
         }

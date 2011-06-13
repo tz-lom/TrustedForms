@@ -67,6 +67,8 @@ class Generator
      */
     public function addDefinition(AbstractTree\Field $definition)
 	{
+        if((strpos($definition->getForm(),'"')!==false)||(strpos($definition->getField(),'"')!==false))
+            throw new Exception(); // @todo: customize exception
         if($definition->getField()=='')
         {
             $this->addFormDescription($definition);
