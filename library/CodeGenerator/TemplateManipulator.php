@@ -26,13 +26,6 @@ interface TemplateManipulator
      * @return string
      */
     public function getHTML();
-	/**
-	 * Return ``name`` attribute of element specified by selector or NULL if element or attribute not exists
-	 * 
-	 * @var string $css
-	 * @return string Name of element
-	 */
-	public function getNameOfElement($css);
 
     /**
      * Adds code that replaces value of element in form with value from form validator
@@ -78,41 +71,18 @@ interface TemplateManipulator
     public function getAllForms();
     
     /**
-     * Compares two element descriptors, returns true if they are equal
+     * Set var name that identifies to what form (in terms of php validator)
+     * changes are performed
      * 
-     * @var element descriptor $a
-     * @var element descriptor $b
-     * @return boolean
+     * @param string $name
      */
-    public function compareElements($a,$b);
-    
-    /**
-     * Returns element descriptor that belongs to <form> element
-     * that owns element described by $css selector
-     * 
-     * @var string $css
-     * @return element descriptor
-     */
-    public function getFormForElement($css);
-    
-    /**
-     * Returns wether element is form or not
-     * 
-     * @var string $css
-     * @return boolean
-     */
-    public function isForm($css);
-    
-    /**
-     * Returns element descriptor
-     * 
-     * @var string $css
-     * @return element descriptor
-     */
-    public function getElement($css);
-    
     public function setFormContainer($name);
 	
+    /**
+     * Inserts JS code in form
+     * 
+     * @param string $validator
+     */
 	public function appendJSvalidator($validator);
 
 }

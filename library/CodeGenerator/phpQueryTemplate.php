@@ -83,12 +83,6 @@ class phpQueryTemplate implements TemplateManipulator
         $this->formContainer = $fc;
     }
 
-
-    public function getNameOfElement($css)
-    {
-        return $this->pq->find($css)->attr('name');
-    }
-
     public function addValueReplacement($name)
     {
         /**
@@ -176,28 +170,6 @@ class phpQueryTemplate implements TemplateManipulator
             $ret[] = pq($form)->attr('name');
         }
         return $ret;
-    }
-    
-    public function compareElements($a,$b)
-    {
-        return $a->isSameNode($b);
-    }
-    
-    public function getFormForElement($css)
-    {
-        $el = $this->pq->find($css);
-        $form = $el->parent('form');
-        return $form->elements[0];
-    }
-    
-    public function isForm($css)
-    {
-        return $this->pq->find($css)->is('form');
-    }
-    
-    public function getElement($css)
-    {
-        return $this->pq->find($css)->elements[0];
     }
 	
 	public function appendJSvalidator($validator)
