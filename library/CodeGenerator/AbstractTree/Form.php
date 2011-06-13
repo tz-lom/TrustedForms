@@ -55,7 +55,15 @@ class Form
     
     public function toJScode()
     {
-        
+        $obj->code = '';
+        $obj->validators = array();
+        foreach($this->fields as $field)
+        {
+            $descr = $field->toJScode();
+            $obj->code.= $descr->code;
+            $obj->validators = array_merge($obj->validators,$descr->validators);
+        }
+        return $obj;
     }
 }
 

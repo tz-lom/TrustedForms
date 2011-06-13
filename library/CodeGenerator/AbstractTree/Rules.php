@@ -31,7 +31,13 @@ class Rules
     
     public function toJScode()
     {
-        
+        $obj->code = '';
+        $obj->validators = array();
+        foreach($this->checks as $check)
+        {
+            $descr = $check->toJScode();
+//            $obj->code
+        }
     }
     
     public function toPHPcode(\TrustedForms\CodeGenerator\TemplateManipulator &$tpl)
@@ -40,7 +46,7 @@ class Rules
         
         foreach($this->checks as $check)
         {
-            $code.=$check->toPHPcode($tpl,'@todo: change me');
+            $code.=$check->toPHPcode($tpl,'@todo: change me'); //@todo: correct
         }
         
         return $code;

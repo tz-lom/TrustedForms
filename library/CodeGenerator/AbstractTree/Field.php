@@ -46,7 +46,16 @@ class Field
 
     public function toJScode()
     {
+        $obj->code = '';
+        $obj->validators = array();
         
+        foreach($this->rules->getChecks() as $check)
+        {
+            $descr = $check->toJScode();
+            $obj->validators = array_merge($obj->validators,$descr->validators);
+            $obj->code.= 'TrustedForms.check('.json_encode($descr->code).");\n";
+        }
+        return $obj;
     }
     
     public function toPHPcode(Form &$form,\TrustedForms\CodeGenerator\TemplateManipulator &$tpl)

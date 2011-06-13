@@ -266,7 +266,7 @@ class Generator
      */
 	public function generateJSvalidators()
 	{
-		$jscode = '';
+		/*$jscode = '';
         $tests = array();
         foreach($this->js as $js)
         {
@@ -288,7 +288,24 @@ class Generator
             $ret.=";\n";
         }
         $ret.=$jscode;
-        return $ret;
+        return $ret;*/
+
+        $validators = array();
+        $code = '';
+        foreach($this->forms as $form)
+        {
+            $descr = $form->toJScode();
+            $code.= $descr->code;
+            $validators = array_merge($validators,$descr->validators);
+        }
+        if(count($validators)>0)
+        {
+            return 'TrustedForms'.implode('', $validators).";\n".$code;
+        }
+        else
+        {
+            return $code;
+        }
 	}
 
     public function defaultErrorReport($params,$reporter)

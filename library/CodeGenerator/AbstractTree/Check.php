@@ -35,17 +35,35 @@ class Check
     
     public function toJScode()
     {
-        $reporters = array();
-        foreach($this->reporters as $reporter)
-        {
-            $reporters[] = $reporter->toJScode();
-        }
+        $check = '\\TrustedForms\\ValueChecks\\'.$this->name;
         
-        return array(
-            'test'      => $this->name,
-            'arguments' => $this->params,
-            'error'     => $reporters
-        );
+        $obj->validators = array();
+        $obj->code = '';
+        
+        if($check::jsValidator===NULL)
+        {
+            $obj->code = array(
+                    'test'      => 'rpcTest',
+                    'arguments' => array('@todo: $rpc',$this->name), //@todo: correct
+                    'error'     => array()
+            );
+        }
+        else
+        {
+            $obj->validators[$this->name] = '.register({name:'.json_encode($this->name).',validator:function(value,config){'.$check::jsValidator.'}})';
+            $reporters = array();
+            foreach($this->reporters as $reporter)
+            {
+                $reporters[] = $reporter->toJScode();
+            }
+
+            $obj->code = array(
+                'test'      => $this->name,
+                'arguments' => $this->params,
+                'error'     => $reporters
+            );
+        }
+        return $obj;
     }
     
     public function toPHPcode(\TrustedForms\CodeGenerator\TemplateManipulator &$tpl, $inheritedReporters)
@@ -56,7 +74,7 @@ class Check
 		$code .= "new \\TrustedForms\\ValueChecks\\{$this->name}($params)";
         
         $reporters = $this->reporters?$this->reporters:$inheritedReporters;
-        return $code.','.$this->reportersToPHPcode($reporters,$tpl);
+        return $code.','.$this->reportersToPHPcode($reporters,$tpl).')';
     }
     
     protected function reportersToPHPcode($reporters,\TrustedForms\CodeGenerator\TemplateManipulator &$tpl)
