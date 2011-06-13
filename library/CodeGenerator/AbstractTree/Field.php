@@ -48,8 +48,9 @@ class Field
     {
         $obj->validators = array();
         $desc = array(
-                'element'   => "[name={$this->field}]",
-                'tests'     => array()
+                'field' => $this->field,
+                'form'  => $this->form,
+                'tests' => array()
             );
         foreach($this->rules->getChecks() as $check)
         {
