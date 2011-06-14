@@ -47,31 +47,14 @@ class Field
     public function toJScode(ParceEnvironment $env)
     {
         $env->field = &$this;
-        $obj->validators = array();
-        $desc = array(
-                'field' => $this->field,
-                'form'  => $this->form,
-                'tests' => array()
-            );
-        foreach($this->rules->getChecks() as $check)
-        {
-            $descr = $check->toJScode($env);
-            if($descr===NULL)
-            {
-                $obj->validators = array();
-                $desc['tests'] = array(
-                    array(
-                        'test'      => 'rpcTest',
-                        'arguments' => array('@todo: $rpc',$this->name), //@todo: correct
-                        'error'     => array()
-                    )
-                );
-                break;
-            }
-            $obj->validators = array_merge($obj->validators,$descr->validators);
-            $desc['tests'][] = $descr->code;
-        }
-        $obj->code= 'TrustedForms.check('.json_encode($desc).");\n";
+        $obj = $this->rules->toJScode($env);
+        $obj->code= 'TrustedForms.check('.
+                    json_encode(array(
+                        'field' => $this->field,
+                        'form'  => $this->form,
+                        'tests' => $obj->code
+                    )).
+                    ");\n";
         return $obj;
     }
     

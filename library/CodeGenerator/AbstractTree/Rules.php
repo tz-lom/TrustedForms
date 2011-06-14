@@ -37,8 +37,21 @@ class Rules
         {
             // @todo : enable inheritance of default reporter
             $descr = $check->toJScode($env);
+            if($descr===NULL)
+            {
+                $obj->validators = array();
+                $obj->code = array(
+                    array(
+                        'test'      => 'rpcTest',
+                        'arguments' => array('@todo: $rpc',$this->name), //@todo: correct
+                        'error'     => array()
+                    )
+                );
+                break;
+            }
+            
             $obj->validators = array_merge($obj->validators,$descr->validators);
-            $obj->code[] = $desc->code;
+            $obj->code[] = $descr->code;
         }
         return $obj;
     }
