@@ -18,6 +18,16 @@ class Rules
         $this->checks[] = $check;
         return $this;
     }
+    
+    public function addPrefix(Rules $rules)
+    {
+        $this->checks = array_merge($rules->checks,$this->checks);
+    }
+    
+    public function addPostfix(Rules $rules)
+    {
+        $this->checks = array_merge($this->checks,$rules->checks);
+    }
 
     static public function instance()
     {

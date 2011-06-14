@@ -104,9 +104,24 @@ class Generator
                     $params = $check->getParams();
                     $form->setRpcServer($params[0]);
                     break;
+                case 'defaultErrorReport':
+                    $form->setDefaultErrorReporter($check->getReporters());
+                    break;
+                case 'prefixRules':
+                    $params = $check->getParams();
+                    if(! $params[0] instanceof AbstractTree\Rules)
+                        throw new TemplateException('Prefix must be set of rules');
+                    $form->setPrefixRules($params[0]);
+                    break;
+                case 'postfixRules':
+                    $params = $check->getParams();
+                    if(! $params[0] instanceof AbstractTree\Rules)
+                        throw new TemplateException('Postfix must be set of rules');
+                    $form->setPostfixRules($params[0]);
+                    break;
                 default :
                     // show error message
-                    throw new TemplateException('Invalid parameter of form: '.$definition->getName());
+                    throw new TemplateException('Invalid parameter of form: '.$check->getName());
             }
         }
     }

@@ -16,6 +16,9 @@ class Form
     protected $enableJSvalidation = true;
     protected $rpcServer = '/jsonrpc/validate.php';
     protected $fields = array();
+    protected $defaultErrorReporter = array();
+    protected $prefixRules = NULL;
+    protected $postfixRules = NULL;
 
     public function __construct($name)
     {
@@ -24,6 +27,8 @@ class Form
     
     public function addField(Field $field)
     {
+        if($this->prefixRules)  $field->addPrefixRules($this->prefixRules);
+        if($this->postfixRules) $field->addPostfixRules($this->postfixRules);
         $this->fields[] = $field;
     }
     
@@ -52,11 +57,19 @@ class Form
         $this->enableJSvalidation = $bool;
     }
     
+    public function setDefaultErrorReporter($reporter)
+    {
+        $this->defaultErrorReporter = $reporter;
+    }
+    
     public function toPHPcode(ParceEnvironment $env)
     {
         $env->form = &$this;
+        $env->defaultReporter = $this->defaultErrorReporter;
         $code = "{$this->var} = new \\TrustedForms\\FormValidator();\n";
+        
         $env->tpl->setFormContainer($this->var);
+        
         foreach($this->fields as $field)
         {
             $code .= $field->toPHPcode($env);
@@ -72,6 +85,8 @@ class Form
         if(!$this->enableJSvalidation) return $obj;
         
         $env->form = &$this;
+        $env->defaultReporter = $this->defaultErrorReporter;
+        
         foreach($this->fields as $field)
         {
             $descr = $field->toJScode($env);
@@ -79,6 +94,16 @@ class Form
             $obj->validators = array_merge($obj->validators,$descr->validators);
         }
         return $obj;
+    }
+    
+    public function setPrefixRules(Rules $rules)
+    {
+        $this->prefixRules = $rules;
+    }
+    
+    public function setPostfixRules(Rules $rules)
+    {
+        $this->postfixRules = $rules;
     }
 }
 

@@ -7,7 +7,7 @@
  * @package TrustedForms\CodeGenerator
  */
 
-namespace TrustedForms\CodeGenerator\AbstractTree;
+namespace TrustedForms\CodeGenerator;
 
 class TemplateException extends \ErrorException
 {

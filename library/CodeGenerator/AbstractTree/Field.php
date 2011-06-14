@@ -88,4 +88,14 @@ class Field
     {
         $this->jsEnabled = $bool;
     }
+    
+    public function addPrefixRules(Rules $rules)
+    {
+        $this->rules->addPrefix($rules);
+    }
+    
+    public function addPostfixRules(Rules $rules)
+    {
+        $this->rules->addPostfix($rules);
+    }
 }
