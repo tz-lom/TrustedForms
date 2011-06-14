@@ -48,7 +48,8 @@ class Check
         {
             $obj->validators[$this->name] = '.register({name:'.json_encode($this->name).',validator:function(value,config){'.$check::jsValidator.'}})';
             $reporters = array();
-            foreach($this->reporters as $reporter)
+            $reportersOut = $this->reporters?$this->reporters:$env->defaultReporter;
+            foreach($reportersOut as $reporter)
             {
                 $reporters[] = $reporter->toJScode($env);
             }
@@ -70,12 +71,13 @@ class Check
 		$code .= "new \\TrustedForms\\ValueChecks\\{$this->name}($params)";
         
         $reporters = $this->reporters?$this->reporters:$env->defaultReporter;
-        return $code.','.$this->reportersToPHPcode($reporters,$env).')';
+        return $code.$this->reportersToPHPcode($reporters,$env).')';
     }
     
     protected function reportersToPHPcode($reporters,ParceEnvironment $env)
     {
-        $code = "\\TrustedForms\\FormErrorReporter::instance()";
+        if(count($reporters)==0) return '';
+        $code = ", \\TrustedForms\\FormErrorReporter::instance()";
         $json = array();
         foreach($reporters as $reporter)
         {

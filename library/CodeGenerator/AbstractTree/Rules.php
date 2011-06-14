@@ -35,7 +35,11 @@ class Rules
         $obj->validators = array();
         foreach($this->checks as $check)
         {
-            // @todo : enable inheritance of default reporter
+            if($check->getName()=='defaultErrorReport')
+            {
+                $env->defaultReporter = $check->getReporters();
+                continue;
+            }
             $descr = $check->toJScode($env);
             if($descr===NULL)
             {
@@ -43,7 +47,7 @@ class Rules
                 $obj->code = array(
                     array(
                         'test'      => 'rpcTest',
-                        'arguments' => array('@todo: $rpc',$this->name), //@todo: correct
+                        'arguments' => array($env->form->getRpcServer(),$this->name), //@todo: correct
                         'error'     => array()
                     )
                 );
@@ -62,7 +66,11 @@ class Rules
         
         foreach($this->checks as $check)
         {
-            // @todo : enable inheritance of default reporter
+            if($check->getName()=='defaultErrorReport')
+            {
+                $env->defaultReporter = $check->getReporters();
+                continue;
+            }
             $code.=$check->toPHPcode($env);
         }
         

@@ -32,6 +32,11 @@ class Form
         $this->rpcServer = $server;
     }
     
+    public function getRpcServer()
+    {
+        return $this->rpcServer;
+    }
+    
     public function setVar($var)
     {
         $this->var = $var;
@@ -40,6 +45,11 @@ class Form
     public function getVar()
     {
         return $this->var;
+    }
+    
+    public function enableJS($bool)
+    {
+        $this->enableJSvalidation = $bool;
     }
     
     public function toPHPcode(ParceEnvironment $env)
@@ -56,9 +66,12 @@ class Form
     
     public function toJScode(ParceEnvironment $env)
     {
-        $env->form = &$this;
         $obj->code = '';
-        $obj->validators = array();
+        $obj->validators = array();        
+        
+        if(!$this->enableJSvalidation) return $obj;
+        
+        $env->form = &$this;
         foreach($this->fields as $field)
         {
             $descr = $field->toJScode($env);

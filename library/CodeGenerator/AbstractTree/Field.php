@@ -46,6 +46,11 @@ class Field
 
     public function toJScode(ParceEnvironment $env)
     {
+        if(!$this->jsEnabled)
+        {
+            return (object)array('code'=>'','validators'=>array());
+        }
+        
         $env->field = &$this;
         $obj = $this->rules->toJScode($env);
         $obj->code= 'TrustedForms.check('.
