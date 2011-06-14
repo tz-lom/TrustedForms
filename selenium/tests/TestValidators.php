@@ -66,8 +66,8 @@ class TestValidators extends PHPUnit_Framework_TestCase
         <form> { var = "\$form" }
    
    <form>value {
-//        defaultErrorReport: @#in@+error ,
-        $description: @#in@+error
+        defaultErrorReport: @#in@+error ,
+        $description
    }
    -->
 </form>

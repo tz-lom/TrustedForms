@@ -47,7 +47,7 @@ class Rules
                 $obj->code = array(
                     array(
                         'test'      => 'rpcTest',
-                        'arguments' => array($env->form->getRpcServer(),$this->name), //@todo: correct
+                        'arguments' => array($env->form->getRpcServer(),$env->field->getField()),
                         'error'     => array()
                     )
                 );

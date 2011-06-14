@@ -52,7 +52,8 @@ class Generator
     {
         $forms = $this->tpl->getAllForms();
         // check if only one unnamed form (or form with empty name)
-        if(count($forms)!=count(array_unique($forms))) throw new \Exception(); // @todo: customize it
+        if(count($forms)!=count(array_unique($forms)))
+            throw new TemplateException('All form names must be different, and only one form can be unnamed');
         
         foreach($forms as $form)
         {
@@ -68,7 +69,7 @@ class Generator
     public function addDefinition(AbstractTree\Field $definition)
 	{
         if((strpos($definition->getForm(),'"')!==false)||(strpos($definition->getField(),'"')!==false))
-            throw new Exception(); // @todo: customize exception
+            throw new TemplateException('Double quotes in name of form or field are not alowed');
         if($definition->getField()=='')
         {
             $this->addFormDescription($definition);
@@ -105,7 +106,7 @@ class Generator
                     break;
                 default :
                     // show error message
-                    throw new \Exception(); // @todo: Invalid form parameter:',$rule['rule']['name'],"\n";
+                    throw new TemplateException('Invalid parameter of form: '.$definition->getName());
             }
         }
     }
@@ -143,12 +144,16 @@ class Generator
      */
     public function generatePHPvalidators()
     {
-        // @todo: give all forms name
         $code = '';
         $env = new AbstractTree\ParceEnvironment();
         $env->tpl = &$this->tpl;
+        $formCount = NULL;
         foreach($this->forms as $form)
         {
+            if($form->getVar()==NULL)
+            {
+                $form->setVar('$form'.$formCount++);
+            }
             $code.= $form->toPHPcode($env);
         }
         return $code;
