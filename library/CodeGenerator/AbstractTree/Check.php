@@ -49,6 +49,25 @@ class Check
             $obj->validators[$this->name] = '.register({name:'.json_encode($this->name).',validator:function(value,config){'.$check::jsValidator.'}})';
             $reporters = array();
             $reportersOut = $this->reporters?$this->reporters:$env->defaultReporter;
+            
+            $params = array();
+            foreach($this->params as $param)
+            {
+                if($param instanceof Rules)
+                {
+                    $descr = $param->toJScode($env);
+                    if($descr===NULL)
+                        return NULL;
+                    
+                    $params[] = $descr->code;
+                    $obj->validators = array_merge($obj->validators,$descr->validators);
+                }
+                else
+                {
+                    $params[] = $param;
+                }
+            }
+            
             foreach($reportersOut as $reporter)
             {
                 $reporters[] = $reporter->toJScode($env);
@@ -56,7 +75,7 @@ class Check
 
             $obj->code = array(
                 'test'      => $this->name,
-                'arguments' => $this->params,
+                'arguments' => $params,
                 'error'     => $reporters
             );
         }

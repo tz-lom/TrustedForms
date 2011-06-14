@@ -42,17 +42,7 @@ class Rules
             }
             $descr = $check->toJScode($env);
             if($descr===NULL)
-            {
-                $obj->validators = array();
-                $obj->code = array(
-                    array(
-                        'test'      => 'rpcTest',
-                        'arguments' => array($env->form->getRpcServer(),$env->field->getField()),
-                        'error'     => array()
-                    )
-                );
-                break;
-            }
+                return NULL;
             
             $obj->validators = array_merge($obj->validators,$descr->validators);
             $obj->code[] = $descr->code;

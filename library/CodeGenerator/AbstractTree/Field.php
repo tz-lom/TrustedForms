@@ -53,6 +53,18 @@ class Field
         
         $env->field = &$this;
         $obj = $this->rules->toJScode($env);
+        if($obj === NULL)
+        {
+            $obj->validators = array();
+            $obj->code = array(
+                    array(
+                        'test'      => 'rpcTest',
+                        'arguments' => array($env->form->getRpcServer(),$env->field->getField()),
+                        'error'     => array()
+                    )
+                );
+                break;
+        }
         $obj->code= 'TrustedForms.check('.
                     json_encode(array(
                         'field' => $this->field,
