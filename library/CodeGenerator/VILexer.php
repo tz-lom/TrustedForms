@@ -6,9 +6,8 @@
  * @license http://www.opensource.org/licenses/mit-license.php MIT License
  * @package TrustedForms\CodeGenerator
  */
-include 'jlex.php';
-include 'instructions.php';
-class ReadTokenException extends Exception {}
+namespace TrustedForms\CodeGenerator;
+class ReadTokenException extends \Exception {}
 
 
 class VILexer extends JLexBase  {
@@ -33,7 +32,7 @@ class VILexer extends JLexBase  {
 	const COMMENT = 1;
 	static $yy_state_dtrans = array(
 		0,
-		33
+		34
 	);
 	static $yy_acpt = array(
 		/* 0 */ self::YY_NOT_ACCEPT,
@@ -57,29 +56,30 @@ class VILexer extends JLexBase  {
 		/* 18 */ self::YY_NO_ANCHOR,
 		/* 19 */ self::YY_NO_ANCHOR,
 		/* 20 */ self::YY_NO_ANCHOR,
-		/* 21 */ self::YY_NOT_ACCEPT,
+		/* 21 */ self::YY_NO_ANCHOR,
 		/* 22 */ self::YY_NO_ANCHOR,
 		/* 23 */ self::YY_NO_ANCHOR,
-		/* 24 */ self::YY_NO_ANCHOR,
-		/* 25 */ self::YY_NOT_ACCEPT,
+		/* 24 */ self::YY_NOT_ACCEPT,
+		/* 25 */ self::YY_NO_ANCHOR,
 		/* 26 */ self::YY_NO_ANCHOR,
-		/* 27 */ self::YY_NOT_ACCEPT,
-		/* 28 */ self::YY_NO_ANCHOR,
-		/* 29 */ self::YY_NOT_ACCEPT,
-		/* 30 */ self::YY_NO_ANCHOR,
-		/* 31 */ self::YY_NOT_ACCEPT,
-		/* 32 */ self::YY_NO_ANCHOR,
+		/* 27 */ self::YY_NO_ANCHOR,
+		/* 28 */ self::YY_NOT_ACCEPT,
+		/* 29 */ self::YY_NO_ANCHOR,
+		/* 30 */ self::YY_NOT_ACCEPT,
+		/* 31 */ self::YY_NO_ANCHOR,
+		/* 32 */ self::YY_NOT_ACCEPT,
 		/* 33 */ self::YY_NOT_ACCEPT,
-		/* 34 */ self::YY_NOT_ACCEPT
+		/* 34 */ self::YY_NOT_ACCEPT,
+		/* 35 */ self::YY_NOT_ACCEPT
 	);
 		static $yy_cmap = array(
- 2, 2, 2, 2, 2, 2, 2, 2, 2, 21, 4, 2, 21, 4, 2, 2, 2, 2, 2, 2,
- 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 21, 2, 19, 2, 2, 2, 2, 2,
- 6, 7, 3, 9, 10, 8, 17, 1, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 12, 2,
- 13, 5, 14, 2, 15, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18,
- 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 2, 20, 2, 2, 18, 2, 18, 18, 18,
- 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18,
- 18, 18, 18, 2, 11, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+ 2, 2, 2, 2, 2, 2, 2, 2, 2, 22, 4, 2, 22, 4, 2, 2, 2, 2, 2, 2,
+ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 22, 2, 20, 2, 2, 2, 2, 2,
+ 6, 7, 3, 13, 14, 12, 18, 1, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 15, 2,
+ 8, 5, 9, 2, 16, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19,
+ 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 2, 21, 2, 2, 19, 2, 19, 19, 19,
+ 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19,
+ 19, 19, 19, 10, 2, 11, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
@@ -88,77 +88,73 @@ class VILexer extends JLexBase  {
  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0,);
 
 		static $yy_rmap = array(
- 0, 1, 2, 1, 1, 1, 1, 3, 1, 1, 1, 4, 5, 6, 1, 1, 1, 1, 7, 1,
- 1, 8, 1, 9, 10, 11, 12, 9, 13, 14, 11, 7, 14, 15, 16,);
+ 0, 1, 2, 1, 1, 1, 1, 3, 1, 1, 1, 4, 1, 1, 1, 5, 6, 7, 1, 1,
+ 1, 8, 1, 1, 9, 1, 10, 11, 12, 12, 10, 13, 13, 8, 14, 15,);
 
 		static $yy_nxt = array(
 array(
- 1, 2, 22, 22, 3, 4, 5, 6, 7, 8, 9, 26, 10, 28, 22, 30, 11, 22, 12, 32,
- 22, 3,
+ 1, 2, 25, 25, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 29, 15, 25, 16,
+ 31, 25, 3,
 ),
 array(
  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
- -1, -1,
+ -1, -1, -1,
 ),
 array(
- -1, 13, -1, 14, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
- -1, -1,
+ -1, 17, -1, 18, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+ -1, -1, -1,
 ),
 array(
- -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 11, -1, -1, -1,
- -1, -1,
+ -1, -1, -1, -1, -1, -1, -1, -1, 24, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+ -1, -1, -1,
 ),
 array(
- -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 11, 27, -1, -1,
- -1, -1,
+ -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 15, -1, -1,
+ -1, -1, -1,
 ),
 array(
- -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 12, -1, 12, -1,
- -1, -1,
+ -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 15, 30, -1,
+ -1, -1, -1,
 ),
 array(
- -1, 13, 13, 13, -1, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
- 13, 13,
+ -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 16, -1, 16,
+ -1, -1, -1,
 ),
 array(
- -1, 21, 21, 21, -1, 21, 21, 21, 21, 21, 21, 21, 21, 21, 18, 21, 21, 21, 21, 21,
- 21, 21,
+ -1, 17, 17, 17, -1, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17,
+ 17, 17, 17,
 ),
 array(
- -1, 21, 21, 21, -1, 21, 21, 21, 21, 21, 21, 21, 21, 21, 31, 21, 21, 21, 21, 21,
- 21, 21,
+ -1, 24, 24, 24, -1, 24, 24, 24, 24, 21, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24,
+ 24, 24, 24,
 ),
 array(
- -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 23, -1, -1, -1,
- -1, -1,
+ -1, 24, 24, 24, -1, 24, 24, 24, 24, 33, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24,
+ 24, 24, 24,
 ),
 array(
- -1, 20, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
- -1, -1,
+ -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 26, -1, -1,
+ -1, -1, -1,
 ),
 array(
- -1, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 16, 25, 25, 25, 25,
- 25, 25,
+ -1, 23, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+ -1, -1, -1,
 ),
 array(
- -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 15, -1, -1, -1, -1, -1, -1, -1, -1,
- -1, -1,
+ -1, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 19, 28, 28, 28,
+ 28, 28, 28,
 ),
 array(
- -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 21, -1, -1, -1, -1, -1, -1,
- -1, -1,
+ -1, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
+ 20, 35, 32,
 ),
 array(
- -1, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 17,
- 34, 29,
+ 1, 22, 22, 27, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22,
+ 22, 22, 22,
 ),
 array(
- 1, 19, 19, 24, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19,
- 19, 19,
-),
-array(
- -1, 29, 29, 29, -1, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29,
- 29, 29,
+ -1, 32, 32, 32, -1, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
+ 32, 32, 32,
 ),
 );
 
@@ -228,100 +224,104 @@ array(
 						case -7:
 							break;
 						case 7:
-							{ return $this->createToken(VIParser::TK_MINUS); }
+							{ return $this->createToken(VIParser::TK_ANGLE_LBRACKET); }
 						case -8:
 							break;
 						case 8:
-							{ return $this->createToken(VIParser::TK_PLUS); }
+							{ return $this->createToken(VIParser::TK_ANGLE_RBRACKET); }
 						case -9:
 							break;
 						case 9:
-							{ return $this->createToken(VIParser::TK_COMA); }
+							{ return $this->createToken(VIParser::TK_CURLY_LBRACKET); }
 						case -10:
 							break;
 						case 10:
-							{ return $this->createToken(VIParser::TK_COLON); }
+							{ return $this->createToken(VIParser::TK_CURLY_RBRACKET); }
 						case -11:
 							break;
 						case 11:
-							{ return $this->createToken(VIParser::TK_NUMBER); }
+							{ return $this->createToken(VIParser::TK_MINUS); }
 						case -12:
 							break;
 						case 12:
-							{ return $this->createToken(VIParser::TK_IDENTIFIER); }
+							{ return $this->createToken(VIParser::TK_PLUS); }
 						case -13:
 							break;
 						case 13:
-							{ /* do nothing on comments*/ }
+							{ return $this->createToken(VIParser::TK_COMA); }
 						case -14:
 							break;
 						case 14:
-							{ $this->yybegin(self::COMMENT); }
+							{ return $this->createToken(VIParser::TK_COLON); }
 						case -15:
 							break;
 						case 15:
-							{ return $this->createToken(VIParser::TK_OR); }
+							{ return $this->createToken(VIParser::TK_NUMBER); }
 						case -16:
 							break;
 						case 16:
+							{ return $this->createToken(VIParser::TK_IDENTIFIER); }
+						case -17:
+							break;
+						case 17:
+							{ /* do nothing on comments*/ }
+						case -18:
+							break;
+						case 18:
+							{ $this->yybegin(self::COMMENT); }
+						case -19:
+							break;
+						case 19:
 							{
 								$tok = $this->createToken(VIParser::TK_CSS);
 								$tok->value = substr($tok->value,1,-1);		//trim @ characters
 								return $tok;
 							}
-						case -17:
+						case -20:
 							break;
-						case 17:
+						case 20:
 							{
 									$tok = $this->createToken(VIParser::TK_STRING);
 									$tok->value = substr($tok->value,1,-1);		//trim " characters
 									return $tok;
 								}
-						case -18:
+						case -21:
 							break;
-						case 18:
+						case 21:
 							{
 								$tok = $this->createToken(VIParser::TK_HTML);
 								$tok->value = substr($tok->value,2,-2);		//trim << and >>
 								return $tok;
 							}
-						case -19:
-							break;
-						case 19:
-							{ }
-						case -20:
-							break;
-						case 20:
-							{ $this->yybegin(self::YYINITIAL); }
-						case -21:
-							break;
-						case 22:
-							{ throw new ReadTokenException("Invalid character [{$this->yytext()}] at {$this->yyline}:{$this->yycol}"); }
 						case -22:
 							break;
-						case 23:
-							{ return $this->createToken(VIParser::TK_NUMBER); }
+						case 22:
+							{ }
 						case -23:
 							break;
-						case 24:
-							{ }
+						case 23:
+							{ $this->yybegin(self::YYINITIAL); }
 						case -24:
 							break;
-						case 26:
+						case 25:
 							{ throw new ReadTokenException("Invalid character [{$this->yytext()}] at {$this->yyline}:{$this->yycol}"); }
 						case -25:
 							break;
-						case 28:
-							{ throw new ReadTokenException("Invalid character [{$this->yytext()}] at {$this->yyline}:{$this->yycol}"); }
+						case 26:
+							{ return $this->createToken(VIParser::TK_NUMBER); }
 						case -26:
 							break;
-						case 30:
-							{ throw new ReadTokenException("Invalid character [{$this->yytext()}] at {$this->yyline}:{$this->yycol}"); }
+						case 27:
+							{ }
 						case -27:
 							break;
-						case 32:
+						case 29:
 							{ throw new ReadTokenException("Invalid character [{$this->yytext()}] at {$this->yyline}:{$this->yycol}"); }
 						case -28:
+							break;
+						case 31:
+							{ throw new ReadTokenException("Invalid character [{$this->yytext()}] at {$this->yyline}:{$this->yycol}"); }
+						case -29:
 							break;
 						default:
 						$this->yy_error('INTERNAL',false);

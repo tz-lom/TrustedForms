@@ -7,7 +7,8 @@
  * });
  *
  * TrustedForms.check({
- *      element: 'name',
+ *      field: 'input name',
+ *      form: 'form name',
  *      tests: [
  *          {
  *              test: 'isNumber',
@@ -35,7 +36,6 @@ var TrustedForms = function(){
 TrustedForms.prototype = {
     init: function(){
         this.validators = {rpcTest: this.rpcTest};
-      //  this.errors = new Array;
         this.checks = new Array;
         this.errorDisplay = {
             'addClass' : function($el,args){
@@ -71,13 +71,11 @@ TrustedForms.prototype = {
         var result = true;
         var self = this;
         jQuery.each(this.checks,function(i,field){
-            //if(formName==undefined || this.form == formName)
-                result &= self.checkField(field,true);
+            result &= self.checkField(field,true);
         });
         return result==true;
     },
     checkFieldById: function(id){
-        //this.hideErrors(); // @todo: ohh,this is buggy thing
         this.hideError(id);
         this.checkField(this.checks[id],true);
     },
@@ -116,15 +114,16 @@ TrustedForms.prototype = {
     },
     check: function(field){
         var id = this.checks.push(field)-1;
-        //@todo: append checks to form AND elements of form
-        var $el = jQuery(field.element);
-        this.checks[id].name = $el.attr('name');
+        this.checks[id].name = field.field;
+        this.checks[id].form = field.form;
+        this.checks[id].element = field.form?'form[name="'+field.form+'"] [name="'+field.field+'"]':'[name="'+field.field+'"]';
+        var $el = jQuery(this.checks[id].element);
         this.checks[id].circleSemaphore = false;
         this.checks[id].value = undefined;
         this.checks[id].checked = false;
         this.checks[id].displayedError = undefined;
         var self = this;
-        $el.bind('performElementValidation',function(){ //@todo : probably this method drops speed,but it is quite usefull
+        $el.bind('performElementValidation',function(){
             self.checkFieldById(id);
         }).bind('change',function(){$(this).trigger('performElementValidation')});
         var $form = $el.parent('form');

@@ -1,4 +1,7 @@
 <?php # vim:ts=2:sw=2:et:
+
+namespace TrustedForms\CodeGenerator;
+
 /*
   Copyright 2006 Wez Furlong, OmniTI Computer Consulting, Inc.
   Based on JLex which is:

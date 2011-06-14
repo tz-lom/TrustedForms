@@ -1,18 +1,24 @@
-<form id="f1">
+<form id="f1" name="form">
 <!--
-@#f1@:
-name="$test"
+
+<form> {
+    var="$test"
+}
+
 -->
 
 <div id="err"></div>
 
 <input type="text" name="data" id="i1"/>
 <!--
-@#i1@:
- isEqualToField=ta : @#i1@+err
+
+<form>data {
+ isEqualToField = (ta): @#i1@+err @#err@<<message>>
+}
  
-@#i2@:
+ta<form> {
  isIP = (IS_IPV4,FLAG_IPV6) : @#i2@+err
+}
 -->
 
 <!-- simple comment -->

@@ -59,12 +59,16 @@ class TestValidators extends PHPUnit_Framework_TestCase
 		if($this->description==$description) return;
         $this->description = $description;
         $source = <<<HEREDOC
-<form>
+<form name="form">
    <input type="text" name="value" id="in">
    <!--
-   @#in@:
-	defaultErrorReport: @#in@+error ,
-    $description
+   
+        <form> { var = "\$form" }
+   
+   <form>value {
+        defaultErrorReport: @#in@+error ,
+        $description
+   }
    -->
 </form>
 HEREDOC;
@@ -116,15 +120,20 @@ HEREDOC;
     public function testIsEqualToField()
     {
         $source = <<<HEREDOC
-<form>
+<form name="form">
    <input type="text" name="value" id="in">
    <input type="text" name="value2" id="in2">
    <!--
-   @#in@:
-	defaultErrorReport: @#in@+error ,
-    isEqualToField=value2
-   @#in2@:
+   
+    <form>{ var= "\$form" }
+    
+   <form>value {
+    isEqualToField=value2: @#in@+error 
+   }
+   
+   <form>value2 {
     required: @#in@+error
+   }
    -->
 </form>
 HEREDOC;

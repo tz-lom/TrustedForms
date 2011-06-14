@@ -13,7 +13,7 @@
         <script type="text/javascript" src="jquery.js"></script>
         <script type="text/javascript" src="js/TrustedForms.js"></script>
         
-        <form id="form1">
+        <form id="form1" name="form">
             <input type="text" name="string" value="abc" class="" />
             <input type="text" name="int" value="123" class="" />
             <textarea name="bigtext" class=""></textarea>
@@ -35,9 +35,9 @@ TrustedForms.register({name:"isEqualToField",validator:
         return {value:value,passed:this.getValue(config[0])==value};
     }});
 
-TrustedForms.check({element:"[name=string]",tests:[{test:"isEqualToField",arguments:["int"],"error":[{element:"[name=string]",type:'addClass',argument:'error'}]}]});
-TrustedForms.check({"element":"[name=int]","tests":[{"test":"IsNumeric","arguments":[],"error":[{"element":"[name=int]","type":"addClass","argument":"error"}]}]});
-TrustedForms.check({element:"[name=userpc]","tests":[{test:'rpcTest',arguments:['data'],error:[]}]});
+TrustedForms.check({field:"string",form:"",tests:[{test:"isEqualToField",arguments:["int"],"error":[{element:"[name=string]",type:'addClass',argument:'error'}]}]});
+TrustedForms.check({field:"int",form:"form","tests":[{"test":"IsNumeric","arguments":[],"error":[{"element":"[name=int]","type":"addClass","argument":"error"}]}]});
+TrustedForms.check({field:"userpc",form:"form","tests":[{test:'rpcTest',arguments:['data'],error:[]}]});
 </script>  
         
     </body>

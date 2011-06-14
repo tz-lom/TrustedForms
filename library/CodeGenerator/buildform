@@ -15,7 +15,6 @@ require_once(__DIR__.'/../../3dparty/phpQuery/phpQuery/phpQuery.php');
 
 $options = getopt('',array(
     'source:',
-    'code::',
     'tplType::',
     'oCode::',
     'oTpl::'
@@ -29,8 +28,7 @@ function usage()
 
 if(empty($options['source'])) usage();
 
-$options = array_merge(array('tplType' => 'phpQueryTemplate',
-                             'code' => 'PHPCode'
+$options = array_merge(array('tplType' => 'phpQueryTemplate'
                         ),
                         $options);
 
@@ -44,7 +42,7 @@ if(empty($options['oTpl']))
 }
 
 
-$builder = new \TrustedForms\CodeGenerator\Builder($options['tplType'],$options['code']);
+$builder = new \TrustedForms\CodeGenerator\Builder($options['tplType']);
 
 $builder->buildFile(file_get_contents($options['source']));
 
