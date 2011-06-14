@@ -15,7 +15,6 @@ class Generator
 	 * @var TemplateManipulator
 	 */
 	protected $tpl;
-	protected $writer;
 	
 	/**
 	 * @var string
@@ -39,10 +38,9 @@ class Generator
      */
     protected $forms = array();
 
-	public function __construct(TemplateManipulator $tpl,CodeWriter $writer)
+	public function __construct(TemplateManipulator $tpl)
 	{
 		$this->tpl = $tpl;
-		$this->writer = $writer;
 	}
     
     /**

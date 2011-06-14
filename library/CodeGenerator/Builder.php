@@ -20,13 +20,11 @@ class Builder
         throw new \ErrorException();
     }
 
-    public function __construct($templater,$writer)
+    public function __construct($templater)
     {   
         $templater = 'TrustedForms\\CodeGenerator\\'.$templater;
         $this->template = new $templater();
-        $writer = 'TrustedForms\\CodeGenerator\\'.$writer.'\CodeWriter';
-        $this->writer = new $writer();
-        $this->generator = new Generator($this->template, $this->writer);
+        $this->generator = new Generator($this->template);
     }
 
     public function buildFile($source)
