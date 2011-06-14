@@ -33,7 +33,7 @@ class Check
         return $this;
     }
     
-    public function toJScode()
+    public function toJScode(ParceEnvironment $env)
     {
         $check = '\\TrustedForms\\ValueChecks\\'.$this->name;
         
@@ -50,7 +50,7 @@ class Check
             $reporters = array();
             foreach($this->reporters as $reporter)
             {
-                $reporters[] = $reporter->toJScode();
+                $reporters[] = $reporter->toJScode($env);
             }
 
             $obj->code = array(
@@ -62,31 +62,31 @@ class Check
         return $obj;
     }
     
-    public function toPHPcode(\TrustedForms\CodeGenerator\TemplateManipulator &$tpl, $inheritedReporters)
+    public function toPHPcode(ParceEnvironment $env)
     {
         $code = '->addToChain(';
         
-        $params = $this->varExport($this->params);
+        $params = $this->varExport($this->params,$env);
 		$code .= "new \\TrustedForms\\ValueChecks\\{$this->name}($params)";
         
-        $reporters = $this->reporters?$this->reporters:$inheritedReporters;
-        return $code.','.$this->reportersToPHPcode($reporters,$tpl).')';
+        $reporters = $this->reporters?$this->reporters:$env->defaultReporter;
+        return $code.','.$this->reportersToPHPcode($reporters,$env).')';
     }
     
-    protected function reportersToPHPcode($reporters,\TrustedForms\CodeGenerator\TemplateManipulator &$tpl)
+    protected function reportersToPHPcode($reporters,ParceEnvironment $env)
     {
         $code = "\\TrustedForms\\FormErrorReporter::instance()";
         $json = array();
         foreach($reporters as $reporter)
         {
-            $code.= $reporter->toPHPcode($tpl);
-            $json[] = $reporter->toJScode();
+            $code.= $reporter->toPHPcode($env);
+            $json[] = $reporter->toJScode($env);
         }
         $code.='->setJSONdescription('.var_export(json_encode($json),true).')';
         return $code;
     }
     
-    public function varExport($var)
+    public function varExport($var,ParceEnvironment $env)
     {
         switch(gettype($var))
         {
@@ -97,13 +97,13 @@ class Check
             case 'array':
                 $t = $this;
                 array_walk($var,
-                        function(&$var) use($t){
-                            $var = $t->varExport($var);
+                        function(&$var) use($t,$env){
+                            $var = $t->varExport($var,$env);
                         }
                 );
                 return 'array('.implode(',', $var).')';
             default:
-                return $var->toPHPcode();
+                return $var->toPHPcode($env);
         }
     }
 

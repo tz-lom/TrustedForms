@@ -42,24 +42,26 @@ class Form
         return $this->var;
     }
     
-    public function toPHPcode(\TrustedForms\CodeGenerator\TemplateManipulator &$tpl)
+    public function toPHPcode(ParceEnvironment $env)
     {
+        $env->form = &$this;
         $code = "{$this->var} = new \\TrustedForms\\FormValidator();\n";
-        $tpl->setFormContainer($this->var);
+        $env->tpl->setFormContainer($this->var);
         foreach($this->fields as $field)
         {
-            $code .= $field->toPHPcode($this,$tpl);
+            $code .= $field->toPHPcode($env);
         }
         return $code;
     }
     
-    public function toJScode()
+    public function toJScode(ParceEnvironment $env)
     {
+        $env->form = &$this;
         $obj->code = '';
         $obj->validators = array();
         foreach($this->fields as $field)
         {
-            $descr = $field->toJScode();
+            $descr = $field->toJScode($env);
             $obj->code.= $descr->code;
             $obj->validators = array_merge($obj->validators,$descr->validators);
         }

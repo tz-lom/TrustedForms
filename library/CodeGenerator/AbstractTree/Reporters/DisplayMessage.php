@@ -19,7 +19,7 @@ class DisplayMessage extends \TrustedForms\CodeGenerator\AbstractTree\Reporter
         return $this;
     }
     
-    public function toJScode()
+    public function toJScode(\TrustedForms\CodeGenerator\AbstractTree\ParceEnvironment $env)
     {
         return array(
 					'element'   => $this->element,
@@ -28,10 +28,10 @@ class DisplayMessage extends \TrustedForms\CodeGenerator\AbstractTree\Reporter
 				);
     }
     
-    public function toPHPcode(\TrustedForms\CodeGenerator\TemplateManipulator &$tpl)
+    public function toPHPcode(\TrustedForms\CodeGenerator\AbstractTree\ParceEnvironment $env)
     {
         $code = '->addFlag(';
-        $code.= var_export($tpl->addMessageToElement($this->element),true);
+        $code.= var_export($env->tpl->addMessageToElement($this->element),true);
         $code.= ',';
         $code.= var_export($this->text,true);
         return $code.')';

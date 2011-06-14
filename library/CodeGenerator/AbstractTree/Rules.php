@@ -29,24 +29,28 @@ class Rules
         return $this->checks;
     }
     
-    public function toJScode()
+    public function toJScode(ParceEnvironment $env)
     {
-        $obj->code = '';
+        $obj->code = array();
         $obj->validators = array();
         foreach($this->checks as $check)
         {
-            $descr = $check->toJScode();
-//            $obj->code
+            // @todo : enable inheritance of default reporter
+            $descr = $check->toJScode($env);
+            $obj->validators = array_merge($obj->validators,$descr->validators);
+            $obj->code[] = $desc->code;
         }
+        return $obj;
     }
     
-    public function toPHPcode(\TrustedForms\CodeGenerator\TemplateManipulator &$tpl)
+    public function toPHPcode(ParceEnvironment $env)
     {
         $code = '\TrustedForms\VariableValidator::instance()';
         
         foreach($this->checks as $check)
         {
-            $code.=$check->toPHPcode($tpl,'@todo: change me'); //@todo: correct
+            // @todo : enable inheritance of default reporter
+            $code.=$check->toPHPcode($env);
         }
         
         return $code;

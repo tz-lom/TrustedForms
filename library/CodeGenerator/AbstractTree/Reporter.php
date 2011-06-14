@@ -29,8 +29,8 @@ abstract class Reporter
         return new static($css);
     }
     
-    abstract public function toJScode();
+    abstract public function toJScode(ParceEnvironment $env);
     
-    abstract public function toPHPcode(\TrustedForms\CodeGenerator\TemplateManipulator &$tpl);
+    abstract public function toPHPcode(ParceEnvironment $env);
 }
 

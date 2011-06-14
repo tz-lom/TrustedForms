@@ -44,8 +44,9 @@ class Field
     }
 
 
-    public function toJScode()
+    public function toJScode(ParceEnvironment $env)
     {
+        $env->field = &$this;
         $obj->validators = array();
         $desc = array(
                 'field' => $this->field,
@@ -54,7 +55,7 @@ class Field
             );
         foreach($this->rules->getChecks() as $check)
         {
-            $descr = $check->toJScode();
+            $descr = $check->toJScode($env);
             if($descr===NULL)
             {
                 $obj->validators = array();
@@ -74,11 +75,12 @@ class Field
         return $obj;
     }
     
-    public function toPHPcode(Form &$form,\TrustedForms\CodeGenerator\TemplateManipulator &$tpl)
+    public function toPHPcode(ParceEnvironment $env)
     {
-        $tpl->addValueReplacement($this->field,$this->form);
-        $code = "{$form->getVar()}['{$this->field}'] = ";
-        $code.= $this->rules->toPHPcode($tpl);
+        $env->field = &$this;
+        $env->tpl->addValueReplacement($this->field,$this->form);
+        $code = "{$env->form->getVar()}['{$this->field}'] = ";
+        $code.= $this->rules->toPHPcode($env);
         return $code.";\n";
     }
     

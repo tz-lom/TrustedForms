@@ -145,9 +145,11 @@ class Generator
     {
         // @todo: give all forms name
         $code = '';
+        $env = new AbstractTree\ParceEnvironment();
+        $env->tpl = &$this->tpl;
         foreach($this->forms as $form)
         {
-            $code.= $form->toPHPcode(&$this->tpl);
+            $code.= $form->toPHPcode($env);
         }
         return $code;
     }
@@ -160,9 +162,11 @@ class Generator
 	{
         $validators = array();
         $code = '';
+        $env = new AbstractTree\ParceEnvironment();
+        $env->tpl = &$this->tpl;
         foreach($this->forms as $form)
         {
-            $descr = $form->toJScode();
+            $descr = $form->toJScode($env);
             $code.= $descr->code;
             $validators = array_merge($validators,$descr->validators);
         }
