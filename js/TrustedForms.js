@@ -45,14 +45,20 @@ TrustedForms.prototype = {
                 $el.removeClass(args);
             },
 			'message': function($el,args){
-				//@todo: implement this
+                $el[0].TrustedForms_old_text ={
+                         html:  $el.html(),
+                         attr: $el[0].TrustedForms_old_text
+                };
+				$el.html(args);
 			}
         };
         this.errorHide = {
             'addClass': this.errorDisplay['removeClass'],
             'removeClass': this.errorDisplay['addClass'],
 			'message': function($el,args){
-				//@todo: implement this
+				var attr = $el[0].TrustedForms_old_text;
+                $el.html(attr.html);
+                $el[0].TrustedForms_old_text = attr.attr;
 			}
         };
     },
