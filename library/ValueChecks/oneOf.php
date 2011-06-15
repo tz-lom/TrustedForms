@@ -2,6 +2,14 @@
 
 namespace TrustedForms\ValueChecks;
 
+/**
+ * Passes if one of validator chains in params passes
+ * return value from first non-fail validator chains
+ * 
+ * @param validation chain
+ * @param validation chain
+ * [@param validation chain, ...]
+ */
 class oneOf extends \TrustedForms\ValidationChainItem
 {
 	protected function doProcess(&$value)
