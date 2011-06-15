@@ -8,7 +8,7 @@ class TypeTransformationTest extends \PHPUnit_Framework_TestCase
 {
 	public function testIsFloat()
 	{
-		$checker = new \TrustedForms\ValueChecks\isFloat();
+		$checker = new \TrustedForms\ValueChecks\asFloat();
 		$value = 404.502;
 		$checker->process($value);
 		$this->assertFalse($checker->isError());
@@ -26,7 +26,7 @@ class TypeTransformationTest extends \PHPUnit_Framework_TestCase
 	
 	public function testIsInteger()
 	{
-		$checker = new \TrustedForms\ValueChecks\isInteger();
+		$checker = new \TrustedForms\ValueChecks\asInteger();
 		$value = 404.502;
 		$checker->process($value);
 		$this->assertTrue($checker->isError());

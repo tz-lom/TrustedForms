@@ -47,4 +47,15 @@ class FormValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf('TrustedForms\FormValidator', \TrustedForms\FormValidator::instance());
     }
+    
+    /**
+     * @expectedException TrustedForms\Exceptions\CircularValidator
+     */
+    public function testCircleReference()
+    {
+        $form = new FormValidator();
+        $form['value'] = VariableValidator::instance()->addToChain(new \TrustedForms\ValueChecks\isEqualToField(array('value2')));
+        $form['value2'] = VariableValidator::instance()->addToChain(new \TrustedForms\ValueChecks\isEqualToField(array('value')));
+        $form->checkArray(array('value'=>1,'value2'=>2));
+    }
 }
