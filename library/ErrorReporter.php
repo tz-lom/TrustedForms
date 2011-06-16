@@ -17,46 +17,46 @@ class ErrorReporter
     /**
      * @var String
      */
-	protected $message;
-	/**
-	 * @var mixed
-	 */
-	protected $errorValue;
+    protected $message;
+    /**
+     * @var mixed
+     */
+    protected $errorValue;
     /**
      * @var string
      */
     protected $variableName;
 
-	/**
+    /**
      *
      * @param String $message Сообщение об ошибке задаётся в формате printf
      *               $1 - значение на котором произошла ошибка
      *               $2 - имя переменной содержащей ошибку
      */
     public function __construct($message = '$2%s: invalid value $1%s')
-	{
-		$this->message = $message;
-	}
+    {
+        $this->message = $message;
+    }
 
-	/**
+    /**
      *
      * @return String
      */
     public function getMessage()
-	{
-		return sprintf($this->message,$this->errorValue,$this->variableName);
-	}
+    {
+        return sprintf($this->message,$this->errorValue,$this->variableName);
+    }
 
-	/**
-	 *
-	 * @param mixed $value
-	 * @return ErrorReporter
-	 */
-	public function setErrorValue($value)
-	{
-		$this->errorValue = $value;
-		return $this;
-	}
+    /**
+     *
+     * @param mixed $value
+     * @return ErrorReporter
+     */
+    public function setErrorValue($value)
+    {
+        $this->errorValue = $value;
+        return $this;
+    }
 
     /**
      * @param string $name

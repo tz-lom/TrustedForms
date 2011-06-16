@@ -107,7 +107,7 @@ class phpQueryTemplate implements TemplateManipulator
         }
     }
 
-	public function addMessageToElement($css)
+    public function addMessageToElement($css)
     {
         $flag = $this->getFlagName('msg', "message@$css",$fromCache);
         $flag = var_export($flag,true);
@@ -119,7 +119,7 @@ class phpQueryTemplate implements TemplateManipulator
         return $flag;
     }
 
-	public function addClassToElement($css,$class)
+    public function addClassToElement($css,$class)
     {
         $flag = $this->getFlagName('clsAdd', "+$class@$css",$fromCache);
         if(!$fromCache)
@@ -131,7 +131,7 @@ class phpQueryTemplate implements TemplateManipulator
         return $flag;
     }
 
-	public function removeClassFromElement($css,$class)
+    public function removeClassFromElement($css,$class)
     {
         $flag = $this->getFlagName('clsRemove', "-$class@$css",$fromCache);
         if(!$fromCache)
@@ -174,10 +174,10 @@ class phpQueryTemplate implements TemplateManipulator
         }
         return $ret;
     }
-	
-	public function appendJSvalidator($validator)
-	{
+    
+    public function appendJSvalidator($validator)
+    {
         if($validator)
             $this->pq->append(pq("<script type=\"text/javascript\">\n$validator\n</script>"));
-	}
+    }
 }

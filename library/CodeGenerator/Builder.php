@@ -67,7 +67,7 @@ class Builder
     public function getResultTemplate()
     {
         $this->getResultValidator();
-		$this->template->appendJSvalidator($this->generator->generateJSvalidators());
+        $this->template->appendJSvalidator($this->generator->generateJSvalidators());
         return $this->template->getHTML();
     }
     

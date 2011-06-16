@@ -11,11 +11,11 @@ class asInteger extends \TrustedForms\ValidationChainItem
     const jsValidator = " return { value: value, passed: value.match(/^[+-]?[0-9]+\.?[0]*$/) }";
 
     protected function doProcess(&$value)
-	{
+    {
         if(preg_match('/^[+-]?[0-9]+\.?[0]*$/',$value))
         {
-            settype($value,"integer");		
-            return true;	
+            settype($value,"integer");      
+            return true;    
         }
         else
         {

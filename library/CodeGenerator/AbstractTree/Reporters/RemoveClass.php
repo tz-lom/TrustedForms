@@ -22,10 +22,10 @@ class RemoveClass extends \TrustedForms\CodeGenerator\AbstractTree\Reporter
     public function toJScode(\TrustedForms\CodeGenerator\AbstractTree\ParceEnvironment $env)
     {
         return array(
-						'element'   => $this->element,
-						'type'      => 'removeClass',
-						'argument'  => $this->class
-					);
+                        'element'   => $this->element,
+                        'type'      => 'removeClass',
+                        'argument'  => $this->class
+                    );
     }
     
     public function toPHPcode(\TrustedForms\CodeGenerator\AbstractTree\ParceEnvironment $env)

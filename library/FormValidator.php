@@ -12,10 +12,10 @@ namespace TrustedForms;
 class FormValidator extends \TrustedForms\ArrayValidator
 {
     protected $flags = array();
-	/**
-	 * It is very useful, you can call checkArray without mentioning is form displayed first or not
-	 */
-	protected $skipEmptyArray = true;
+    /**
+     * It is very useful, you can call checkArray without mentioning is form displayed first or not
+     */
+    protected $skipEmptyArray = true;
 
     public function setFlag($flagName,$value=NULL)
     {

@@ -27,12 +27,12 @@ abstract class ValueChecker extends \TrustedForms\ValidationChainItem
      */
     public function process($value)
     {
-		parent::process($value);
+        parent::process($value);
         if(!$this->performCheck($value))
-		{
-			$this->reportError($value);
-		}
-		return $value;
+        {
+            $this->reportError($value);
+        }
+        return $value;
     }
 }
 

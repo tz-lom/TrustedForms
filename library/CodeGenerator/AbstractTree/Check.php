@@ -87,7 +87,7 @@ class Check
         $code = '->addToChain(';
         
         $params = $this->varExport($this->params,$env);
-		$code .= "new \\TrustedForms\\ValueChecks\\{$this->name}($params)";
+        $code .= "new \\TrustedForms\\ValueChecks\\{$this->name}($params)";
         
         $reporters = $this->reporters?$this->reporters:$env->defaultReporter;
         return $code.$this->reportersToPHPcode($reporters,$env).')';

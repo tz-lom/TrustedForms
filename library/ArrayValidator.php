@@ -14,24 +14,24 @@ namespace TrustedForms;
  */
 class ArrayValidator implements \ArrayAccess
 {
-	/**
-	 * Возвращать ошибку если для элемента массива нет валидатора
-	 */
-	const REPORT_UNDEFINED_ELEMENT	= 0;
-	/**
-	 * Игнорировать отсутсвие валидатора для элемента массива
-	 */
-	const IGNORE_UNDEFINED_ELEMENT	= 1;
-	/**
-	 * Добавляет пустой валидатор для необъявленного элемента массива
-	 */
-	const ADD_UNDEFINED_ELEMENT		= 2;
+    /**
+     * Возвращать ошибку если для элемента массива нет валидатора
+     */
+    const REPORT_UNDEFINED_ELEMENT  = 0;
+    /**
+     * Игнорировать отсутсвие валидатора для элемента массива
+     */
+    const IGNORE_UNDEFINED_ELEMENT  = 1;
+    /**
+     * Добавляет пустой валидатор для необъявленного элемента массива
+     */
+    const ADD_UNDEFINED_ELEMENT     = 2;
 
 
-	/**
-	 * @var int метод обработки ключей без валидаторов
-	 */
-	protected $undefKeysMode = 0;
+    /**
+     * @var int метод обработки ключей без валидаторов
+     */
+    protected $undefKeysMode = 0;
     /**
      * @var array of \TrustedForms\VariableValidator
      */
@@ -44,10 +44,10 @@ class ArrayValidator implements \ArrayAccess
      * @var array of \TrustedForms\ErrorReporter
      */
     protected $errorPool;
-	/**
-	 * @var boolean
-	 */
-	protected $skipEmptyArray = false;
+    /**
+     * @var boolean
+     */
+    protected $skipEmptyArray = false;
 
     public function  __construct()
     {
@@ -111,48 +111,48 @@ class ArrayValidator implements \ArrayAccess
     public function checkArray($array)
     {
         $this->errorPool = array();
-		
-		if($this->skipEmptyArray && count($array)==0) return false;
-		
-		$undescribedKeys = array_diff_key($array,$this->variables);
-		if(count($undescribedKeys))
-		{
-			switch($this->undefKeysMode)
-			{
-				case ArrayValidator::IGNORE_UNDEFINED_ELEMENT:
-					break;
-				case ArrayValidator::ADD_UNDEFINED_ELEMENT:
-					foreach($undescribedKeys as $key => $value)
-					{
-						$this[$key] = new \TrustedForms\VariableValidator();
-					}
-					break;
-				default:
+        
+        if($this->skipEmptyArray && count($array)==0) return false;
+        
+        $undescribedKeys = array_diff_key($array,$this->variables);
+        if(count($undescribedKeys))
+        {
+            switch($this->undefKeysMode)
+            {
+                case ArrayValidator::IGNORE_UNDEFINED_ELEMENT:
+                    break;
+                case ArrayValidator::ADD_UNDEFINED_ELEMENT:
+                    foreach($undescribedKeys as $key => $value)
+                    {
+                        $this[$key] = new \TrustedForms\VariableValidator();
+                    }
+                    break;
+                default:
                     foreach($undescribedKeys as $key=>$value)
                     {
                         $err = $this->errorReporter;
                         $err->setVariableName($key);
                         $this->errorPool[] = $err;
                     }
-			}
-		}
-		
+            }
+        }
+        
         foreach($this->variables as $name=>$var)
         {
             if(isset($array[$name]))
             {
                 $var->setValue($array[$name]);
             }
-	      else 
-	    {
-  		$var->setValue( new \TrustedForms\Exceptions\ValueNotExists());
-	    }
-	  
+          else 
+        {
+        $var->setValue( new \TrustedForms\Exceptions\ValueNotExists());
+        }
+      
             if(!$var->isCorrect())
             {
                 $this->errorPool[] = $var->getError();
             }
-			
+            
         }
         return !$this->isError();
     }
@@ -173,29 +173,29 @@ class ArrayValidator implements \ArrayAccess
         return $this->errorPool;
     }
 
-	/**
-	 * Задаёт способ обратотки ключей проверяемого массива для которых нет валидатора
-	 * 
-	 * @param \TrustedForms\ArrayValidator::const $mode
-	 * @return ArrayValidator
-	 */
-	public function handleUndefinedKeys($mode)
-	{
-		$this->undefKeysMode = $mode;
-		return $this;
-	}
-	
-	/**
-	 * If array is empty it can be skipped, useful for form validation when no data passed to form
-	 * 
-	 * @param boolean $skip
-	 * @return ArrayValidator 
-	 */
-	public function skipEmptyArray($skip)
-	{
-		$this->skipEmptyArray = $bool;
-		return $this;
-	}
+    /**
+     * Задаёт способ обратотки ключей проверяемого массива для которых нет валидатора
+     * 
+     * @param \TrustedForms\ArrayValidator::const $mode
+     * @return ArrayValidator
+     */
+    public function handleUndefinedKeys($mode)
+    {
+        $this->undefKeysMode = $mode;
+        return $this;
+    }
+    
+    /**
+     * If array is empty it can be skipped, useful for form validation when no data passed to form
+     * 
+     * @param boolean $skip
+     * @return ArrayValidator 
+     */
+    public function skipEmptyArray($skip)
+    {
+        $this->skipEmptyArray = $bool;
+        return $this;
+    }
 
     /**
      * @param \TrustedForms\ErrorReporter $reporter

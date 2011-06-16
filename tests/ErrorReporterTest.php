@@ -11,18 +11,18 @@ require_once 'autoload.php';
 class ErrorReporterTest extends \PHPUnit_Framework_TestCase
 {
 
-	public function testGetMessage()
-	{
-		$report = new ErrorReporter('test message');
-		$this->assertEquals('test message',$report->getMessage());
-	}
+    public function testGetMessage()
+    {
+        $report = new ErrorReporter('test message');
+        $this->assertEquals('test message',$report->getMessage());
+    }
 
-	public function testSetErrorValue()
-	{
-		$report = new ErrorReporter('error value: %s');
-		$report->setErrorValue('42');
-		$this->assertEquals('error value: 42',$report->getMessage());
-	}
+    public function testSetErrorValue()
+    {
+        $report = new ErrorReporter('error value: %s');
+        $report->setErrorValue('42');
+        $this->assertEquals('error value: 42',$report->getMessage());
+    }
 
     public function testSetVariableName()
     {

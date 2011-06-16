@@ -8,9 +8,9 @@ namespace TrustedForms\ValueTransformers;
  */
 class ToInteger extends \TrustedForms\ValidationChainItem
 {
-	protected function doProcess(&$value)
-	{
-		$value = intval($value);
-		return true;
-	}
+    protected function doProcess(&$value)
+    {
+        $value = intval($value);
+        return true;
+    }
 }

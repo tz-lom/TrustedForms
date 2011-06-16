@@ -35,31 +35,31 @@ interface TemplateManipulator
      */
     public function addValueReplacement($field,$form);
 
-	/**
-	 * Registers output of unique identifier as alternative text to element specified by selector
-	 * 
-	 * @var string $css
-	 * @return string Unique identifier
-	 */
-	public function addMessageToElement($css);
-	
-	/**
-	 * Registers class addition to element specified by selector
+    /**
+     * Registers output of unique identifier as alternative text to element specified by selector
+     * 
+     * @var string $css
+     * @return string Unique identifier
+     */
+    public function addMessageToElement($css);
+    
+    /**
+     * Registers class addition to element specified by selector
      *
      * @var string $css
      * @var string $class Class name
      * @return string Unique identifier
-	 */
-	public function addClassToElement($css,$class);
+     */
+    public function addClassToElement($css,$class);
     
     /**
-	 * Registers class removement to element specified by selector
+     * Registers class removement to element specified by selector
      * 
      * @var string $css
      * @var string $class Class name
      * @return string Unique identifier
-	 */
-	public function removeClassFromElement($css,$class);
+     */
+    public function removeClassFromElement($css,$class);
     
     /**
      * Returns array of form element descriptions,
@@ -78,13 +78,13 @@ interface TemplateManipulator
      * @param string $name
      */
     public function setFormContainer($name);
-	
+    
     /**
      * Inserts JS code in form
      * 
      * @param string $validator
      */
-	public function appendJSvalidator($validator);
+    public function appendJSvalidator($validator);
 
 }
 

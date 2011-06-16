@@ -34,19 +34,19 @@ for(var i in config) {
 return {value:value, passed:false};';
 
     protected function doProcess(&$value)
-	{
+    {
         $flag = 0;
         foreach($this->config as $flagvalue)
         {
             switch($flagvalue)
             {
                 case 'IPv4':
-                    $flag = $flag | FILTER_FLAG_IPV4;	
+                    $flag = $flag | FILTER_FLAG_IPV4;   
                 break;
                 case 'IPv6':
                     $flag = $flag | FILTER_FLAG_IPV6;
                     break;
-            }	
+            }   
         }
         if(($flag & ( FILTER_FLAG_IPV4|FILTER_FLAG_IPV6 ))==( FILTER_FLAG_IPV4|FILTER_FLAG_IPV6 ))
         {

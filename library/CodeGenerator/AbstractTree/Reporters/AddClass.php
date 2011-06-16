@@ -21,11 +21,11 @@ class AddClass extends \TrustedForms\CodeGenerator\AbstractTree\Reporter
     
     public function toJScode(\TrustedForms\CodeGenerator\AbstractTree\ParceEnvironment $env)
     {
-		return array(
-						'element'   => $this->element,
-						'type'      => 'addClass',
-						'argument'  => $this->class
-					);
+        return array(
+                        'element'   => $this->element,
+                        'type'      => 'addClass',
+                        'argument'  => $this->class
+                    );
     }
     
     public function toPHPcode(\TrustedForms\CodeGenerator\AbstractTree\ParceEnvironment $env)

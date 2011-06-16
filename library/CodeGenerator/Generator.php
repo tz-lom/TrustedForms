@@ -11,20 +11,20 @@ namespace TrustedForms\CodeGenerator;
 
 class Generator
 {
-	/**
-	 * @var TemplateManipulator
-	 */
-	protected $tpl;
-	
-	/**
-	 * @var string
-	 */
-	protected $fieldName;
+    /**
+     * @var TemplateManipulator
+     */
+    protected $tpl;
+    
+    /**
+     * @var string
+     */
+    protected $fieldName;
 
-	/**
-	 * @var array
-	 */
-	protected $inputs = array();
+    /**
+     * @var array
+     */
+    protected $inputs = array();
     
     /**
      *
@@ -38,10 +38,10 @@ class Generator
      */
     protected $forms = array();
 
-	public function __construct(TemplateManipulator $tpl)
-	{
-		$this->tpl = $tpl;
-	}
+    public function __construct(TemplateManipulator $tpl)
+    {
+        $this->tpl = $tpl;
+    }
     
     /**
      * Retrieve some basic info form template
@@ -65,7 +65,7 @@ class Generator
      * @param AbstractTree\Field $definition 
      */
     public function addDefinition(AbstractTree\Field $definition)
-	{
+    {
         if((strpos($definition->getForm(),'"')!==false)||(strpos($definition->getField(),'"')!==false))
             throw new TemplateException('Double quotes in name of form or field are not alowed');
         if($definition->getField()=='')
@@ -76,7 +76,7 @@ class Generator
         {
             $this->addFieldDescription($definition);
         }
-	}
+    }
     
     /**
      *
@@ -171,13 +171,13 @@ class Generator
         }
         return $code;
     }
-	
+    
     /**
      *
      * @return string
      */
-	public function generateJSvalidators()
-	{
+    public function generateJSvalidators()
+    {
         $validators = array();
         $code = '';
         $env = new AbstractTree\ParceEnvironment();
@@ -196,7 +196,7 @@ class Generator
         {
             return $code;
         }
-	}
+    }
 
     public function defaultErrorReport($params,$reporter)
     {

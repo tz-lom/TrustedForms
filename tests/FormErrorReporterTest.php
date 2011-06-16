@@ -22,24 +22,24 @@ class FormErrorReporterTest extends \PHPUnit_Framework_TestCase
                 $r->getFlags()
         );
     }
-	
-	public function testMessageFlag()
-	{
-		$r = new FormErrorReporter();
-		$r->addFlag('default');
-		$r->addFlag('custom','text');
-		$r->addFlag('message','%s is not %s');
-		
-		$r->setVariableName('varName');
-		$r->setErrorValue('errValue');
-		
-		$this->assertEquals(
-				array(
-					'default'	=> 'varName :: value `errValue` is incorrect',
-					'custom'	=> 'text',
-					'message'	=> 'errValue is not varName'
-				),
-				$r->getFlags()
-		);
-	}
+    
+    public function testMessageFlag()
+    {
+        $r = new FormErrorReporter();
+        $r->addFlag('default');
+        $r->addFlag('custom','text');
+        $r->addFlag('message','%s is not %s');
+        
+        $r->setVariableName('varName');
+        $r->setErrorValue('errValue');
+        
+        $this->assertEquals(
+                array(
+                    'default'   => 'varName :: value `errValue` is incorrect',
+                    'custom'    => 'text',
+                    'message'   => 'errValue is not varName'
+                ),
+                $r->getFlags()
+        );
+    }
 }

@@ -9,12 +9,12 @@ namespace TrustedForms\ValueChecks;
 class asFloat extends \TrustedForms\ValidationChainItem
 {
     const jsValidator = "return { value: value, passed: value.match(/^[+-]?[0-9]+(\.[0-9]+)?(e[+-]?[0-9]+)?$/i) }";
-	
+    
     protected function doProcess(&$value)
-	{
+    {
         if(preg_match('/^[+-]?[0-9]+(\.[0-9]+)?(e[+-]?[0-9]+)?$/i',$value))
         {
-            settype($value,"float");		
+            settype($value,"float");        
             return true;
         }
         else

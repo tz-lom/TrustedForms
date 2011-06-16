@@ -22,10 +22,10 @@ class DisplayMessage extends \TrustedForms\CodeGenerator\AbstractTree\Reporter
     public function toJScode(\TrustedForms\CodeGenerator\AbstractTree\ParceEnvironment $env)
     {
         return array(
-					'element'   => $this->element,
-					'type'      => 'message',
-					'argument'  => $this->text
-				);
+                    'element'   => $this->element,
+                    'type'      => 'message',
+                    'argument'  => $this->text
+                );
     }
     
     public function toPHPcode(\TrustedForms\CodeGenerator\AbstractTree\ParceEnvironment $env)
