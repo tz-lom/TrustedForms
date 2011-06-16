@@ -50,7 +50,7 @@ return {value:value, passed:false};';
         }
         if(($flag & ( FILTER_FLAG_IPV4|FILTER_FLAG_IPV6 ))==( FILTER_FLAG_IPV4|FILTER_FLAG_IPV6 ))
         {
-            // due to bug in PHP<5.4, with  both flags raised check works unstable , but without any of them - all works as desired
+            // because of errors in PHP <5.4, with both flags raised is not working properly, but not both of them working properly
             $flag = $flag ^(FILTER_FLAG_IPV4|FILTER_FLAG_IPV6);
         }
         return (bool)(filter_var($value, FILTER_VALIDATE_IP, $flag));
