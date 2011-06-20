@@ -8,13 +8,14 @@ For example:
 create template looking like this:
 
 <form>
-	<input id="age" type="text" name="age" /><span id="errage"></span>
-	<!--
-		@#age@:
-			isNumeric: @#errage@<< Age must be number >> @#age@+error,
-			inRange = (1,150) : @#errage@<< This cann't be your age >> @#age@+error
-	-->
-	<input type="submit/>
+    <input id="age" type="text" name="age" /><span id="errage"></span>
+    <!--
+        age {
+            isNumeric: @#errage@<< Age must be number >> @#age@+error,
+            inRange = (1,150) : @#errage@<< This cann't be your age >> @#age@+error
+        }
+    -->
+    <input type="submit/>
 </form>
 
 
@@ -42,8 +43,8 @@ now you can simply use them:
     require_once('autoload.php'); // place your own project autoloader here
     require_once('template.validate.php');
     if($form->checkArray($_REQUEST))
-	{
-		echo 'age is: ', $form['age']->value();
+    {
+        echo 'age is: ', $form['age']->value();
     }
     require_once('template.tpl');
     ?>
