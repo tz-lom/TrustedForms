@@ -63,7 +63,6 @@ class Field
                         'error'     => array()
                     )
                 );
-                break;
         }
         $obj->code= 'TrustedForms.check('.
                     json_encode(array(
