@@ -320,6 +320,22 @@ HEREDOC;
             array('a','','-e1')
         );
         
+        /*
+         * regexp
+         */
+        $this->genTestConfig(
+            $tests,
+            'regexp = "/s/i"',
+            array('s','S','as','Sa'),
+            array('','a','$')
+        );
+        $this->genTestConfig(
+            $tests,
+            'regexp = "@s\@@i"',
+            array('s@','S@','as@','S@a'),
+            array('','a','$','s','@')
+        );
+        
         return $tests;
     }
 }
