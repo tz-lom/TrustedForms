@@ -85,7 +85,7 @@ TrustedForms.prototype = {
         this.checkField(this.checks[id],true);
     },
     checkField: function(field,ignoreChecked){
-        if(field.checked && !ignoreChecked) return;
+        if(field.checked && !ignoreChecked) return true;
         if(field.circleSemaphore){
             field.circleSemaphore = false;
             throw 'CircleValidation';
@@ -94,7 +94,6 @@ TrustedForms.prototype = {
         var $el = jQuery(field.element); 
         var res = {value: $el.val(), passed: true};
         for(var i=0; res.passed && i<field.tests.length;i++){
-            //res = this.performTest(field.tests[i],res.value);
             res = this.validators[field.tests[i].test].call(this,res.value,field.tests[i].arguments);
             if(!res.passed){
                 field.displayedError = this.showError(field.tests[i].error);
@@ -109,13 +108,6 @@ TrustedForms.prototype = {
             field.value = undefined;
             return false;
         }
-    },
-    performTest: function(test, value){
-        var res = this.validators[test.test].call(this,value,test.arguments);
-        if(!res.passed){
-            this.showError(test.error)
-        }
-        return res;
     },
     check: function(field){
         var id = this.checks.push(field)-1;
@@ -141,7 +133,6 @@ TrustedForms.prototype = {
         return this;
     },
     showError: function(error){
-       // this.errors.push(error);
         var self = this;
         jQuery.each(error,function(i,error){
             var $el = jQuery(error.element);
