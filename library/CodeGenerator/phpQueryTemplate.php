@@ -56,7 +56,13 @@ class phpQueryTemplate implements TemplateManipulator
 
     protected function getInstruction()
     {
-        $i = $this->instructions->item($this->currentInstruction);
+        $i = NULL;
+       
+        // loop while next node exists and its parent isn't <php> tag
+        for(;
+            ($i = $this->instructions->item($this->currentInstruction)) && ($i->parentNode->nodeName=='php');
+            $this->currentInstruction++ );
+        
         if($i==NULL) return NULL;
         return substr(pq($i)->html(),4,-3);
     }
