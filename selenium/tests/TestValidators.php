@@ -273,7 +273,7 @@ HEREDOC;
          */
         $this->genTestConfig(
             $tests,
-            'isMaxLength = (5)',
+            'length = (5)',
             array('stri','321'),
             array('THIS IS SPARTAAAAAAAAAAAAAAAAAA!!!!!!!!!','teststring','123123124')
         );
@@ -334,6 +334,22 @@ HEREDOC;
             'regexp = "@s\@@i"',
             array('s@','S@','as@','S@a'),
             array('','a','$','s','@')
+        );
+        
+        /**
+         * not
+         */
+        $this->genTestConfig(
+            $tests,
+            'not = { isNumeric }',
+            array('asd'),
+            array('123')
+        );        
+        $this->genTestConfig(
+            $tests,
+            'not = { isNumeric , length=5 }',
+            array('asd','asdfe','123456'),
+            array('123','12345')
         );
         
         return $tests;
