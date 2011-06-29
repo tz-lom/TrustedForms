@@ -35,7 +35,7 @@ class Check
     
     public function toJScode(ParceEnvironment $env)
     {
-        $check = '\\TrustedForms\\ValueChecks\\'.$this->name;
+        $check = 'TrustedForms\\ValueChecks\\'.$this->name;
         
         $obj->validators = array();
         $obj->code = '';
