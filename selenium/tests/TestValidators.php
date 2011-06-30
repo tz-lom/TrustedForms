@@ -352,6 +352,23 @@ HEREDOC;
             array('123','12345')
         );
         
+        /**
+         * equals
+         */
+        $this->genTestConfig($tests,
+            'equals = good',
+            array('good'),
+            array('bad'));
+        
+        /**
+         * trim
+         */
+        $this->genTestConfig(
+            $tests,
+            'trim , equals = "good"',
+            array('good','  good','     good  '),
+            array());
+        
         return $tests;
     }
 }

@@ -17,10 +17,10 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
         $this->object['int'] = new \TrustedForms\VariableValidator();
         $this->object['int']->addReporter(new \TrustedForms\ErrorReporter('int'))
                             ->addToChain(new \TrustedForms\ValueChecks\isNumeric())
-                            ->addToChain(new \TrustedForms\ValueTransformers\ToInteger());
+                            ->addToChain(new \TrustedForms\ValueChecks\asInteger());
         $this->object['str'] = new \TrustedForms\VariableValidator();
         $this->object['str']->addReporter(new \TrustedForms\ErrorReporter('str'))
-                            ->addToChain(new \TrustedForms\ValueTransformers\Trim());
+                            ->addToChain(new \TrustedForms\ValueChecks\trim());
     }
 
     /**
@@ -35,7 +35,7 @@ class ArrayValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $validator = new \TrustedForms\VariableValidator();
         $validator->addReporter(new \TrustedForms\ErrorReporter('test'));
-        $validator->addToChain(new \TrustedForms\ValueTransformers\Trim());
+        $validator->addToChain(new \TrustedForms\ValueChecks\Trim());
 
         $array = new \TrustedForms\ArrayValidator();
 
