@@ -66,15 +66,53 @@ class Form
     {
         $env->form = &$this;
         $env->defaultReporter = $this->defaultErrorReporter;
-        $code = "{$this->var} = new \\TrustedForms\\FormValidator();\n";
         
-        $env->tpl->setFormContainer($this->var);
+        $postfix = '';
+        $code = '';
         
-        foreach($this->fields as $field)
-        {
-            $code .= $field->toPHPcode($env);
+        if(substr($this->var,0,6)=='class ')
+        {                   
+            $class = ltrim(trim(substr($this->var,6)),'\\');
+            
+            if($pos = strrpos($class,'\\'))
+            {
+                $code = 'namespace '.substr($class,0,$pos-1)." {\n";
+                $postfix = "}\n";
+                $class = substr($class,$pos+1);
+            }
+            
+            $code.= "class $class extends \\TrustedForms\\FormValidator\n{\n\tpublic function __construct()\n\t{\n\t\tparent::__construct();\n";
+            
+            $env->tpl->setFormContainer('$this');    
+            
+            $var = $this->var;
+            $this->var = '$this';
+            
+            foreach($this->fields as $field)
+            {
+                $code.= "\t\t".$field->toPHPcode($env);
+            }
+            
+            $this->var = $var;
+            
+            $code.= "\t}\n}\n";
+            
+            return $code.$postfix;
         }
-        return $code;
+        else
+        {
+            $code = "{$this->var} = new \\TrustedForms\\FormValidator();\n";
+            $env->tpl->setFormContainer($this->var);
+
+            foreach($this->fields as $field)
+            {
+                $code .= $field->toPHPcode($env);
+            }
+            
+            
+            
+            return $code;
+        }
     }
     
     public function toJScode(ParceEnvironment $env)
