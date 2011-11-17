@@ -41,6 +41,7 @@ class Rules
     
     public function toJScode(ParceEnvironment $env)
     {
+        $obj = new \stdClass();
         $obj->code = array();
         $obj->validators = array();
         foreach($this->checks as $check)

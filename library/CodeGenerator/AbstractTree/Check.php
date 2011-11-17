@@ -37,6 +37,7 @@ class Check
     {
         $check = 'TrustedForms\\ValueChecks\\'.$this->name;
         
+        $obj = new \stdClass();
         $obj->validators = array();
         $obj->code = '';
         
