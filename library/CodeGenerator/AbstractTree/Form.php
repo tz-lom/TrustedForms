@@ -76,7 +76,7 @@ class Form
             
             if($pos = strrpos($class,'\\'))
             {
-                $code = 'namespace '.substr($class,0,$pos-1)." {\n";
+                $code = 'namespace '.substr($class,0,$pos)." {\n";
                 $postfix = "}\n";
                 $class = substr($class,$pos+1);
             }
@@ -117,6 +117,7 @@ class Form
     
     public function toJScode(ParceEnvironment $env)
     {
+        $obj = new \stdClass();
         $obj->code = '';
         $obj->validators = array();        
         
