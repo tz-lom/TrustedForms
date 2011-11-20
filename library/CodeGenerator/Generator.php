@@ -88,34 +88,33 @@ class Generator
         //parse params for this form
         foreach($definition->getRules()->getChecks() as $check)
         {
+            $params = $check->getParams();
             switch($check->getName())
             {
                 case 'var':
-                    $params = $check->getParams();
                     $form->setVar($params[0]);
                     break;
                 case 'enableJS':
-                    $params = $check->getParams();
                     $form->enableJS((bool) $params[0]);
                     break;
                 case 'rpcServer':
-                    $params = $check->getParams();
                     $form->setRpcServer($params[0]);
                     break;
                 case 'defaultErrorReport':
                     $form->setDefaultErrorReporter($check->getReporters());
                     break;
                 case 'prefixRules':
-                    $params = $check->getParams();
                     if(! $params[0] instanceof AbstractTree\Rules)
                         throw new TemplateException('Prefix must be set of rules');
                     $form->setPrefixRules($params[0]);
                     break;
                 case 'postfixRules':
-                    $params = $check->getParams();
                     if(! $params[0] instanceof AbstractTree\Rules)
                         throw new TemplateException('Postfix must be set of rules');
                     $form->setPostfixRules($params[0]);
+                    break;
+                case 'comment':
+                    $form->setComment($params[0]);
                     break;
                 default :
                     // show error message

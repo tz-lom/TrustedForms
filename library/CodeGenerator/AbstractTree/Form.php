@@ -14,6 +14,7 @@ class Form
     protected $name;
     protected $var = NULL;
     protected $enableJSvalidation = true;
+    protected $comment = '';
     protected $rpcServer = '/jsonrpc/validate.php';
     protected $fields = array();
     protected $defaultErrorReporter = array();
@@ -30,6 +31,17 @@ class Form
         if($this->prefixRules)  $field->addPrefixRules($this->prefixRules);
         if($this->postfixRules) $field->addPostfixRules($this->postfixRules);
         $this->fields[] = $field;
+    }
+    
+    public function setComment($comment)
+    {
+        $comment = trim($comment);
+        $this->comment = $comment."\n";
+    }
+    
+    public function getComment()
+    {
+        return $this->comment;
     }
     
     public function setRpcServer($server)
@@ -76,12 +88,12 @@ class Form
             
             if($pos = strrpos($class,'\\'))
             {
-                $code = 'namespace '.substr($class,0,$pos)." {\n";
+                $code .= 'namespace '.substr($class,0,$pos)." {\n";
                 $postfix = "}\n";
                 $class = substr($class,$pos+1);
             }
             
-            $code.= "class $class extends \\TrustedForms\\FormValidator\n{\n\tpublic function __construct()\n\t{\n\t\tparent::__construct();\n";
+            $code.= $this->comment."class $class extends \\TrustedForms\\FormValidator\n{\n\tpublic function __construct()\n\t{\n\t\tparent::__construct();\n";
             
             $env->tpl->setFormContainer('$this');    
             
@@ -101,15 +113,13 @@ class Form
         }
         else
         {
-            $code = "{$this->var} = new \\TrustedForms\\FormValidator();\n";
+            $code .= $this->comment."{$this->var} = new \\TrustedForms\\FormValidator();\n";
             $env->tpl->setFormContainer($this->var);
 
             foreach($this->fields as $field)
             {
                 $code .= $field->toPHPcode($env);
             }
-            
-            
             
             return $code;
         }
