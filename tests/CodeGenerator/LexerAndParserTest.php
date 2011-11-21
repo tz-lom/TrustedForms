@@ -263,7 +263,7 @@ class LexerAndParserTest extends \PHPUnit_Framework_TestCase
                                                                                     ->addCheck(AbstractTree\Check::instance('withAll',array('42','second'))->addReporters(array(
                                                                                         AbstractTree\Reporters\DisplayMessage::instance('#err')->setText('message'),
                                                                                         AbstractTree\Reporters\AddClass::instance('#err2')->setClass('class'),
-                                                                                        AbstractTree\Reporters\RemoveClass::instance('#err2')->setClass('class')
+                                                                                        AbstractTree\Reporters\RemoveClass::instance('#err2')->setClass('class2')
                                                                                     )))
                                                                     )))
                     ),
