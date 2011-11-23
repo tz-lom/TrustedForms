@@ -50,12 +50,7 @@ class NTMTemplate implements TemplateManipulator
 
     protected function getInstruction()
     {
-        $i = NULL;
-       
-        // i hope this will work
-        for(;
-            $i = $this->instructions->item($this->currentInstruction);
-            $this->currentInstruction++ );
+        $i = $this->instructions->item($this->currentInstruction);
         
         if($i==NULL) return NULL;
         return $i->textContent;
@@ -87,22 +82,24 @@ class NTMTemplate implements TemplateManipulator
     public function addValueReplacement($field,$form)
     {
         $selector = $form?('form[name="'.$form.'"] [name="'.$field.'"]'):('[name="'.$field.'"]');
-        $el = $this->pq->find($selector);
-        
         $name = var_export($field,true);
-        if($el->is('input'))
+        
+        $el = $this->ntm->getElementsByCSS($selector);        
+        $el = $el[0];
+    
+        if($el->tagName =='input')
         {
-            $val = $el->attr('value');
-            $el->attrPHP('value',"if({$this->formContainer}[{$name}]->isChecked()) { if({$this->formContainer}[{$name}]->isCorrect()) { echo {$this->formContainer}[{$name}]->value(); } else { echo htmlentities({$this->formContainer}[{$name}]->inputValue()); } } else { ?>{$val}<?php }");
+            $val = $el->getAttribute('value');
+            $el->setAttribute('value',$this->ntm->encodeMarkdown("<?php if({$this->formContainer}[{$name}]->isChecked()) { if({$this->formContainer}[{$name}]->isCorrect()) { echo {$this->formContainer}[{$name}]->value(); } else { echo htmlentities({$this->formContainer}[{$name}]->inputValue()); } } else { ?>{$val}<?php } ?>"));
         }
-        if($el->is('textarea'))
+        if($el->tagName=='textarea')
         {
-            $val = $el->html();
-            $el->php("if({$this->formContainer}[{$name}]->isChecked()) { echo {$this->formContainer}[{$name}]->value(); } else { ?>{$val}<?php }");
+            $val = $el->textContent;
+            $el->textContent = $this->ntm->encodeMarkdown("<?php if({$this->formContainer}[{$name}]->isChecked()) { echo {$this->formContainer}[{$name}]->value(); } else { ?>{$val}<?php } ?>");
         }
-        if($el->is('select'))
+        if($el->tagName=='select')
         {
-            // @todo: Невозможно реализовать на phpQuery (убогий)
+            // @todo: Сделать,билиать!!!!!!!!!
             //$def = $el->find('option [selected]');
             //$def->attrPHP('selected', "if({$this->formContainer[{$name}])")
         }
@@ -114,8 +111,8 @@ class NTMTemplate implements TemplateManipulator
         $flag = var_export($flag,true);
         if(!$fromCache)
         {
-            $el = $this->pq->find($css);
-            $el->appendPHP("echo {$this->formContainer}->getFlag({$flag});");
+            $el = $this->ntm->getElementsByCSS($css)[0];
+            $el->textContent.= $this->ntm->encodeMarkdown("<?php echo {$this->formContainer}->getFlag({$flag}); ?>");
         }
         return $flag;
     }
@@ -127,7 +124,12 @@ class NTMTemplate implements TemplateManipulator
         {
             $flag = var_export($flag,true);
             $class = var_export($class,true);
-            $this->pq->find($css)->addClassPHP("if({$this->formContainer}->isFlag({$flag})) echo {$class};");
+            $els = $this->ntm->getElementsByCSS($css);
+            foreach($els as $el)
+            {
+                $ca = $el->getAttribute('class');
+                $el->setAttribute('class',$ca.' '.$this->ntm->encodeMarkdown("<?php if({$this->formContainer}->isFlag({$flag})) echo {$class}; ?>"));
+            }
         }
         return $flag;
     }
@@ -137,16 +139,19 @@ class NTMTemplate implements TemplateManipulator
         $flag = $this->getFlagName('clsRemove', "-$class@$css",$fromCache);
         if(!$fromCache)
         {
-            foreach($this->pq->find($css) as $el)
+            $flag = var_export($flag,true);
+            $class = var_export($class,true);
+
+            $els = $this->ntm->getElementsByCSS($css);
+            foreach($els as $el)
             {
-                $pq = pq($el);
-                if($pq->hasClass($class))
-                {
-                    $pq->removeClass($class);
-                    $flag = var_export($flag,true);
-                    $class = var_export($class,true);
-                    $pq->addClassPHP("if(! {$this->formContainer}->isFlag({$flag})) echo {$class};");
-                }
+                $ca = $el->getAttribute('class');
+                
+                if(strpos($ca,$class)===NULL) continue;
+                
+                $ca = str_replace($class, '', $ca);
+                $ca.= $this->ntm->encodeMarkdown("<?php if(! {$this->formContainer}->isFlag({$flag})) echo {$class}; ?>");
+                $el->setAttribute('class',$ca);
             }
         }
         return $flag;
@@ -169,9 +174,9 @@ class NTMTemplate implements TemplateManipulator
     public function getAllForms()
     {
         $ret = array();
-        foreach($this->pq->find('form') as $form)
+        foreach($this->ntm->getElementsByCSS('form') as $form)
         {
-            $ret[] = pq($form)->attr('name');
+            $ret[] = $form->getAttribute('name');
         }
         return $ret;
     }
@@ -179,6 +184,10 @@ class NTMTemplate implements TemplateManipulator
     public function appendJSvalidator($validator)
     {
         if($validator)
-            $this->pq->append(pq("<script type=\"text/javascript\">\n$validator\n</script>"));
+        {
+            $el = $this->ntm->getDOM()->createElement('script',$validator);
+            $el->setAttribute('type','text/javascript');
+            $this->ntm->getRoot()->appendChild($el);
+        }
     }
 }
