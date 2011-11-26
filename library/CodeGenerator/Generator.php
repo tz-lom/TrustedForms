@@ -95,7 +95,16 @@ class Generator
                     $form->setVar($params[0]);
                     break;
                 case 'enableJS':
-                    $form->enableJS((bool) $params[0]);
+                    switch($params[0])
+                    {
+                        case 'true':
+                            $form->enableJS(true);
+                            break;
+                        case 'false':
+                            $form->enableJS(false);
+                        default:
+                            throw new TemplateException('Invalid value for enableJS parameter');
+                    }
                     break;
                 case 'rpcServer':
                     $form->setRpcServer($params[0]);
