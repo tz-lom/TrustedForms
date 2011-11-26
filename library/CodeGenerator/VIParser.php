@@ -41,8 +41,8 @@ class VIParser {
 
   const YYNOCODE = 34;
 #if INTERFACE
-  const YYNSTATE = 55;
-  const YYNRULE = 35;
+  const YYNSTATE = 57;
+  const YYNRULE = 36;
 
   private $YY_NO_ACTION;
   private $YY_ACCEPT_ACTION;
@@ -51,45 +51,47 @@ class VIParser {
   /* action tables */ 
 
 static $yy_action = array(
- /*     0 */    27,   28,   29,   30,   91,    5,    1,   42,   27,   28,
- /*    10 */    29,   30,    2,   25,   11,   12,   26,   10,   54,    9,
- /*    20 */     2,   55,   25,   10,   53,   26,   22,   15,   47,   33,
- /*    30 */    31,   19,   45,   20,   25,   21,   15,   26,   32,   31,
- /*    40 */    40,   13,   34,   31,   52,   48,    2,    6,    2,   22,
- /*    50 */    14,   43,   16,   37,   18,   46,   36,   25,   11,   12,
- /*    60 */    26,   50,    4,   21,   41,   35,   38,   39,   23,   24,
- /*    70 */     3,   44,   49,    2,   51,    8,   92,   17,    7,
+ /*     0 */    28,   29,   30,   31,   94,    5,    1,   43,   28,   29,
+ /*    10 */    30,   31,    2,   26,   12,   13,   27,   11,   56,    9,
+ /*    20 */     2,   57,   26,   11,   55,   27,   23,   10,   48,   34,
+ /*    30 */    32,   20,   46,   21,   26,   26,   10,   27,   27,   22,
+ /*    40 */    41,   14,   33,   32,   53,   22,    2,   35,   32,   49,
+ /*    50 */    19,   44,   16,   23,   18,    2,    6,   15,   51,   47,
+ /*    60 */    25,   38,   12,   13,   37,   26,   45,    4,   27,   42,
+ /*    70 */    36,   39,   40,   50,   24,   52,    2,   54,    3,    8,
+ /*    80 */    95,   17,    7,
 );
 static $yy_lookahead = array(
  /*     0 */     1,    2,    3,    4,   18,   19,    7,    2,    1,    2,
  /*    10 */     3,    4,   13,    1,    9,   10,    4,   31,   32,    5,
  /*    20 */    13,    0,    1,   31,   32,    4,   23,   15,   14,   20,
- /*    30 */    21,   22,   29,   30,    1,    4,   15,    4,   20,   21,
- /*    40 */    25,   26,   20,   21,   21,   14,   13,   11,   13,   23,
- /*    50 */    15,   27,   28,    1,   31,   29,    4,    1,    9,   10,
- /*    60 */     4,   21,    5,    4,   25,    8,   24,   24,   31,   31,
- /*    70 */     6,   27,   21,   13,   21,   12,   33,   16,   16,
+ /*    30 */    21,   22,   29,   30,    1,    1,   15,    4,    4,    4,
+ /*    40 */    25,   26,   20,   21,   21,    4,   13,   20,   21,   14,
+ /*    50 */    16,   27,   28,   23,   31,   13,   11,   15,   21,   29,
+ /*    60 */    31,    1,    9,   10,    4,    1,   27,    5,    4,   25,
+ /*    70 */     8,   24,   24,   21,   31,   21,   13,   21,    6,   12,
+ /*    80 */    33,   16,   16,
 );
   const YY_SHIFT_USE_DFLT = -2;
-  const YY_SHIFT_MAX = 24;
+  const YY_SHIFT_MAX = 25;
 static $yy_shift_ofst = array(
- /*     0 */    12,    7,   31,   -1,    7,   21,    5,   33,   36,   59,
- /*    10 */    35,   52,   52,   49,   56,   56,   36,   60,   60,   57,
- /*    20 */    14,   64,   63,   61,   62,
+ /*     0 */    12,    7,   35,   -1,    7,   21,    5,   33,   45,   41,
+ /*    10 */    34,   42,   60,   60,   53,   64,   45,   63,   63,   63,
+ /*    20 */    62,   14,   72,   67,   65,   66,
 );
   const YY_REDUCE_USE_DFLT = -15;
-  const YY_REDUCE_MAX = 18;
+  const YY_REDUCE_MAX = 19;
 static $yy_reduce_ofst = array(
- /*     0 */   -14,    9,    3,   18,   22,   -8,   15,   23,   24,   26,
- /*    10 */    40,   42,   43,   39,   37,   38,   44,   51,   53,
+ /*     0 */   -14,    9,    3,   22,   27,   -8,   15,   23,   24,   30,
+ /*    10 */    29,   37,   47,   48,   44,   43,   39,   52,   54,   56,
 );
 static $yy_default = array(
- /*     0 */    90,   90,   90,   90,   90,   90,   90,   90,   90,   90,
- /*    10 */    90,   90,   90,   73,   90,   90,   77,   90,   90,   90,
- /*    20 */    90,   63,   76,   90,   90,   82,   83,   56,   57,   58,
- /*    30 */    59,   60,   64,   61,   62,   65,   66,   67,   68,   69,
- /*    40 */    70,   71,   72,   74,   75,   78,   79,   80,   81,   84,
- /*    50 */    87,   85,   86,   89,   88,
+ /*     0 */    93,   93,   93,   93,   93,   93,   93,   93,   93,   93,
+ /*    10 */    93,   93,   93,   93,   75,   93,   79,   93,   93,   93,
+ /*    20 */    93,   93,   65,   78,   93,   93,   84,   85,   58,   59,
+ /*    30 */    60,   61,   62,   66,   63,   64,   67,   68,   69,   70,
+ /*    40 */    71,   72,   73,   74,   76,   77,   80,   81,   82,   83,
+ /*    50 */    86,   90,   87,   88,   89,   92,   91,
 );
 
   /* fallback */
@@ -142,9 +144,10 @@ static $yy_default = array(
  /*  29 */ "element_rules_definition ::= element_selector_name ANGLE_LBRACKET element_selector_name ANGLE_RBRACKET rules",
  /*  30 */ "element_rules_definition ::= ANGLE_LBRACKET element_selector_name ANGLE_RBRACKET element_selector_name rules",
  /*  31 */ "element_rules_definition ::= ANGLE_LBRACKET element_selector_name ANGLE_RBRACKET rules",
- /*  32 */ "element_rules_definition ::= element_selector_name rules",
- /*  33 */ "translation_unit ::= element_rules_definition",
- /*  34 */ "translation_unit ::= translation_unit element_rules_definition",
+ /*  32 */ "element_rules_definition ::= ANGLE_LBRACKET ANGLE_RBRACKET rules",
+ /*  33 */ "element_rules_definition ::= element_selector_name rules",
+ /*  34 */ "translation_unit ::= element_rules_definition",
+ /*  35 */ "translation_unit ::= translation_unit element_rules_definition",
   );
 
   public function trace($TraceFILE, $zTracePrompt)
@@ -294,7 +297,7 @@ static $yy_default = array(
   {
 #line 20 "VIParser.y"
  throw new ParceTokenException('Stack overflow: '.$yyminor->value,$yymajor,0,'',$yyminor->line); 
-#line 278 "VIParser.php"
+#line 281 "VIParser.php"
   }
 
   private static $yyRuleInfo = array(
@@ -330,6 +333,7 @@ static $yy_default = array(
   32, 5,
   32, 5,
   32, 4,
+  32, 3,
   32, 2,
   19, 1,
   19, 2,
@@ -360,60 +364,60 @@ static $yy_default = array(
       case 28: /* element_selector_name ::= IDENTIFIER */
 #line 25 "VIParser.y"
 { $yygotominor = $this->yystack[$this->yyidx + 0]->minor->value; }
-#line 344 "VIParser.php"
+#line 348 "VIParser.php"
         break;
       case 5: /* parameter ::= rules */
       case 19: /* validation_reporter ::= vr_definition */
       case 21: /* validator ::= validation_rule */
 #line 29 "VIParser.y"
 { $yygotominor = $this->yystack[$this->yyidx + 0]->minor; }
-#line 351 "VIParser.php"
+#line 355 "VIParser.php"
         break;
       case 6: /* param_list ::= parameter */
       case 15: /* class_transformations ::= vr_ct_rule */
 #line 31 "VIParser.y"
 { $yygotominor = array($this->yystack[$this->yyidx + 0]->minor); }
-#line 357 "VIParser.php"
+#line 361 "VIParser.php"
         break;
       case 7: /* param_list ::= param_list COMA parameter */
 #line 32 "VIParser.y"
 { $yygotominor=$this->yystack[$this->yyidx + -2]->minor; $yygotominor[]=$this->yystack[$this->yyidx + 0]->minor; }
-#line 362 "VIParser.php"
+#line 366 "VIParser.php"
         break;
       case 8: /* validation_rule ::= IDENTIFIER */
 #line 34 "VIParser.y"
 { $yygotominor = new Check($this->yystack[$this->yyidx + 0]->minor->value); }
-#line 367 "VIParser.php"
+#line 371 "VIParser.php"
         break;
       case 9: /* validation_rule ::= IDENTIFIER EQUALS parameter */
 #line 35 "VIParser.y"
 { $yygotominor = new Check($this->yystack[$this->yyidx + -2]->minor->value,array($this->yystack[$this->yyidx + 0]->minor)); }
-#line 372 "VIParser.php"
+#line 376 "VIParser.php"
         break;
       case 10: /* validation_rule ::= IDENTIFIER EQUALS LBRACKET param_list RBRACKET */
 #line 36 "VIParser.y"
 { $yygotominor = new Check($this->yystack[$this->yyidx + -4]->minor->value,$this->yystack[$this->yyidx + -1]->minor); }
-#line 377 "VIParser.php"
+#line 381 "VIParser.php"
         break;
       case 13: /* vr_ct_rule ::= PLUS vr_ct_class_name */
 #line 41 "VIParser.y"
 { $yygotominor = array('className'=> __NAMESPACE__.'\\AbstractTree\\Reporters\\AddClass'	, 'class'=>$this->yystack[$this->yyidx + 0]->minor); }
-#line 382 "VIParser.php"
+#line 386 "VIParser.php"
         break;
       case 14: /* vr_ct_rule ::= MINUS vr_ct_class_name */
 #line 42 "VIParser.y"
 { $yygotominor = array('className'=> __NAMESPACE__.'\\AbstractTree\\Reporters\\RemoveClass', 'class'=>$this->yystack[$this->yyidx + 0]->minor); }
-#line 387 "VIParser.php"
+#line 391 "VIParser.php"
         break;
       case 16: /* class_transformations ::= class_transformations vr_ct_rule */
 #line 45 "VIParser.y"
 { $yygotominor=$this->yystack[$this->yyidx + -1]->minor; $yygotominor[]=$this->yystack[$this->yyidx + 0]->minor; }
-#line 392 "VIParser.php"
+#line 396 "VIParser.php"
         break;
       case 17: /* vr_definition ::= CSS HTML */
 #line 47 "VIParser.y"
 { $yygotominor = array(AbstractTree\Reporters\DisplayMessage::instance($this->yystack[$this->yyidx + -1]->minor->value)->setText($this->yystack[$this->yyidx + 0]->minor->value)); }
-#line 397 "VIParser.php"
+#line 401 "VIParser.php"
         break;
       case 18: /* vr_definition ::= CSS class_transformations */
 #line 48 "VIParser.y"
@@ -424,63 +428,68 @@ static $yy_default = array(
 																		$yygotominor[] = $action['className']::instance($this->yystack[$this->yyidx + -1]->minor->value)->setClass($action['class']);
 																	}
 																}
-#line 408 "VIParser.php"
+#line 412 "VIParser.php"
         break;
       case 20: /* validation_reporter ::= validation_reporter vr_definition */
 #line 57 "VIParser.y"
 { $yygotominor=array_merge($this->yystack[$this->yyidx + -1]->minor,$this->yystack[$this->yyidx + 0]->minor); }
-#line 413 "VIParser.php"
+#line 417 "VIParser.php"
         break;
       case 22: /* validator ::= validation_rule COLON validation_reporter */
 #line 60 "VIParser.y"
 { $yygotominor = $this->yystack[$this->yyidx + -2]->minor->addReporters($this->yystack[$this->yyidx + 0]->minor); }
-#line 418 "VIParser.php"
+#line 422 "VIParser.php"
         break;
       case 23: /* rules_list ::= validator */
 #line 62 "VIParser.y"
 { $yygotominor = Rules::instance()->addCheck($this->yystack[$this->yyidx + 0]->minor); }
-#line 423 "VIParser.php"
+#line 427 "VIParser.php"
         break;
       case 24: /* rules_list ::= rules_list COMA validator */
 #line 63 "VIParser.y"
 { $yygotominor = $this->yystack[$this->yyidx + -2]->minor->addCheck($this->yystack[$this->yyidx + 0]->minor); }
-#line 428 "VIParser.php"
+#line 432 "VIParser.php"
         break;
       case 25: /* rules ::= CURLY_LBRACKET rules_list CURLY_RBRACKET */
 #line 65 "VIParser.y"
 { $yygotominor = $this->yystack[$this->yyidx + -1]->minor; }
-#line 433 "VIParser.php"
+#line 437 "VIParser.php"
         break;
       case 26: /* rules ::= CURLY_LBRACKET CURLY_RBRACKET */
 #line 66 "VIParser.y"
 { $yygotominor = Rules::instance();}
-#line 438 "VIParser.php"
+#line 442 "VIParser.php"
         break;
       case 29: /* element_rules_definition ::= element_selector_name ANGLE_LBRACKET element_selector_name ANGLE_RBRACKET rules */
 #line 71 "VIParser.y"
 { $yygotominor = new Field($this->yystack[$this->yyidx + -4]->minor,$this->yystack[$this->yyidx + -2]->minor,$this->yystack[$this->yyidx + 0]->minor); }
-#line 443 "VIParser.php"
+#line 447 "VIParser.php"
         break;
       case 30: /* element_rules_definition ::= ANGLE_LBRACKET element_selector_name ANGLE_RBRACKET element_selector_name rules */
 #line 72 "VIParser.y"
 { $yygotominor = new Field($this->yystack[$this->yyidx + -1]->minor,$this->yystack[$this->yyidx + -3]->minor,$this->yystack[$this->yyidx + 0]->minor); }
-#line 448 "VIParser.php"
+#line 452 "VIParser.php"
         break;
       case 31: /* element_rules_definition ::= ANGLE_LBRACKET element_selector_name ANGLE_RBRACKET rules */
 #line 73 "VIParser.y"
 { $yygotominor = new Field('',$this->yystack[$this->yyidx + -2]->minor,$this->yystack[$this->yyidx + 0]->minor); }
-#line 453 "VIParser.php"
+#line 457 "VIParser.php"
         break;
-      case 32: /* element_rules_definition ::= element_selector_name rules */
+      case 32: /* element_rules_definition ::= ANGLE_LBRACKET ANGLE_RBRACKET rules */
 #line 74 "VIParser.y"
-{ $yygotominor = new Field($this->yystack[$this->yyidx + -1]->minor,'',$this->yystack[$this->yyidx + 0]->minor); }
-#line 458 "VIParser.php"
+{ $yygotominor = new Field('','',$this->yystack[$this->yyidx + 0]->minor); }
+#line 462 "VIParser.php"
         break;
-      case 33: /* translation_unit ::= element_rules_definition */
-      case 34: /* translation_unit ::= translation_unit element_rules_definition */
-#line 76 "VIParser.y"
+      case 33: /* element_rules_definition ::= element_selector_name rules */
+#line 75 "VIParser.y"
+{ $yygotominor = new Field($this->yystack[$this->yyidx + -1]->minor,'',$this->yystack[$this->yyidx + 0]->minor); }
+#line 467 "VIParser.php"
+        break;
+      case 34: /* translation_unit ::= element_rules_definition */
+      case 35: /* translation_unit ::= translation_unit element_rules_definition */
+#line 77 "VIParser.y"
 { $this->generator->addDefinition($this->yystack[$this->yyidx + 0]->minor); }
-#line 464 "VIParser.php"
+#line 473 "VIParser.php"
         break;
       default:
       /* (0) start ::= translation_unit */
@@ -511,7 +520,7 @@ static $yy_default = array(
 
 #line 21 "VIParser.y"
  throw new ParceTokenException('Parse failure: '.$yyminor->value,$yymajor,0,'',$yyminor->line); 
-#line 495 "VIParser.php"
+#line 504 "VIParser.php"
   }
 
   private function yy_syntax_error($yymajor, $yyminor)
@@ -519,7 +528,7 @@ static $yy_default = array(
     $message = 'Unexpected ' . $this->yy_token_name($yymajor) . '(' . $yyminor . ')';
 #line 19 "VIParser.y"
  throw new ParceTokenException('Syntax error: '.$yyminor->value,$yymajor,0,'',$yyminor->line); 
-#line 503 "VIParser.php"
+#line 512 "VIParser.php"
   }
 
   private function yy_accept()

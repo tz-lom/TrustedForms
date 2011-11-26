@@ -71,6 +71,7 @@ element_selector_name(p) ::= IDENTIFIER(v).     { p = v->value; }
 element_rules_definition(def) ::= element_selector_name(name) ANGLE_LBRACKET element_selector_name(form) ANGLE_RBRACKET rules(r).	{ def = new Field(name,form,r); }
 element_rules_definition(def) ::= ANGLE_LBRACKET element_selector_name(form) ANGLE_RBRACKET element_selector_name(name) rules(r).	{ def = new Field(name,form,r); }
 element_rules_definition(def) ::= ANGLE_LBRACKET element_selector_name(form) ANGLE_RBRACKET rules(r).                               { def = new Field('',form,r); }
+element_rules_definition(def) ::= ANGLE_LBRACKET ANGLE_RBRACKET rules(r).                                                           { def = new Field('','',r); }
 element_rules_definition(def) ::= element_selector_name(name) rules(r).                                                             { def = new Field(name,'',r); }
 
 translation_unit ::= element_rules_definition(def).						{ $this->generator->addDefinition(def); }
