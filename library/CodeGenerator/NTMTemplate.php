@@ -99,9 +99,32 @@ class NTMTemplate implements TemplateManipulator
         }
         if($el->tagName=='select')
         {
-            // @todo: Сделать,билиать!!!!!!!!!
-            //$def = $el->find('option [selected]');
-            //$def->attrPHP('selected', "if({$this->formContainer[{$name}])")
+            $opts = $this->ntm->getElementsByCSS('option',$el);
+            foreach($opts as $opt)
+            {
+                if($opt->getAttribute('selected')!==NULL)
+                {
+                    $opt->removeAttribute('selected');
+                    $value = $opt->getAttribute('value');
+                    if($value===NULL)
+                    {
+                        $value = $opt->innerHTML;
+                    }
+                    $value = var_export($value,true);
+                    $opt->setAttribute($this->ntm->encodeMarkdown("<?php if({$this->formContainer}[{$name}]->isChecked()) { if({$this->formContainer}[{$name}]->value()==$value) echo ' selected '; } else { echo ' selected ';} ?>"));
+                }
+                else
+                {
+                    $value = $opt->getAttribute('value');
+                    if($value===NULL)
+                    {
+                        $value = $opt->innerHTML;
+                    }
+                    $value = var_export($value,true);
+                    $opt->setAttribute($this->ntm->encodeMarkdown("<?php if({$this->formContainer}[{$name}]->isChecked() && ({$this->formContainer}[{$name}]->value()==$value)) echo ' selected '; ?>"));                    
+                }
+            }
+            
         }
     }
 
@@ -111,7 +134,8 @@ class NTMTemplate implements TemplateManipulator
         $flag = var_export($flag,true);
         if(!$fromCache)
         {
-            $el = $this->ntm->getElementsByCSS($css)[0];
+            $el = $this->ntm->getElementsByCSS($css);
+            $el = $el[0];
             $el->textContent.= $this->ntm->encodeMarkdown("<?php echo {$this->formContainer}->getFlag({$flag}); ?>");
         }
         return $flag;

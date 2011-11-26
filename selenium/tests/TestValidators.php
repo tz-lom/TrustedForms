@@ -22,6 +22,8 @@ class TestValidators extends PHPUnit_Framework_TestCase
     protected $form;
     static $selenium = NULL;
     
+    const templater = 'NTMTemplate';
+    
     public function setUp()
     {
         if(!self::$selenium && !defined('SKIP_SELENIUM_TESTS'))
@@ -73,7 +75,7 @@ class TestValidators extends PHPUnit_Framework_TestCase
 </form>
 HEREDOC;
         
-        $builder = new \TrustedForms\CodeGenerator\Builder('phpQueryTemplate','PHPCode');
+        $builder = new \TrustedForms\CodeGenerator\Builder(self::templater,'PHPCode');
         $builder->buildFile($source);
         
         eval($builder->getResultValidator()); // here $form will be defined
@@ -138,7 +140,7 @@ HEREDOC;
 </form>
 HEREDOC;
         
-        $builder = new \TrustedForms\CodeGenerator\Builder('phpQueryTemplate','PHPCode');
+        $builder = new \TrustedForms\CodeGenerator\Builder(self::templater,'PHPCode');
         $builder->buildFile($source);
         
         eval($builder->getResultValidator()); // here $form will be defined

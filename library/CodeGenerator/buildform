@@ -28,7 +28,7 @@ function usage()
 
 if(empty($options['source'])) usage();
 
-$options = array_merge(array('tplType' => 'phpQueryTemplate'
+$options = array_merge(array('tplType' => 'NTMTemplate'
                         ),
                         $options);
 
